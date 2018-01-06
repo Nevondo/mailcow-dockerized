@@ -9,16 +9,19 @@ echo $BACKUPDIR
 DATE=$(date +"%Y%m%d_%H%M%S")
 
 function check_structure {
-	
-	if (!is_dir($BACKUPDIR)) {
-		mkdir ($BACKUPDIR);
-		echo "Backup Verzeichnis angelegt."
-	} 
 
-	if (!is_dir($ARCHIVDIR)) {
+	if [[ -f $BACKUPDIR ]]; then
+		echo "Das angegebene Backup Verzeichnis: " $BACKUPDIR
+	else 
+		mkdir ($BACKUPDIR);
+	fi
+
+	if [[ -f $ARCHIVDIR ]]; then
+		echo "Das angegebene Archiv Verzeichnis: " $ARCHIVDIR
+	else 
 		mkdir ($ARCHIVDIR);
-		echo "Backup Archiv Verzeichnis angelegt."
-	}
+	fi
+	
 
 }
 

@@ -100,5 +100,5 @@ smtp_sasl_password_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_ma
 smtp_sasl_security_options = 
 smtp_sasl_mechanism_filter = plain, login
 
-smtpd_client_recipient_rate_limit = 100 	# 100 Mails in 
-anvil_rate_time_unit = 1800					# 1800 Sekunden
+smtpd_client_recipient_rate_limit = 100 
+anvil_rate_time_unit = 1800

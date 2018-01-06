@@ -27,7 +27,7 @@ function check_structure {
 }
 
 function archiv_move {
-	mv $BACKUPDIR/backup_* $ARCHIVDIR/ >
+	mv $BACKUPDIR/backup_* $ARCHIVDIR/ 
 }
 
 function del_live_backup {

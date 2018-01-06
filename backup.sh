@@ -4,6 +4,8 @@ source mailcow.conf
 source ${PWD}/backup/backup.conf
 source ${PWD}/backup/backup.local.conf
 
+echo $BACKUPDIR
+
 DATE=$(date +"%Y%m%d_%H%M%S")
 
 function check_structure {

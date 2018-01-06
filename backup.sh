@@ -1,8 +1,7 @@
 #!/bin/bash
 
-source mailcow.conf
-source ${PWD}/backup/backup.conf
-source ${PWD}/backup/backup.local.conf
+source backup/backup.conf
+source backup/backup.local.conf
 
 echo $BACKUPDIR
 
@@ -42,11 +41,6 @@ function backup_maildir {
 	mv backup_vmail.tar.gz $BACKUPDIR/backup_vmail_${DATE}.tar.gz
 	echo "MySQL Backup erfolgreich abgeschlossen."	
 }
-
-
-
-
-cd ${PWD}
 
 check_structure
 archiv_move

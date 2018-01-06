@@ -101,4 +101,4 @@ smtp_sasl_security_options =
 smtp_sasl_mechanism_filter = plain, login
 
 smtpd_client_recipient_rate_limit = 100 
-anvil_rate_time_unit = 1800
+anvil_rate_time_unit = 300

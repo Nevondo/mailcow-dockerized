@@ -1,7 +1,11 @@
 #!/bin/bash
 
 source backup/backup.conf
-source backup/backup.local.conf
+
+if [[ -f "backup/backup.local.conf" ]]; then
+	source backup/backup.local.conf
+fi
+
 
 echo $BACKUPDIR
 
@@ -12,13 +16,13 @@ function check_structure {
 	if [[ -f $BACKUPDIR ]]; then
 		echo "Das angegebene Backup Verzeichnis: " $BACKUPDIR
 	else 
-		mkdir ($BACKUPDIR);
+		mkdir $BACKUPDIR
 	fi
 
 	if [[ -f $ARCHIVDIR ]]; then
 		echo "Das angegebene Archiv Verzeichnis: " $ARCHIVDIR
 	else 
-		mkdir ($ARCHIVDIR);
+		mkdir $ARCHIVDIR
 	fi
 	
 

@@ -36,7 +36,7 @@ function del_live_backup {
 
 function del_old_backups {
 
-	find $ARCHIVDIR -mtime +ARCHIV_HISTORY -exec rm {} \;
+	find $ARCHIVDIR -mtime +$ARCHIV_HISTORY -exec rm {} \;
 
 }
 

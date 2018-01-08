@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source mailcow.conf
 source backup/backup.conf
 
 #Einbinden der localen Backupkonfiguration die nicht überschrieben wird.

@@ -176,6 +176,7 @@ $lang['user']['misc_delete_profile'] = 'Sonstige Kontoeinstellungen';
 $lang['user']['tag_handling'] = 'Umgang mit getaggten E-Mails steuern';
 $lang['user']['tag_in_subfolder'] = 'In Unterordner';
 $lang['user']['tag_in_subject'] = 'In Betreff';
+$lang['user']['tag_in_none'] = 'Nichts tun';
 $lang['user']['tag_help_explain'] = 'Als Unterordner: Es wird ein Ordner mit dem Namen des Tags unterhalb der Inbox erstellt ("INBOX/Facebook").<br>
 In Betreff: Der Name des Tags wird dem Betreff angefügt, etwa "[Facebook] Meine Neuigkeiten".';
 $lang['user']['tag_help_example'] = 'Beispiel für eine getaggte E-Mail-Adresse: ich<b>+Facebook</b>@example.org';
@@ -629,6 +630,7 @@ $lang['quarantaine']['check_hash'] = "Checksumme auf VirusTotal suchen";
 $lang['quarantaine']['qitem'] = "Quarantäneeintrag";
 $lang['quarantaine']['subj'] = "Betreff";
 $lang['quarantaine']['text_plain_content'] = "Inhalt (text/plain)";
+$lang['quarantaine']['text_from_html_content'] = "Inhalt (html, konvertiert)";
 $lang['quarantaine']['atts'] = "Anhänge";
 
 $lang['header']['quarantaine'] = "Quarantäne";

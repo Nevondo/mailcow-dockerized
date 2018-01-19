@@ -16,9 +16,10 @@ done
 
 [[ ${NC_PURGE} == "y" ]] && [[ ${NC_INSTALL} == "y" ]] && { echo "Cannot use -p and -i at the same time"; }
 
-  SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${SCRIPT_DIR}/../mailcow.conf
 
-  source ${SCRIPT_DIR}/../mailcow.conf
+if [[ ${NC_PURGE} == "y" ]]; then
 
 	docker exec -it $(docker ps -f name=mysql-mailcow -q) mysql -uroot -p${DBROOT} -e \
 	  "$(docker exec -it $(docker ps -f name=mysql-mailcow -q) mysql -uroot -p${DBROOT} -e "SELECT GROUP_CONCAT('DROP TABLE ', TABLE_SCHEMA, '.', TABLE_NAME SEPARATOR ';') FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE 'nc_%' AND TABLE_SCHEMA = '${DBNAME}';" -BN)"
@@ -94,7 +95,7 @@ elif [[ ${NC_INSTALL} == "y" ]]; then
 
 	if [[ ${NC_TYPE} == "subdomain" ]]; then
 		docker exec -it -u www-data $(docker ps -f name=php-fpm-mailcow -q) /web/nextcloud/occ config:system:set overwritewebroot --value=/
-		docker exec -it -u www-data $(docker ps -f name=php-fpm-mailcow -q) /web/nextcloud/occ config:system:set overwritehost --value=nextcloud.develcow.de
+		docker exec -it -u www-data $(docker ps -f name=php-fpm-mailcow -q) /web/nextcloud/occ config:system:set overwritehost --value=${NC_SUBD}
 		cp ./data/assets/nextcloud/nextcloud.conf ./data/conf/nginx/
 		sed -i 's/NC_SUBD/${NC_SUBD}/g' ./data/conf/nginx/nextcloud.conf
 	elif [[ ${NC_TYPE} == "subfolder" ]]; then

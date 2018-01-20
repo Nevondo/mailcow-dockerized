@@ -62,8 +62,8 @@ def ban(address):
         print "Address %s is whitelisted by rule %s" % (self_network, wl_net)
         return
 
-  net = ipaddress.ip_network((address + ('/32' if type(ip) is ipaddress.IPv4Address else '/64')).decode('ascii'), strict=False)
-  net = ipaddress.ip_network((address + (if type(ip) is ipaddress.IPv4Address else '/64')).decode('ascii'), strict=False)
+  net = ipaddress.ip_network((address + ('/32' if type(ip) is ipaddress.IPv4Address else '/64')).decode('ascii'), strict=True)
+  net = ipaddress.ip_network((address + (if type(ip) is ipaddress.IPv4Address else '/64')).decode('ascii'), strict=True)
   net = str(net)
 
   if not net in bans or time.time() - bans[net]['last_attempt'] > RETRY_WINDOW:

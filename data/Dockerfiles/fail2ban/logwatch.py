@@ -38,7 +38,6 @@ log = {}
 quit_now = False
 
 def ban(address):
-  print "DEBUG 1: %s" % (address)
   BAN_TIME = int(r.get("F2B_BAN_TIME"))
   MAX_ATTEMPTS = int(r.get("F2B_MAX_ATTEMPTS"))
   RETRY_WINDOW = int(r.get("F2B_RETRY_WINDOW"))
@@ -51,7 +50,6 @@ def ban(address):
   if ip.is_private or ip.is_loopback:
     return
 
-  print "IP 2: %s" % (ip)
   self_network = ipaddress.ip_network(address.decode('ascii'))
   if WHITELIST:
     for wl_key in WHITELIST:
@@ -65,11 +63,7 @@ def ban(address):
         return
 
   net = ipaddress.ip_network((address + ('/32' if type(ip) is ipaddress.IPv4Address else '/64')).decode('ascii'), strict=False)
-  print "IP 3: %s" % (net)
-  net = ipaddress.ip_network((address + (if type(ip) is ipaddress.IPv4Address else '/64')).decode('ascii'), strict=False)
-  print "IP 4: %s" % (net)
   net = str(net)
-  print "IP 5 : %s" % (net)
 
   if not net in bans or time.time() - bans[net]['last_attempt'] > RETRY_WINDOW:
     bans[net] = { 'attempts': 0 }

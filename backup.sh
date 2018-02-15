@@ -28,11 +28,11 @@ function check_structure {
 }
 
 function archiv_move {
-	mv $BACKUPDIR/backup_* $ARCHIVDIR/ 
+	mv $BACKUPDIR/mailcow* $ARCHIVDIR/ 
 }
 
 function del_live_backup {
-	rm $BACKUPDIR/backup_* -R
+	rm $BACKUPDIR/mailcow* -R
 }
 
 function del_old_backups {

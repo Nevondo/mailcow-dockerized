@@ -32,27 +32,15 @@ function archiv_move {
 }
 
 function del_live_backup {
-	rm $BACKUPDIR/backup_*
+	rm $BACKUPDIR/backup_* -R
 }
 
 function del_old_backups {
-
 	find $ARCHIVDIR -mtime +$ARCHIV_HISTORY -exec rm {} \;
-
 }
 
-# MySQL Dump erstellen
-function backup_mysql {
-	docker-compose exec -T mysql-mailcow mysqldump --default-character-set=utf8mb4 -u${DBUSER} -p${DBPASS} ${DBNAME} > backup_${DBNAME}_${DATE}.sql
-    mv backup_${DBNAME}_${DATE}.sql $BACKUPDIR/backup_${DBNAME}_${DATE}.sql
-	echo "MySQL Backup erfolgreich abgeschlossen."	
-}
-
-# Mailboxen Packen 
-function backup_maildir {
-	docker run --rm -i -v $(docker inspect --format '{{ range .Mounts }}{{ if eq .Destination "/var/vmail" }}{{ .Name }}{{ end }}{{ end }}' $(docker-compose ps -q dovecot-mailcow)):/vmail -v ${PWD}:/backup debian:stretch-slim tar cvfz /backup/backup_vmail.tar.gz /vmail
-	mv backup_vmail.tar.gz $BACKUPDIR/backup_vmail_${DATE}.tar.gz
-	echo "Mailboxen erfolgreich gesichert."	
+function backup_all {
+    BACKUP_LOCATION=$BACKUPDIR helper-scripts/backup_and_restore.sh backup all
 }
 
 check_structure
@@ -62,7 +50,6 @@ if [[ $ENABLE_ARCHIV == "yes" ]]; then
 else 
 	del_live_backup
 fi
-backup_mysql
-backup_maildir
+backup_all
 
 

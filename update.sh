@@ -115,8 +115,7 @@ echo -e "Stopping mailcow... "
 sleep 2
 docker-compose down
 
-# Silently fixing remote url from andryyy to mailcow
-git remote set-url origin https://git.hosted4u.de/Hosted4u/mailcow-dockerized.git
+git remote set-url origin https://git.codeink.de/CodeInk/mailcow-dockerized.git
 echo -e "\e[32mCommitting current status...\e[0m"
 git add -u
 git commit -am "Before update on ${DATE}" > /dev/null

@@ -505,9 +505,9 @@ $lang['quarantine']['atts'] = "Anhänge";
 $lang['header']['quarantine'] = "Quarantäne";
 $lang['header']['debug'] = "Debugging";
 
-$lang['quarantine']['release_body'] = "Die ursprüngliche Nachricht wurde als EML-Datei im Anhang hinterlegt.";
+$lang['quarantine']['release_body'] = "Die ursprüngliche Nachricht wurde durch einen Administator freigegeben und an diese E-Mail angehangen.\n  Die E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt.\n Sollte es sich doch um eine unerwünschte Nachricht halten, antworten Sie nicht auf die unten angehange Nachricht um weiten Spam zu vermeiden!";
 $lang['danger']['release_send_failed'] = "Die Nachricht konnte nicht versendet werden: %s";
-$lang['quarantine']['release_subject'] = "Potentiell schädliche Nachricht aus Quarantäne: %s";
+$lang['quarantine']['release_subject'] = "Potentiell schädliche Nachricht aus Quarantäne freigegeben: %s";
 
 $lang['mailbox']['bcc_map_type'] = "BCC Typ";
 $lang['mailbox']['bcc_type'] = "BCC Typ";

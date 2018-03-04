@@ -505,7 +505,7 @@ $lang['quarantine']['atts'] = "Anhänge";
 $lang['header']['quarantine'] = "Quarantäne";
 $lang['header']['debug'] = "Debugging";
 
-$lang['quarantine']['release_body'] = "Die ursprüngliche Nachricht wurde durch einen Administator freigegeben und an diese E-Mail angehangen. \nDie E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt. \nSollte es sich doch um eine unerwünschte Nachricht halten, antworten Sie nicht auf die sich im Anhang befindene Nachricht um weiten Spam zu vermeiden! \n\n Mit freundlichen Grüßen \nIhr Systemadministrator";
+$lang['quarantine']['release_body'] = "Die ursprüngliche Nachricht wurde durch einen Administator freigegeben und an diese E-Mail angehangen. \nDie E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt. \nSollte es sich doch um eine unerwünschte Nachricht halten, antworten Sie nicht auf die sich im Anhang befindene Nachricht um weiten Spam zu vermeiden! \n\nMit freundlichen Grüßen \nIhr Systemadministrator";
 $lang['danger']['release_send_failed'] = "Die Nachricht konnte nicht versendet werden: %s";
 $lang['quarantine']['release_subject'] = "Potentiell schädliche Nachricht aus Quarantäne freigegeben: %s";
 

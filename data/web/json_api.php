@@ -1005,6 +1005,7 @@ if (isset($_SESSION['mailcow_cc_role']) || isset($_SESSION['pending_mailcow_cc_u
                   echo json_encode($logs, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
                 }
                 else {
+                  echo get_logs('rspamd-history');
                   echo '{}';
                 }
               break;

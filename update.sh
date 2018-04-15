@@ -70,7 +70,7 @@ for option in ${CONFIG_ARRAY[@]}; do
   elif [[ ${option} == "COMPOSE_PROJECT_NAME" ]]; then
     if ! grep -q ${option} mailcow.conf; then
       echo "Adding new option \"${option}\" to mailcow.conf"
-      echo "COMPOSE_PROJECT_NAME=mailcow-dockerized" >> mailcow.conf
+      echo "COMPOSE_PROJECT_NAME=mailcowdockerized" >> mailcow.conf
     fi
   elif [[ ${option} == "DOVEADM_PORT" ]]; then
     if ! grep -q ${option} mailcow.conf; then
@@ -205,6 +205,10 @@ docker-compose pull --parallel
 # Fix missing SSL, does not overwrite existing files
 [[ ! -d data/assets/ssl ]] && mkdir -p data/assets/ssl
 cp -n data/assets/ssl-example/*.pem data/assets/ssl/
+
+echo -e "Fixing project name... "
+sed -ie 's#COMPOSEPROJECT_NAME#COMPOSE_PROJECT_NAME#g' mailcow.conf
+sed -i '/COMPOSE_PROJECT_NAME=/s/-//g' mailcow.conf
 
 echo -e "\e[32mStarting mailcow...\e[0m"
 sleep 2

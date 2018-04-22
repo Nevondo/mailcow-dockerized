@@ -127,6 +127,6 @@ smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_maps.cf
 smtp_sasl_security_options = 
 smtp_sasl_mechanism_filter = plain, login
-
+smtp_header_checks = pcre:/opt/postfix/conf/mailcow_anonymize_headers.pcre
 smtpd_client_recipient_rate_limit = 100 
 anvil_rate_time_unit = 300

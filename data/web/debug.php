@@ -4,6 +4,7 @@ require_once "inc/prerequisites.inc.php";
 if (isset($_SESSION['mailcow_cc_role']) && $_SESSION['mailcow_cc_role'] == "admin") {
 require_once "inc/header.inc.php";
 $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
+$git_last = array_pop(file('/git_head'));
 
 ?>
 <div class="container">
@@ -42,6 +43,21 @@ $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
           $vmail_df = explode(',', json_decode(docker('dovecot-mailcow', 'post', 'exec', $exec_fields), true));
         ?>
         <div role="tabpanel" class="tab-pane active" id="tab-containers">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Version information</h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p>Git head</p>
+                </div>
+                <div class="col-sm-9">
+                  <a target="_blank" href="https://github.com/mailcow/mailcow-dockerized/commit/<?=explode(' ', $git_last)[1];?>"><?=explode(' ', $git_last)[1];?></a>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Disk usage</h3>
@@ -83,14 +99,15 @@ $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
               'netfilter-mailcow',
               'clamd-mailcow'
             );
+            $container_states = (docker($container, 'states'));
             foreach ($container_array as $container) {
-                $container_stats = docker($container, 'info');
+                $container_state = $container_states[$container];
                 ?>
                 <li class="list-group-item">
                 <?=$container;?>
                 <?php
                 date_default_timezone_set('UTC');
-                $StartedAt = date_parse($container_stats['State']['StartedAt']);
+                $StartedAt = date_parse($container_state['StartedAt']);
                 if ($StartedAt['hour'] !== false) {
                   $date = new \DateTime();
                   $date->setTimestamp(mktime(
@@ -110,7 +127,7 @@ $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
                 ?>
                 <small>(Started on <?=$started;?>),
                 <a href data-toggle="modal" data-container="<?=$container;?>" data-target="#RestartContainer">Restart</a></small>
-                <span class="pull-right label label-<?=($container_stats !== false && !empty($container_stats)) ? (($container_stats['State']['Running'] == 1) ? 'success' : 'danger') : 'default'; ?>">&nbsp;&nbsp;&nbsp;</span>
+                <span class="pull-right label label-<?=($container_state !== false && !empty($container_state)) ? (($container_state['Running'] == 1) ? 'success' : 'danger') : 'default'; ?>">&nbsp;&nbsp;&nbsp;</span>
                 </li>
               <?php
               }
@@ -198,6 +215,7 @@ $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
               </div>
             </div>
             <div class="panel-body">
+              <div id="rspamd_donut" style="height:400px;width:100%; "></div>
               <div class="table-responsive">
                 <table class="table table-striped table-condensed log-table" id="rspamd_history"></table>
               </div>

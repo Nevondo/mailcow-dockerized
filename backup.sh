@@ -1,11 +1,11 @@
 #!/bin/bash
 
 source mailcow.conf
-source backup/backup.conf
+source backup.conf
 
 #Einbinden der localen Backupkonfiguration die nicht überschrieben wird.
-if [[ -f "backup/backup.local.conf" ]]; then
-	source backup/backup.local.conf
+if [[ -f "backup.local.conf" ]]; then
+	source backup.local.conf
 fi
 
 DATE=$(date +"%Y%m%d_%H%M%S")

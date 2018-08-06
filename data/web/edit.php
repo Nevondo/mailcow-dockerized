@@ -31,9 +31,15 @@ if (isset($_SESSION['mailcow_cc_role'])) {
               <div class="form-group">
                 <label class="control-label col-sm-2" for="goto"><?=$lang['edit']['target_address'];?></label>
                 <div class="col-sm-10">
-                  <textarea id="textarea_alias_goto" class="form-control" autocapitalize="none" autocorrect="off" rows="10" id="goto" name="goto" required><?= ($result['goto'] != "null@localhost") ? htmlspecialchars($result['goto']) : null; ?></textarea>
+                  <textarea id="textarea_alias_goto" class="form-control" autocapitalize="none" autocorrect="off" rows="10" id="goto" name="goto" required><?= (!preg_match('/^(null|ham|spam)@localhost$/i', $result['goto'])) ? htmlspecialchars($result['goto']) : null; ?></textarea>
                   <div class="checkbox">
-                    <label><input id="goto_null" type="checkbox" value="1" name="goto_null" <?= ($result['goto'] == "null@localhost") ? "checked" : null; ?>> <?=$lang['add']['goto_null'];?></label>
+                    <label><input class="goto_checkbox"id="goto_null" type="checkbox" value="1" name="goto_null" <?= ($result['goto'] == "null@localhost") ? "checked" : null; ?>> <?=$lang['add']['goto_null'];?></label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input class="goto_checkbox" id="goto_spam" type="checkbox" value="1" name="goto_spam" <?= ($result['goto'] == "spam@localhost") ? "checked" : null; ?>> <?=$lang['add']['goto_spam'];?></label>
+                  </div>
+                  <div class="checkbox">
+                    <label><input class="goto_checkbox" id="goto_ham" type="checkbox" value="1" name="goto_ham" <?= ($result['goto'] == "ham@localhost") ? "checked" : null; ?>> <?=$lang['add']['goto_ham'];?></label>
                   </div>
                 </div>
               </div>
@@ -388,7 +394,7 @@ if (isset($_SESSION['mailcow_cc_role'])) {
         ?>
         <h4><?=$lang['edit']['mailbox'];?></h4>
         <form class="form-horizontal" data-id="editmailbox" role="form" method="post">
-          <input type="hidden" value="0" name="sender_acl">
+          <input type="hidden" value="default" name="sender_acl">
           <input type="hidden" value="0" name="active">
           <input type="hidden" value="0" name="force_pw_update">
           <div class="form-group">
@@ -456,6 +462,7 @@ if (isset($_SESSION['mailcow_cc_role'])) {
 
               ?>
               </select>
+              <div style="display:none" id="sender_acl_disabled"><?=$lang['edit']['sender_acl_disabled'];?></div>
             </div>
           </div>
           <div class="form-group">
@@ -733,6 +740,7 @@ if (isset($_SESSION['mailcow_cc_role'])) {
             <input type="hidden" value="0" name="automap">
             <input type="hidden" value="0" name="skipcrossduplicates">
             <input type="hidden" value="0" name="active">
+            <input type="hidden" value="0" name="subscribeall">
             <div class="form-group">
               <label class="control-label col-sm-2" for="host1"><?=$lang['edit']['hostname'];?></label>
               <div class="col-sm-10">
@@ -771,7 +779,7 @@ if (isset($_SESSION['mailcow_cc_role'])) {
               <label class="control-label col-sm-2" for="mins_interval"><?=$lang['edit']['mins_interval'];?></label>
               <div class="col-sm-10">
                 <input type="number" class="form-control" name="mins_interval" min="1" max="3600" value="<?=htmlspecialchars($result['mins_interval'], ENT_QUOTES, 'UTF-8');?>" required>
-                <small class="help-block">10-3600</small>
+                <small class="help-block">1-3600</small>
               </div>
             </div>
             <div class="form-group">
@@ -795,43 +803,70 @@ if (isset($_SESSION['mailcow_cc_role'])) {
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-sm-2" for="timeout1"><?=$lang['add']['timeout1'];?></label>
+              <div class="col-sm-10">
+              <input type="number" class="form-control" name="timeout1" id="timeout1" min="1" max="32000" value="<?=htmlspecialchars($result['timeout1'], ENT_QUOTES, 'UTF-8');?>">
+              <small class="help-block">1-32000</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="timeout2"><?=$lang['add']['timeout2'];?></label>
+              <div class="col-sm-10">
+              <input type="number" class="form-control" name="timeout2" id="timeout2" min="1" max="32000" value="<?=htmlspecialchars($result['timeout2'], ENT_QUOTES, 'UTF-8');?>">
+              <small class="help-block">1-32000</small>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="control-label col-sm-2" for="exclude"><?=$lang['edit']['exclude'];?></label>
               <div class="col-sm-10">
               <input type="text" class="form-control" name="exclude" id="exclude" value="<?=htmlspecialchars($result['exclude'], ENT_QUOTES, 'UTF-8');?>">
               </div>
             </div>
             <div class="form-group">
+              <label class="control-label col-sm-2" for="custom_params"><?=$lang['add']['custom_params'];?></label>
+              <div class="col-sm-10">
+              <input type="text" class="form-control" name="custom_params" id="custom_params" value="<?=htmlspecialchars($result['custom_params'], ENT_QUOTES, 'UTF-8');?>">
+              </div>
+            </div>
+            <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
-                <label><input type="checkbox" value="1" name="delete2duplicates" <?=($result['delete2duplicates']=="1") ? "checked" : "";?>> <?=$lang['edit']['delete2duplicates'];?></label>
+                <label><input type="checkbox" value="1" name="delete2duplicates" <?=($result['delete2duplicates']=="1") ? "checked" : "";?>> <?=$lang['edit']['delete2duplicates'];?> (--delete2duplicates)</label>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
-                <label><input type="checkbox" value="1" name="delete1" <?=($result['delete1']=="1") ? "checked" : "";?>> <?=$lang['edit']['delete1'];?></label>
+                <label><input type="checkbox" value="1" name="delete1" <?=($result['delete1']=="1") ? "checked" : "";?>> <?=$lang['edit']['delete1'];?> (--delete1)</label>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
-                <label><input type="checkbox" value="1" name="delete2" <?=($result['delete2']=="1") ? "checked" : "";?>> <?=$lang['edit']['delete2'];?></label>
+                <label><input type="checkbox" value="1" name="delete2" <?=($result['delete2']=="1") ? "checked" : "";?>> <?=$lang['edit']['delete2'];?> (--delete2)</label>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
-                <label><input type="checkbox" value="1" name="automap" <?=($result['automap']=="1") ? "checked" : "";?>> <?=$lang['edit']['automap'];?></label>
+                <label><input type="checkbox" value="1" name="automap" <?=($result['automap']=="1") ? "checked" : "";?>> <?=$lang['edit']['automap'];?> (--automap)</label>
                 </div>
               </div>
             </div>
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
                 <div class="checkbox">
-                <label><input type="checkbox" value="1" name="skipcrossduplicates" <?=($result['skipcrossduplicates']=="1") ? "checked" : "";?>> <?=$lang['edit']['skipcrossduplicates'];?></label>
+                <label><input type="checkbox" value="1" name="skipcrossduplicates" <?=($result['skipcrossduplicates']=="1") ? "checked" : "";?>> <?=$lang['edit']['skipcrossduplicates'];?> (--skipcrossduplicates)</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                <label><input type="checkbox" value="1" name="subscribeall" <?=($result['subscribeall']=="1") ? "checked" : "";?>> <?=$lang['add']['subscribeall'];?> (--subscribeall)</label>
                 </div>
               </div>
             </div>

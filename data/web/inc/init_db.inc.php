@@ -3,7 +3,7 @@ function init_db_schema() {
   try {
     global $pdo;
 
-    $db_version = "04072018_2119";
+    $db_version = "05072018_2319";
 
     $stmt = $pdo->query("SHOW TABLES LIKE 'versions'");
     $num_results = count($stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -147,7 +147,7 @@ function init_db_schema() {
               "col" => "username",
               "ref" => "admin.username",
               "delete" => "CASCADE",
-              "update" => "NO ACTION"
+              "update" => "CASCADE"
             )
           )
         ),
@@ -363,6 +363,24 @@ function init_db_schema() {
         ),
         "attr" => "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC"
       ),
+      "logs" => array(
+        "cols" => array(
+          "id" => "INT NOT NULL AUTO_INCREMENT",
+          "type" => "VARCHAR(32) DEFAULT ''",
+          "msg" => "TEXT",
+          "call" => "TEXT",
+          "user" => "VARCHAR(64) NOT NULL",
+          "role" => "VARCHAR(32) NOT NULL",
+          "remote" => "VARCHAR(32) NOT NULL",
+          "time" => "INT(11) NOT NULL"
+        ),
+        "keys" => array(
+          "primary" => array(
+            "" => array("id")
+          )
+        ),
+        "attr" => "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC"
+      ),
       "quota2" => array(
         "cols" => array(
           "username" => "VARCHAR(255) NOT NULL",
@@ -417,6 +435,10 @@ function init_db_schema() {
           "delete2" => "TINYINT(1) NOT NULL DEFAULT '0'",
           "automap" => "TINYINT(1) NOT NULL DEFAULT '0'",
           "skipcrossduplicates" => "TINYINT(1) NOT NULL DEFAULT '0'",
+          "custom_params" => "VARCHAR(512) NOT NULL DEFAULT ''",
+          "timeout1" => "SMALLINT NOT NULL DEFAULT '600'",
+          "timeout2" => "SMALLINT NOT NULL DEFAULT '600'",
+          "subscribeall" => "TINYINT(1) NOT NULL DEFAULT '1'",
           "is_running" => "TINYINT(1) NOT NULL DEFAULT '0'",
           "returned_text" => "MEDIUMTEXT",
           "last_run" => "TIMESTAMP NULL DEFAULT NULL",
@@ -913,7 +935,8 @@ DELIMITER ;';
     }
     $_SESSION['return'] = array(
       'type' => 'success',
-      'msg' => 'Database initialisation completed'
+      'log' => array(__FUNCTION__),
+      'msg' => 'db_init_complete'
     );
 
     // Fix user_acl
@@ -922,7 +945,8 @@ DELIMITER ;';
   catch (PDOException $e) {
     $_SESSION['return'] = array(
       'type' => 'danger',
-      'msg' => 'Database initialisation failed: ' . $e->getMessage()
+      'log' => array(__FUNCTION__),
+      'msg' => array('mysql_error', $e)
     );
   }
 }

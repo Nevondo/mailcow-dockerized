@@ -89,8 +89,17 @@ $(document).ready(function() {
     $('#password2').val(random_passwd);
   });
 
-  $("#goto_null").click(function( event ) {
-    if ($("#goto_null").is(":checked")) {
+  $(".goto_checkbox").click(function( event ) {
+   $("form[data-id='add_alias'] .goto_checkbox").not(this).prop('checked', false);
+    if ($("form[data-id='add_alias'] .goto_checkbox:checked").length > 0) {
+      $('#textarea_alias_goto').prop('disabled', true);
+    }
+    else {
+      $("#textarea_alias_goto").removeAttr('disabled');
+    }
+  });
+  $('#addAliasModal').on('show.bs.modal', function(e) {
+    if ($("form[data-id='add_alias'] .goto_checkbox:checked").length > 0) {
       $('#textarea_alias_goto').prop('disabled', true);
     }
     else {
@@ -233,7 +242,7 @@ jQuery(function($){
       ft_paging.goto(parseInt(current_page[name]))
     }
   }
-  function table_mailbox_paging(ft, name) {
+  function paging_mailbox_after(ft, name) {
     var ft_paging = ft.use(FooTable.Paging)
     current_page[name] = ft_paging.current;
     localStorage.setItem('current_page', JSON.stringify(current_page));
@@ -306,7 +315,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'domain_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'domain_table');
+          paging_mailbox_after(ft, 'domain_table');
         }
       }
     });
@@ -334,7 +343,7 @@ jQuery(function($){
         },
         {"name":"messages","filterable": false,"title":lang.msg_num,"breakpoints":"xs sm md"},
         {"name":"active","filterable": false,"title":lang.active},
-        {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right"},"type":"html","title":lang.action,"breakpoints":"xs sm md"}
+        {"name":"action","filterable": false,"sortable": false,"style":{"min-width":"250px","text-align":"right"},"type":"html","title":lang.action,"breakpoints":"xs sm md"}
       ],
       "empty": lang.empty,
       "rows": $.ajax({
@@ -392,7 +401,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'mailbox_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'mailbox_table');
+          paging_mailbox_after(ft, 'mailbox_table');
         }
       }
     });
@@ -457,7 +466,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'resource_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'resource_table');
+          paging_mailbox_after(ft, 'resource_table');
         }
       }
     });
@@ -519,7 +528,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'bcc_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'bcc_table');
+          paging_mailbox_after(ft, 'bcc_table');
         }
       }
     });
@@ -576,7 +585,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'recipient_map_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'recipient_map_table');
+          paging_mailbox_after(ft, 'recipient_map_table');
         }
       }
     });
@@ -616,6 +625,12 @@ jQuery(function($){
             if (item.goto == "null@localhost") {
               item.goto = '⤷ <span style="font-size:12px" class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
             }
+            else if (item.goto == "spam@localhost") {
+              item.goto = '<span class="label label-danger">Learn as spam</span>';
+            }
+            else if (item.goto == "ham@localhost") {
+              item.goto = '<span class="label label-success">Learn as ham</span>';
+            }
             if (item.in_primary_domain !== "") {
               item.domain = "↳ " + item.domain + " (" + item.in_primary_domain + ")";
             }
@@ -645,7 +660,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'alias_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'alias_table');
+          paging_mailbox_after(ft, 'alias_table');
         }
       }
     });
@@ -699,7 +714,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'aliasdomain_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'aliasdomain_table');
+          paging_mailbox_after(ft, 'aliasdomain_table');
         }
       }
     });
@@ -711,10 +726,10 @@ jQuery(function($){
         {"name":"chkbox","title":"","style":{"maxWidth":"60px","width":"60px","text-align":"center"},"filterable": false,"sortable": false,"type":"html"},
         {"sorted": true,"name":"id","title":"ID","style":{"maxWidth":"60px","width":"60px","text-align":"center"}},
         {"name":"user2","title":lang.owner},
-        {"name":"server_w_port","title":"Server","breakpoints":"xs"},
+        {"name":"server_w_port","title":"Server","breakpoints":"xs","style":{"word-break":"break-all"}},
         {"name":"exclude","title":lang.excludes,"breakpoints":"all"},
         {"name":"mins_interval","title":lang.mins_interval,"breakpoints":"all"},
-        {"name":"last_run","title":lang.last_run,"breakpoints":"all"},
+        {"name":"last_run","title":lang.last_run,"breakpoints":"sm"},
         {"name":"log","title":"Log"},
         {"name":"active","filterable": false,"style":{"maxWidth":"70px","width":"70px"},"title":lang.active},
         {"name":"is_running","filterable": false,"style":{"maxWidth":"120px","width":"100px"},"title":lang.status},
@@ -774,7 +789,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'sync_job_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'sync_job_table');
+          paging_mailbox_after(ft, 'sync_job_table');
         }
       }
     });
@@ -837,7 +852,7 @@ jQuery(function($){
           table_mailbox_ready(ft, 'filter_table');
         },
         "after.ft.paging": function(e, ft){
-          table_mailbox_paging(ft, 'filter_table');
+          paging_mailbox_after(ft, 'filter_table');
         }
       }
     });

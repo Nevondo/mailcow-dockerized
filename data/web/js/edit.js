@@ -1,15 +1,26 @@
 $(document).ready(function() {
-  if ($("#goto_null").is(":checked")) {
-    $('#textarea_alias_goto').prop('disabled', true);
-  }
-  $("#goto_null").click(function( event ) {
-    if ($("#goto_null").is(":checked")) {
+  $(".goto_checkbox").click(function( event ) {
+   $("form[data-id='editalias'] .goto_checkbox").not(this).prop('checked', false);
+    if ($("form[data-id='editalias'] .goto_checkbox:checked").length > 0) {
       $('#textarea_alias_goto').prop('disabled', true);
     }
     else {
       $("#textarea_alias_goto").removeAttr('disabled');
     }
   });
+  $("#disable_sender_check").click(function( event ) {
+    if ($("form[data-id='editmailbox'] #disable_sender_check:checked").length > 0) {
+      $('#sender_acl').prop('disabled', true);
+      $('#sender_acl').selectpicker('refresh');
+    }
+    else {
+      $('#sender_acl').prop('disabled', false);
+      $('#sender_acl').selectpicker('refresh');
+    }
+  });
+  if ($("form[data-id='editalias'] .goto_checkbox:checked").length > 0) {
+    $('#textarea_alias_goto').prop('disabled', true);
+  }
   $("#script_data").numberedtextarea({allowTabChar: true});
 });
 if ($("#multiple_bookings_select").val() == "custom") {
@@ -23,6 +34,17 @@ $("#multiple_bookings_select").change(function() {
   }
   else {
     $("#multiple_bookings_custom_div").hide();
+  }
+});
+if ($("#sender_acl option[value='\*']:selected").length > 0){
+  $("#sender_acl_disabled").show();
+}
+$('#sender_acl').change(function() {
+  if ($("#sender_acl option[value='\*']:selected").length > 0){
+    $("#sender_acl_disabled").show();
+  }
+  else {
+    $("#sender_acl_disabled").hide();
   }
 });
 $("#multiple_bookings_custom").bind("change keypress keyup blur", function() {

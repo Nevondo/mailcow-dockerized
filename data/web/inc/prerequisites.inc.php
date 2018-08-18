@@ -51,6 +51,25 @@ catch (PDOException $e) {
 <?php
 exit;
 }
+function pdo_exception_handler($e) {
+    if ($e instanceof PDOException) {
+      $_SESSION['return'][] = array(
+        'type' => 'danger',
+        'log' => array(__FUNCTION__),
+        'msg' => array('mysql_error', $e)
+      );
+      return false;
+    }
+    else {
+      $_SESSION['return'][] = array(
+        'type' => 'danger',
+        'log' => array(__FUNCTION__),
+        'msg' => array('mysql_error', 'unknown error')
+      );
+      return false;
+    }
+}
+set_exception_handler('pdo_exception_handler');
 
 // TODO: Move function
 function get_remote_ip($anonymize = null) {
@@ -61,25 +80,7 @@ function get_remote_ip($anonymize = null) {
   elseif ($anonymize !== true && $anonymize !== false)  {
     $anonymize = true;
   }
-  $remote = '';
-  if ($_SERVER['HTTP_CLIENT_IP']) {
-    $remote = $_SERVER['HTTP_CLIENT_IP'];
-  }
-  elseif ($_SERVER['HTTP_X_FORWARDED_FOR']) {
-    $remote = $_SERVER['HTTP_X_FORWARDED_FOR'];
-  }
-  elseif ($_SERVER['HTTP_X_FORWARDED']) {
-    $remote = $_SERVER['HTTP_X_FORWARDED'];
-  }
-  elseif ($_SERVER['HTTP_FORWARDED_FOR']) {
-    $remote = $_SERVER['HTTP_FORWARDED_FOR'];
-  }
-  elseif ($_SERVER['HTTP_FORWARDED']) {
-    $remote = $_SERVER['HTTP_FORWARDED'];
-  }
-  elseif ($_SERVER['REMOTE_ADDR']) {
-    $remote = $_SERVER['REMOTE_ADDR'];
-  }
+  $remote = $_SERVER['REMOTE_ADDR'];
   if (filter_var($remote, FILTER_VALIDATE_IP) === false) {
     return '0.0.0.0';
   }

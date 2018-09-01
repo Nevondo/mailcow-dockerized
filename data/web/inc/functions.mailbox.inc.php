@@ -139,7 +139,6 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             $stmt = $pdo->prepare("UPDATE `sieve_filters` SET `script_name` = 'inactive' WHERE `username` = :username AND `filter_type` = :filter_type");
             $stmt->execute(array(
               ':username' => $username,
-              'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
               ':filter_type' => $filter_type
             ));
           }
@@ -415,6 +414,9 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             );
             return false;
           }
+          if (!empty(intval($_data['rl_value']))) {
+            ratelimit('edit', 'domain', array('rl_value' => $_data['rl_value'], 'rl_frame' => $_data['rl_frame'], 'object' => $domain));
+          }
           if (!empty($restart_sogo)) {
             $restart_reponse = json_decode(docker('post', 'sogo-mailcow', 'restart'), true);
             if ($restart_reponse['type'] == "success") {
@@ -634,7 +636,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             );
             return false;
           }
-          foreach ($alias_domains as $i => &$alias_domain) {
+          foreach ($alias_domains as $i => $alias_domain) {
             $alias_domain = idn_to_ascii(strtolower(trim($alias_domain)));
             if (!is_valid_domain_name($alias_domain)) {
               $_SESSION['return'][] = array(
@@ -677,30 +679,30 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
               );
               continue;
             }
-          }
-          $stmt = $pdo->prepare("INSERT INTO `alias_domain` (`alias_domain`, `target_domain`, `active`)
-            VALUES (:alias_domain, :target_domain, :active)");
-          $stmt->execute(array(
-            ':alias_domain' => $alias_domain,
-            ':target_domain' => $target_domain,
-            ':active' => $active
-          ));
-          try {
-            $redis->hSet('DOMAIN_MAP', $alias_domain, 1);
-          }
-          catch (RedisException $e) {
+            $stmt = $pdo->prepare("INSERT INTO `alias_domain` (`alias_domain`, `target_domain`, `active`)
+              VALUES (:alias_domain, :target_domain, :active)");
+            $stmt->execute(array(
+              ':alias_domain' => $alias_domain,
+              ':target_domain' => $target_domain,
+              ':active' => $active
+            ));
+            try {
+              $redis->hSet('DOMAIN_MAP', $alias_domain, 1);
+            }
+            catch (RedisException $e) {
+              $_SESSION['return'][] = array(
+                'type' => 'danger',
+                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                'msg' => array('redis_error', $e)
+              );
+              return false;
+            }
             $_SESSION['return'][] = array(
-              'type' => 'danger',
+              'type' => 'success',
               'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-              'msg' => array('redis_error', $e)
+              'msg' => array('aliasd_added', htmlspecialchars($alias_domain))
             );
-            return false;
           }
-          $_SESSION['return'][] = array(
-            'type' => 'success',
-            'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-            'msg' => array('aliasd_added', htmlspecialchars($alias_domain))
-          );
         break;
         case 'mailbox':
           $local_part   = strtolower(trim($_data['local_part']));
@@ -1288,86 +1290,6 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
               'type' => 'success',
               'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
               'msg' => array('mailbox_modified', $username)
-            );
-          }
-        break;
-        case 'ratelimit':
-          if (!is_array($_data['object'])) {
-            $objects = array();
-            $objects[] = $_data['object'];
-          }
-          else {
-            $objects = $_data['object'];
-          }
-          foreach ($objects as $object) {
-            $rl_value = intval($_data['rl_value']);
-            $rl_frame = $_data['rl_frame'];
-            if (!in_array($rl_frame, array('s', 'm', 'h'))) {
-              $_SESSION['return'][] = array(
-                'type' => 'danger',
-                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                'msg' => 'rl_timeframe'
-              );
-              continue;
-            }
-            if (is_valid_domain_name($object)) {
-              if (!hasDomainAccess($_SESSION['mailcow_cc_username'], $_SESSION['mailcow_cc_role'], $object)) {
-                $_SESSION['return'][] = array(
-                  'type' => 'danger',
-                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                  'msg' => 'access_denied'
-                );
-                continue;
-              }
-            }
-            elseif (filter_var($object, FILTER_VALIDATE_EMAIL)) {
-              if (!hasMailboxObjectAccess($_SESSION['mailcow_cc_username'], $_SESSION['mailcow_cc_role'], $object)) {
-                $_SESSION['return'][] = array(
-                  'type' => 'danger',
-                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                  'msg' => 'access_denied'
-                );
-                continue;
-              }
-            }
-            else {
-              $_SESSION['return'][] = array(
-                'type' => 'danger',
-                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                'msg' => 'access_denied'
-              );
-              continue;
-            }
-            if (empty($rl_value)) {
-              try {
-                $redis->hDel('RL_VALUE', $object);
-              }
-              catch (RedisException $e) {
-                $_SESSION['return'][] = array(
-                  'type' => 'danger',
-                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                  'msg' => array('redis_error', $e)
-                );
-                continue;
-              }
-            }
-            else {
-              try {
-                $redis->hSet('RL_VALUE', $object, $rl_value . ' / 1' . $rl_frame);
-              }
-              catch (RedisException $e) {
-                $_SESSION['return'][] = array(
-                  'type' => 'danger',
-                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                  'msg' => array('redis_error', $e)
-                );
-                continue;
-              }
-            }
-            $_SESSION['return'][] = array(
-              'type' => 'success',
-              'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-              'msg' => array('object_modified', $object)
             );
           }
         break;
@@ -2670,51 +2592,6 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           }
           return $aliases;
         break;
-        case 'ratelimit':
-          if (is_valid_domain_name($_data)) {
-            if (!hasDomainAccess($_SESSION['mailcow_cc_username'], $_SESSION['mailcow_cc_role'], $_data)) {
-              $_SESSION['return'][] = array(
-                'type' => 'danger',
-                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                'msg' => 'access_denied'
-              );
-              return false;
-            }
-          }
-          elseif (filter_var($_data, FILTER_VALIDATE_EMAIL)) {
-            if (!hasMailboxObjectAccess($_SESSION['mailcow_cc_username'], $_SESSION['mailcow_cc_role'], $_data)) {
-              $_SESSION['return'][] = array(
-                'type' => 'danger',
-                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-                'msg' => 'access_denied'
-              );
-              return false;
-            }
-          }
-          else {
-            return false;
-          }
-          try {
-            if ($rl_value = $redis->hGet('RL_VALUE', $_data)) {
-              $rl = explode(' / 1', $rl_value);
-              $data['value'] = $rl[0];
-              $data['frame'] = $rl[1];
-              return $data;
-            }
-            else {
-              return false;
-            }
-          }
-          catch (RedisException $e) {
-            $_SESSION['return'][] = array(
-              'type' => 'danger',
-              'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
-              'msg' => array('redis_error', $e)
-            );
-            return false;
-          }
-          return false;
-        break;
         case 'alias_details':
           $aliasdata = array();
           $stmt = $pdo->prepare("SELECT
@@ -2759,6 +2636,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
         break;
         case 'alias_domain_details':
           $aliasdomaindata = array();
+          $rl = ratelimit('get', 'domain', $_data);
           $stmt = $pdo->prepare("SELECT
             `alias_domain`,
             `target_domain`,
@@ -2775,6 +2653,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           $aliasdomaindata['alias_domain'] = $row['alias_domain'];
           $aliasdomaindata['target_domain'] = $row['target_domain'];
           $aliasdomaindata['active'] = $row['active'];
+          $aliasdomaindata['rl'] = $rl;
           $aliasdomaindata['active_int'] = $row['active_int'];
           $aliasdomaindata['created'] = $row['created'];
           $aliasdomaindata['modified'] = $row['modified'];
@@ -2848,6 +2727,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
                   AND `domain` = :domain");
           $stmt->execute(array(':domain' => $row['domain']));
           $MailboxDataDomain	= $stmt->fetch(PDO::FETCH_ASSOC);
+          $rl = ratelimit('get', 'domain', $_data);
           $domaindata['max_new_mailbox_quota']	= ($row['quota'] * 1048576) - $MailboxDataDomain['in_use'];
           if ($domaindata['max_new_mailbox_quota'] > ($row['maxquota'] * 1048576)) {
             $domaindata['max_new_mailbox_quota'] = ($row['maxquota'] * 1048576);
@@ -2864,6 +2744,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           $domaindata['relayhost'] = $row['relayhost'];
           $domaindata['backupmx'] = $row['backupmx'];
           $domaindata['backupmx_int'] = $row['backupmx_int'];
+          $domaindata['rl'] = $rl;
           $domaindata['active'] = $row['active'];
           $domaindata['active_int'] = $row['active_int'];
           $domaindata['relay_all_recipients'] = $row['relay_all_recipients'];
@@ -2887,6 +2768,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             return false;
           }
           $mailboxdata = array();
+          $rl = ratelimit('get', 'mailbox', $_data);
           $stmt = $pdo->prepare("SELECT
               `domain`.`backupmx`,
               `mailbox`.`username`,
@@ -2918,6 +2800,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             $mailboxdata['max_new_quota'] = ($DomainQuota['maxquota'] * 1048576);
           }
           $mailboxdata['username'] = $row['username'];
+          $mailboxdata['rl'] = $rl;
           $mailboxdata['is_relayed'] = $row['backupmx'];
           $mailboxdata['name'] = $row['name'];
           $mailboxdata['active'] = $row['active'];
@@ -3213,6 +3096,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             ));
             try {
               $redis->hDel('DOMAIN_MAP', $domain);
+              $redis->hDel('RL_VALUE', $domain);
             }
             catch (RedisException $e) {
               $_SESSION['return'][] = array(
@@ -3301,6 +3185,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             ));
             try {
               $redis->hDel('DOMAIN_MAP', $alias_domain);
+              $redis->hDel('RL_VALUE', $domain);
             }
             catch (RedisException $e) {
               $_SESSION['return'][] = array(
@@ -3419,6 +3304,17 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
                 ':goto' => $gotos_rebuild,
                 ':address' => $gotos['address']
               ));
+            }
+            try {
+              $redis->hDel('RL_VALUE', $username);
+            }
+            catch (RedisException $e) {
+              $_SESSION['return'][] = array(
+                'type' => 'danger',
+                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                'msg' => array('redis_error', $e)
+              );
+              continue;
             }
             $_SESSION['return'][] = array(
               'type' => 'success',

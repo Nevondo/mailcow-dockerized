@@ -52,6 +52,7 @@ catch (PDOException $e) {
 exit;
 }
 function pdo_exception_handler($e) {
+    print_r($e);
     if ($e instanceof PDOException) {
       $_SESSION['return'][] = array(
         'type' => 'danger',
@@ -124,6 +125,7 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], $AVAILABLE_LANGUAGES)) {
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lang/lang.en.php';
 include $_SERVER['DOCUMENT_ROOT'] . '/lang/lang.'.$_SESSION['mailcow_locale'].'.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.inc.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.acl.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.mailbox.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.customize.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/functions.address_rewriting.inc.php';
@@ -141,6 +143,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/init_db.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/triggers.inc.php';
 init_db_schema();
 if (isset($_SESSION['mailcow_cc_role'])) {
-  set_acl();
+  acl('to_session');
 }
 $UI_TEXTS = customize('get', 'ui_texts');

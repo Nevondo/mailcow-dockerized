@@ -3,6 +3,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
   global $pdo;
   global $redis;
   global $lang;
+  global $MAILBOX_DEFAULT_ATTRIBUTES;
   $_data_log = $_data;
   !isset($_data_log['password']) ?: $_data_log['password'] = '*';
   !isset($_data_log['password2']) ?: $_data_log['password2'] = '*';
@@ -734,6 +735,12 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           $active = intval($_data['active']);
           $quota_b		= ($quota_m * 1048576);
           $maildir		= $domain . "/" . $local_part . "/";
+          $mailbox_attrs = json_encode(
+            array(
+              'force_pw_update' => strval(intval($MAILBOX_DEFAULT_ATTRIBUTES['force_pw_update'])),
+              'tls_enforce_in' => strval(intval($MAILBOX_DEFAULT_ATTRIBUTES['tls_enforce_in'])),
+              'tls_enforce_out' => strval(intval($MAILBOX_DEFAULT_ATTRIBUTES['tls_enforce_out'])))
+            );
           if (!is_valid_domain_name($domain)) {
             $_SESSION['return'][] = array(
               'type' => 'danger',
@@ -867,7 +874,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             return false;
           }
           $stmt = $pdo->prepare("INSERT INTO `mailbox` (`username`, `password`, `name`, `maildir`, `quota`, `local_part`, `domain`, `attributes`, `active`) 
-            VALUES (:username, :password_hashed, :name, :maildir, :quota_b, :local_part, :domain, '{\"force_pw_update\": \"0\", \"tls_enforce_in\": \"0\", \"tls_enforce_out\": \"0\"}', :active)");
+            VALUES (:username, :password_hashed, :name, :maildir, :quota_b, :local_part, :domain, :mailbox_attrs, :active)");
           $stmt->execute(array(
             ':username' => $username,
             ':password_hashed' => $password_hashed,
@@ -876,6 +883,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             ':quota_b' => $quota_b,
             ':local_part' => $local_part,
             ':domain' => $domain,
+            ':mailbox_attrs' => $mailbox_attrs,
             ':active' => $active
           ));
           $stmt = $pdo->prepare("INSERT INTO `quota2` (`username`, `bytes`, `messages`)
@@ -2776,6 +2784,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
               `mailbox`.`active` AS `active_int`,
               CASE `mailbox`.`active` WHEN 1 THEN '".$lang['mailbox']['yes']."' ELSE '".$lang['mailbox']['no']."' END AS `active`,
               `mailbox`.`domain`,
+              `mailbox`.`maildir`,
               `mailbox`.`quota`,
               `quota2`.`bytes`,
               `attributes`,
@@ -2806,6 +2815,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           $mailboxdata['active'] = $row['active'];
           $mailboxdata['active_int'] = $row['active_int'];
           $mailboxdata['domain'] = $row['domain'];
+          $mailboxdata['maildir'] = $row['maildir'];
           $mailboxdata['quota'] = $row['quota'];
           $mailboxdata['attributes'] = json_decode($row['attributes'], true);
           $mailboxdata['quota_used'] = intval($row['bytes']);
@@ -3054,6 +3064,15 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
               );
               continue;
             }
+            $exec_fields = array('cmd' => 'maildir_cleanup', 'maildir' => $domain);
+            $maildir_gc = json_decode(docker('post', 'dovecot-mailcow', 'exec', $exec_fields), true);
+            if ($maildir_gc['type'] != 'success') {
+              $_SESSION['return'][] = array(
+                'type' => 'warning',
+                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                'msg' => 'Could not move maildir to garbage collector: ' . $maildir_gc['msg']
+              );
+            }
             $stmt = $pdo->prepare("DELETE FROM `domain` WHERE `domain` = :domain");
             $stmt->execute(array(
               ':domain' => $domain,
@@ -3078,17 +3097,17 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             $stmt->execute(array(
               ':domain' => '%@'.$domain,
             ));
-            $stmt = $pdo->prepare("DELETE FROM `quota2` WHERE `username` = :domain");
+            $stmt = $pdo->prepare("DELETE FROM `quota2` WHERE `username` LIKE :domain");
             $stmt->execute(array(
               ':domain' => '%@'.$domain,
             ));
-            $stmt = $pdo->prepare("DELETE FROM `spamalias` WHERE `address` = :domain");
+            $stmt = $pdo->prepare("DELETE FROM `spamalias` WHERE `address` LIKE :domain");
             $stmt->execute(array(
               ':domain' => '%@'.$domain,
             ));
             $stmt = $pdo->prepare("DELETE FROM `filterconf` WHERE `object` = :domain");
             $stmt->execute(array(
-              ':domain' => '%@'.$domain,
+              ':domain' => $domain,
             ));
             $stmt = $pdo->prepare("DELETE FROM `bcc_maps` WHERE `local_dest` = :domain");
             $stmt->execute(array(
@@ -3226,6 +3245,16 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
                 'msg' => 'access_denied'
               );
               continue;
+            }
+            $maildir = mailbox('get', 'mailbox_details', $username)['maildir'];
+            $exec_fields = array('cmd' => 'maildir_cleanup', 'maildir' => $maildir);
+            $maildir_gc = json_decode(docker('post', 'dovecot-mailcow', 'exec', $exec_fields), true);
+            if ($maildir_gc['type'] != 'success') {
+              $_SESSION['return'][] = array(
+                'type' => 'warning',
+                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                'msg' => 'Could not move maildir to garbage collector: ' . $maildir_gc['msg']
+              );
             }
             $stmt = $pdo->prepare("DELETE FROM `alias` WHERE `goto` = :username");
             $stmt->execute(array(

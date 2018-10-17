@@ -132,4 +132,3 @@ smtp_tls_policy_maps=proxy:mysql:/opt/postfix/conf/sql/mysql_tls_policy_override
 smtpd_client_recipient_rate_limit = 100 
 anvil_rate_time_unit = 300
 smtp_header_checks = pcre:/opt/postfix/conf/mailcow_anonymize_headers.pcre
-mail_name = Postcow

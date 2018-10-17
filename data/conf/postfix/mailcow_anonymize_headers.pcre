@@ -1,9 +1,10 @@
-if /^\s*Received:.*Authenticated sender.*\(Postfix\)/
-/^\s*Received:.*Authenticated sender:(.+)/
-  REPLACE Received: from localhost (localhost [127.0.0.1]) (Authenticated sender:$1
+/^\s*Received:[^\)]+\)\s+\(Authenticated sender:(.+)/
+	REPLACE Received: from localhost (localhost [127.0.0.1]) (Authenticated sender:$1
+
 /^\s*User-Agent/        IGNORE
 /^\s*X-Enigmail/        IGNORE
 /^\s*X-Mailer/          IGNORE
 /^\s*X-Originating-IP/  IGNORE
 /^\s*X-Forward/         IGNORE
-endif
+/^\s*Mime-Version:/     IGNORE
+

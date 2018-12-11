@@ -3,6 +3,7 @@
  * English language file
  */
 
+$lang['header']['apps'] = 'Apps';
 $lang['footer']['loading'] = "Please wait...";
 $lang['header']['restart_sogo'] = 'Restart SOGo';
 $lang['header']['restart_netfilter'] = 'Restart netfilter';
@@ -252,9 +253,12 @@ $lang['start']['imap_smtp_server_auth_info'] = 'Please use your full email addre
 Your login data will be encrypted by the server-side mandatory encryption.';
 $lang['start']['help'] = 'Show/Hide help panel';
 $lang['header']['mailcow_settings'] = 'Configuration';
-$lang['header']['administration'] = 'Administration';
-$lang['header']['mailboxes'] = 'Mailboxes';
-$lang['header']['user_settings'] = 'User settings';
+$lang['header']['administration'] = 'Configuration & Details';
+$lang['header']['mailboxes'] = 'Mail Setup';
+$lang['header']['user_settings'] = 'User Settings';
+$lang['header']['quarantine'] = "Quarantine";
+$lang['header']['debug'] = "System Information";
+$lang['quarantine']['disabled_by_config'] = "The current system configuration disables the quarantine functionality.";
 $lang['mailbox']['tls_policy_maps'] = 'TLS policy maps';
 $lang['mailbox']['tls_policy_maps_long'] = 'Outgoing TLS policy map overrides';
 $lang['mailbox']['tls_policy_maps_info'] = 'This policy map overrides outgoing TLS transport rules independently of a users TLS policy settings.<br>
@@ -280,6 +284,7 @@ $lang['mailbox']['description'] = 'Description';
 $lang['mailbox']['alias'] = 'Alias';
 $lang['mailbox']['aliases'] = 'Aliases';
 $lang['mailbox']['domains'] = 'Domains';
+$lang['admin']['domain'] = 'Domain';
 $lang['admin']['domain_s'] = 'Domain/s';
 $lang['mailbox']['mailboxes'] = 'Mailboxes';
 $lang['mailbox']['resources'] = 'Resources';
@@ -413,6 +418,8 @@ $lang['add']['custom_params'] = 'Custom parameters';
 $lang['add']['subscribeall'] = 'Subscribe all folders';
 $lang['add']['timeout1'] = 'Timeout for connection to remote host';
 $lang['add']['timeout2'] = 'Timeout for connection to local host';
+$lang['edit']['timeout1'] = 'Timeout for connection to remote host';
+$lang['edit']['timeout2'] = 'Timeout for connection to local host';
 
 $lang['edit']['delete2duplicates'] = 'Delete duplicates on destination';
 $lang['edit']['delete1'] = 'Delete from source when completed';
@@ -494,6 +501,7 @@ $lang['admin']['rspamd-com_settings'] = '<a href="https://rspamd.com/doc/configu
   - A setting name will be auto-generated, please see the example presets below.';
 
 $lang['admin']['no_new_rows'] = 'No further rows available';
+$lang['admin']['queue_manager'] = 'Queue manager';
 $lang['admin']['additional_rows'] = ' additional rows were added'; // parses to 'n additional rows were added'
 $lang['admin']['private_key'] = 'Private key';
 $lang['admin']['import'] = 'Import';
@@ -523,7 +531,9 @@ $lang['admin']['dkim_key_unused'] = 'Key unused';
 $lang['admin']['dkim_key_missing'] = 'Key missing';
 $lang['admin']['dkim_add_key'] = 'Add ARC/DKIM key';
 $lang['admin']['dkim_keys'] = 'ARC/DKIM keys';
+$lang['admin']['dkim_private_key'] = 'Private key';
 $lang['admin']['dkim_domains_wo_keys'] = "Select domains with missing keys";
+$lang['admin']['dkim_domains_selector'] = "Selector";
 $lang['admin']['add'] = 'Add';
 $lang['add']['add_domain_restart'] = 'Add domain and restart SOGo';
 $lang['add']['add_domain_only'] = 'Add domain only';
@@ -553,6 +563,9 @@ $lang['admin']['admin_domains'] = 'Domain assignments';
 $lang['admin']['domain_admins'] = 'Domain administrators';
 $lang['admin']['flush_queue'] = 'Flush queue';
 $lang['admin']['delete_queue'] = 'Delete all';
+$lang['admin']['queue_deliver_mail'] = 'Deliver';
+$lang['admin']['queue_hold_mail'] = 'Hold';
+$lang['admin']['queue_unhold_mail'] = 'Unhold';
 $lang['admin']['username'] = 'Username';
 $lang['admin']['edit'] = 'Edit';
 $lang['admin']['remove'] = 'Remove';
@@ -609,6 +622,9 @@ $lang['admin']['quarantine'] = "Quarantine";
 $lang['admin']['quarantine_retention_size'] = "Retentions per mailbox<br />0 indicates <b>inactive</b>!";
 $lang['admin']['quarantine_max_size'] = "Maximum size in MiB (larger elements are discarded)<br />0 does <b>not</b> indicate unlimited!";
 $lang['admin']['quarantine_exclude_domains'] = "Exclude domains and alias-domains:";
+$lang['admin']['quarantine_release_format'] = "Format of released items:";
+$lang['admin']['quarantine_release_format_raw'] = "Unmodified original";
+$lang['admin']['quarantine_release_format_att'] = "As attachment";
 
 $lang['admin']['ui_texts'] = "UI labels and texts";
 $lang['admin']['help_text'] = "Override help text below login mask (HTML allowed)";
@@ -672,9 +688,8 @@ $lang['warning']['fuzzy_learn_error'] = "Fuzzy hash learn error: %s";
 $lang['danger']['spam_learn_error'] = "Spam learn error: %s";
 $lang['success']['qlearn_spam'] = "Message ID %s was learned as spam and deleted";
 
-$lang['header']['quarantine'] = "Quarantine";
-$lang['header']['debug'] = "Debug";
-
+$lang['debug']['system_containers'] = 'System & Containers';
+$lang['debug']['logs'] = 'Logs';
 $lang['debug']['log_info'] = '<p>mailcow <b>in-memory logs</b> are collected in Redis lists and trimmed to LOG_LINES (%d) every minute to reduce hammering.
   <br>In-memory logs are not meant to be persistent. All applications that log in-memory, also log to the Docker daemon and therefore to the default logging driver.
   <br>The in-memory log type should be used for debugging minor issues with containers.</p>
@@ -684,6 +699,10 @@ $lang['debug']['log_info'] = '<p>mailcow <b>in-memory logs</b> are collected in 
 $lang['debug']['in_memory_logs'] = 'In-memory logs';
 $lang['debug']['external_logs'] = 'External logs';
 $lang['debug']['static_logs'] = 'Static logs';
+
+$lang['debug']['disk_usage'] = 'Disk usage';
+$lang['debug']['containers_info'] = "Container information";
+$lang['debug']['restart_container'] = 'Restart';
 
 $lang['quarantine']['release_body'] = "We have attached your message as eml file to this message.";
 $lang['danger']['release_send_failed'] = "Message could not be released: %s";

@@ -112,7 +112,7 @@ cat <<EOF > /var/lib/sogo/GNUstep/Defaults/sogod.plist
 EOF
 
 # Generate multi-domain setup
-while read line
+while read -r line gal
   do
   echo "        <key>${line}</key>
         <dict>
@@ -137,11 +137,11 @@ while read line
                     <key>canAuthenticate</key>
                     <string>YES</string>
                     <key>displayName</key>
-                    <string>GAL</string>
+                    <string>GAL ${line}</string>
                     <key>id</key>
                     <string>${line}</string>
                     <key>isAddressBook</key>
-                    <string>YES</string>
+                    <string>${gal}</string>
                     <key>type</key>
                     <string>sql</string>
                     <key>userPasswordAlgorithm</key>
@@ -156,7 +156,7 @@ while read line
   line=${line} envsubst < /etc/sogo/plist_ldap >> /var/lib/sogo/GNUstep/Defaults/sogod.plist
   echo "            </array>
         </dict>" >> /var/lib/sogo/GNUstep/Defaults/sogod.plist
-done < <(mysql --socket=/var/run/mysqld/mysqld.sock -u ${DBUSER} -p${DBPASS} ${DBNAME} -e "SELECT domain FROM domain;" -B -N)
+done < <(mysql --socket=/var/run/mysqld/mysqld.sock -u ${DBUSER} -p${DBPASS} ${DBNAME} -e "SELECT domain, CASE gal WHEN '1' THEN 'YES' ELSE 'NO' END AS gal FROM domain;" -B -N)
 
 # Generate footer
 echo '    </dict>
@@ -167,9 +167,17 @@ echo '    </dict>
 chown sogo:sogo -R /var/lib/sogo/
 chmod 600 /var/lib/sogo/GNUstep/Defaults/sogod.plist
 
-# Patch ACLs (comment this out to enable any or authenticated targets for ACL)
-if patch -sfN --dry-run /usr/lib/GNUstep/SOGo/Templates/UIxAclEditor.wox < /acl.diff > /dev/null; then
-  patch /usr/lib/GNUstep/SOGo/Templates/UIxAclEditor.wox < /acl.diff;
+# Patch ACLs
+if [[ ${ACL_ANYONE} == 'allow' ]]; then
+  #enable any or authenticated targets for ACL
+  if patch -R -sfN --dry-run /usr/lib/GNUstep/SOGo/Templates/UIxAclEditor.wox < /acl.diff > /dev/null; then
+    patch -R /usr/lib/GNUstep/SOGo/Templates/UIxAclEditor.wox < /acl.diff;
+  fi
+else
+  #disable any or authenticated targets for ACL
+  if patch -sfN --dry-run /usr/lib/GNUstep/SOGo/Templates/UIxAclEditor.wox < /acl.diff > /dev/null; then
+    patch /usr/lib/GNUstep/SOGo/Templates/UIxAclEditor.wox < /acl.diff;
+  fi
 fi
 
 # Copy logo, if any

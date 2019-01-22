@@ -697,7 +697,7 @@ $lang['danger']['spam_learn_error'] = "Spam Lernfehler: %s";
 $lang['success']['qlearn_spam'] = "Nachricht ID %s wurde als Spam gelernt und gelöscht";
 $lang['header']['quarantine'] = "Quarantäne";
 $lang['header']['debug'] = "Debugging";
-$lang['quarantine']['release_body'] = "Die ursprüngliche Nachricht wurde durch einen Administator freigegeben und an diese E-Mail angehangen. \nDie E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt. \nSollte es sich doch um eine unerwünschte Nachricht halten, antworten Sie nicht auf die sich im Anhang befindene Nachricht um weiten Spam zu vermeiden! \n\nMit freundlichen Grüßen \nIhr Systemadministrator";
+$lang['quarantine']['release_body'] = "Die ursprüngliche Nachricht wurde durch einen Administrator freigegeben und an diese E-Mail angehangen. \nDie E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt. \nSollte es sich doch um eine unerwünschte Nachricht handeln, antworten Sie nicht auf die sich im Anhang befindene Nachricht um weiteren Spam zu vermeiden!";
 $lang['debug']['log_info'] = '<p>mailcow <b>in-memory Logs</b> werden in Redis Listen gespeichert, die maximale Anzahl der Einträge pro Anwendung richtet sich nach LOG_LINES (%d).
   <br>In-memory Logs sind vergänglich und nicht zur ständigen Aufbewahrung bestimmt. Alle Anwendungen, die in-memory protokollieren, schreiben ebenso in den Docker Daemon.
   <br>Das in-memory Protokoll versteht sich als schnelle Übersicht zum Debugging eines Containers, für komplexere Protokolle sollte der Docker Daemon konsultiert werden.</p>

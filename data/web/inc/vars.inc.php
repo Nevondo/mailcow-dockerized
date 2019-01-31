@@ -147,7 +147,7 @@ $MAILBOX_DEFAULT_ATTRIBUTES['force_pw_update'] = false;
 $MAILBOX_DEFAULT_ATTRIBUTES['sogo_access'] = true;
 
 // Send notification when quarantine is not empty (never, hourly, daily, weekly)
-$MAILBOX_DEFAULT_ATTRIBUTES['quarantine_notification'] = 'never';
+$MAILBOX_DEFAULT_ATTRIBUTES['quarantine_notification'] = 'daily';
 
 // Default mailbox format, should not be changed unless you know exactly, what you do, keep the trailing ":"
 // Check dovecot.conf for further changes (e.g. shared namespace)

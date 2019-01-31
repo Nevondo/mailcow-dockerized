@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# Check permissions
+if [ "$(id -u)" -ne "0" ]; then
+  echo "You need to be root"
+  exit 1
+fi
 
 #exit on error and pipefail
 set -o pipefail
@@ -222,6 +228,13 @@ for option in ${CONFIG_ARRAY[@]}; do
       echo '# Solr will refuse to start with total system memory below or equal to 2 GB.' >> mailcow.conf
       echo "SOLR_HEAP=1024" >> mailcow.conf
   fi
+  elif [[ ${option} == "SKIP_SOLR" ]]; then
+    if ! grep -q ${option} mailcow.conf; then
+      echo "Adding new option \"${option}\" to mailcow.conf"
+      echo '# Solr is disabled by default after upgrading from non-Solr to Solr-enabled mailcows.' >> mailcow.conf
+      echo '# Disable Solr or if you do not want to store a readable index of your mails in solr-vol-1.' >> mailcow.conf
+      echo "SKIP_SOLR=y" >> mailcow.conf
+  fi
   elif ! grep -q ${option} mailcow.conf; then
     echo "Adding new option \"${option}\" to mailcow.conf"
     echo "${option}=n" >> mailcow.conf
@@ -229,7 +242,7 @@ for option in ${CONFIG_ARRAY[@]}; do
 done
 
 echo -en "Checking internet connection... "
-curl -o /dev/null google.com -sm3
+curl -o /dev/null 1.1.1.1 -sm3
 if [[ $? != 0 ]]; then
   echo -e "\e[31mfailed\e[0m"
   exit 1
@@ -265,7 +278,6 @@ echo -e "Stopping mailcow... "
 sleep 2
 docker-compose down
 
-# Fix header check
 # Silently fixing remote url from andryyy to mailcow
 git remote set-url origin https://git.codeink.de/CodeInk/mailcow-dockerized.git
 echo -e "\e[32mCommitting current status...\e[0m"
@@ -352,6 +364,14 @@ fi
 if [[ -f "data/web/nextcloud/occ" ]]; then
 echo "Setting Nextcloud Redis timeout to 0.0..."
 docker exec -it -u www-data $(docker ps -f name=php-fpm-mailcow -q) bash -c "/web/nextcloud/occ config:system:set redis timeout --value=0.0 --type=integer"
+fi
+
+# Fix Rspamd maps
+if [ -f data/conf/rspamd/custom/global_from_blacklist.map ]; then
+  mv data/conf/rspamd/custom/global_from_blacklist.map data/conf/rspamd/custom/global_smtp_from_blacklist.map
+fi
+if [ -f data/conf/rspamd/custom/global_from_whitelist.map ]; then
+  mv data/conf/rspamd/custom/global_from_whitelist.map data/conf/rspamd/custom/global_smtp_from_whitelist.map
 fi
 
 echo -e "\e[32mStarting mailcow...\e[0m"

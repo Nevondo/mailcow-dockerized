@@ -19,8 +19,8 @@
   </style>
   </head>
   <body>
-    <p>Hallo {{username}}!<br><br>
-    Ihr Postfach ist zu {{percent}}% voll, bitte denken Sie darüber nach, alte Nachrichten zu löschen, um weiterhin neue E-Mails empfangen zu können.<br> 
+    <p>Hallo {{username}},<br><br>
+    Ihr Postfach ist zu {{percent}}% gefüllt, bitte erwägen Sie das Löschen alter Nachrichten, um weiterhin neue E-Mails zu erhalten.<br> 
     <div id="progressbar">
       <div></div>
     </div>

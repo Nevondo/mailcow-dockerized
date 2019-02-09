@@ -24,11 +24,11 @@
   </style>
   </head>
   <body>
-    <p>Hallo!<br>
+    <p>Hallo,<br>
     {% if counter == 1 %}
-    Es wurde 1 neue E-Mail in Ihre persönliche Quarantäne verschoben:<br>
+    es wurde 1 neue E-Mail in Ihre persönliche Quarantäne verschoben:<br>
     {% else %}
-    Es wurden {{counter}} neue E-Mails in Ihre persönliche Quarantäne verschoben:<br>
+    es wurden {{counter}} neue E-Mails in Ihre persönliche Quarantäne verschoben:<br>
     {% endif %}
     <table>
     <tr><th>Betreff</th><th>Absender</th><th>Wertung</th><th>Empfangen</th>{% if quarantine_acl == 1 %}<th>Aktionen</th>{% endif %}</tr>

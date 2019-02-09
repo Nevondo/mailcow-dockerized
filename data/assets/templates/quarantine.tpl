@@ -24,10 +24,14 @@
   </style>
   </head>
   <body>
-    <p>Hi!<br>
-    There are {{counter}} new messages waiting in quarantine:<br>
+    <p>Hallo!<br>
+    {% if counter == 1 %}
+    Es wurde 1 neue E-Mail in Ihre persönliche Quarantäne verschoben:<br>
+    {% else %}
+    Es wurden {{counter}} neue E-Mails in Ihre persönliche Quarantäne verschoben:<br>
+    {% endif %}
     <table>
-    <tr><th>Subject</th><th>Sender</th><th>Score</th><th>Arrived on</th>{% if quarantine_acl == 1 %}<th>Actions</th>{% endif %}</tr>
+    <tr><th>Betreff</th><th>Absender</th><th>Wertung</th><th>Empfangen</th>{% if quarantine_acl == 1 %}<th>Aktionen</th>{% endif %}</tr>
     {% for line in meta %}
     <tr>
     <td>{{ line.subject|e }}</td>
@@ -35,7 +39,7 @@
     <td>{{ line.score }}</td>
     <td>{{ line.created }}</td>
     {% if quarantine_acl == 1 %}
-    <td><a href="https://{{ hostname }}/qhandler/release/{{ line.qhash }}">release</a> | <a href="https://{{ hostname }}/qhandler/delete/{{ line.qhash }}">delete</a></td>
+    <td><a href="https://{{ hostname }}/qhandler/release/{{ line.qhash }}">Freigeben</a> | <a href="https://{{ hostname }}/qhandler/delete/{{ line.qhash }}">Löschen</a></td>
     {% endif %}
     </tr>
     {% endfor %}

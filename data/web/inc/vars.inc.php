@@ -100,7 +100,7 @@ $SHOW_DKIM_PRIV_KEYS = false;
 // mailcow Apps - buttons on login screen
 $MAILCOW_APPS = array(
   array(
-    'name' => 'SOGo',
+    'name' => 'Webmail',
     'link' => '/SOGo/',
   )
 );

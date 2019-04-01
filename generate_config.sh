@@ -186,6 +186,10 @@ SKIP_LETS_ENCRYPT=n
 
 SKIP_IP_CHECK=n
 
+# Skip HTTP verification in ACME container - y/n
+
+SKIP_HTTP_VERIFICATION=n
+
 # Skip ClamAV (clamd-mailcow) anti-virus (Rspamd will auto-detect a missing ClamAV container) - y/n
 
 SKIP_CLAMD=${SKIP_CLAMD}
@@ -200,6 +204,10 @@ SOLR_HEAP=1024
 # Enable watchdog (watchdog-mailcow) to restart unhealthy containers (experimental)
 
 USE_WATCHDOG=n
+
+# Allow admins to log into SOGo as email user (without any password)
+
+ALLOW_ADMIN_EMAIL_LOGIN=n
 
 # Send notifications by mail (no DKIM signature, sent from watchdog@MAILCOW_HOSTNAME)
 # Can by multiple rcpts, NO quotation marks

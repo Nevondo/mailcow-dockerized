@@ -3,28 +3,18 @@ $(document).ready(function() {
   FooTable.domainFilter = FooTable.Filtering.extend({
     construct: function(instance){
       this._super(instance);
-      var domain_list = [];
-      $.ajax({
-        dataType: 'json',
-        url: '/api/v1/get/domain/all',
-        jsonp: false,
-        async: true,
-        error: function () {
-          domain_list.push('Cannot read domain list');
-        },
-        success: function (data) {
-          $.each(data, function (i, item) {
-            domain_list.push(item.domain_name);
-          });
-        }
-      });
-      this.domains = domain_list;
       this.def = 'All Domains';
       this.$domain = null;
     },
     $create: function(){
       this._super();
-      var self = this,
+      var self = this;
+      var domains = [];
+      
+      $.each(self.ft.rows.all, function(i, row){
+        if((row.val().domain != null) && ($.inArray(row.val().domain, domains) === -1)) domains.push(row.val().domain);
+      });
+      
       $form_grp = $('<div/>', {'class': 'form-group'})
         .append($('<label/>', {'class': 'sr-only', text: 'Domain'}))
         .prependTo(self.$form);
@@ -33,7 +23,7 @@ $(document).ready(function() {
         .append($('<option/>', {text: self.def}))
         .appendTo($form_grp);
 
-      $.each(self.domains, function(i, domain){
+      $.each(domains, function(i, domain){
         self.$domain.append($('<option/>').text(domain));
       });
     },
@@ -930,10 +920,10 @@ jQuery(function($){
         {"name":"chkbox","title":"","style":{"maxWidth":"60px","width":"60px","text-align":"center"},"filterable": false,"sortable": false,"type":"html"},
         {"sorted": true,"name":"id","title":"ID","style":{"maxWidth":"60px","width":"60px","text-align":"center"}},
         {"name":"user2","title":lang.owner},
-        {"name":"server_w_port","title":"Server","breakpoints":"xs","style":{"word-break":"break-all"}},
+        {"name":"server_w_port","title":"Server","breakpoints":"xs sm md","style":{"word-break":"break-all"}},
         {"name":"exclude","title":lang.excludes,"breakpoints":"all"},
         {"name":"mins_interval","title":lang.mins_interval,"breakpoints":"all"},
-        {"name":"last_run","title":lang.last_run,"breakpoints":"sm"},
+        {"name":"last_run","title":lang.last_run,"breakpoints":"xs sm md"},
         {"name":"log","title":"Log"},
         {"name":"active","filterable": false,"style":{"maxWidth":"70px","width":"70px"},"title":lang.active},
         {"name":"is_running","filterable": false,"style":{"maxWidth":"120px","width":"100px"},"title":lang.status},

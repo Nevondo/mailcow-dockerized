@@ -124,6 +124,7 @@ CONFIG_ARRAY=(
   "SKIP_LETS_ENCRYPT"
   "USE_WATCHDOG"
   "WATCHDOG_NOTIFY_EMAIL"
+  "WATCHDOG_NOTIFY_BAN"
   "SKIP_CLAMD"
   "SKIP_IP_CHECK"
   "ADDITIONAL_SAN"
@@ -255,6 +256,12 @@ for option in ${CONFIG_ARRAY[@]}; do
       echo '# MAILDIR_SUB defines a path in a users virtual home to keep the maildir in. Leave empty for updated setups.' >> mailcow.conf
       echo "#MAILDIR_SUB=Maildir" >> mailcow.conf
       echo "MAILDIR_SUB=" >> mailcow.conf
+  fi
+  elif [[ ${option} == "WATCHDOG_NOTIFY_BAN" ]]; then
+    if ! grep -q ${option} mailcow.conf; then
+      echo "Adding new option \"${option}\" to mailcow.conf"
+      echo '# Notify about banned IP. Includes whois lookup.' >> mailcow.conf
+      echo "WATCHDOG_NOTIFY_BAN=y" >> mailcow.conf
   fi
   elif ! grep -q ${option} mailcow.conf; then
     echo "Adding new option \"${option}\" to mailcow.conf"

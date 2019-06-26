@@ -28,7 +28,6 @@ data/conf/dovecot/mail_plugins*
 data/conf/dovecot/sogo-sso.conf
 data/conf/dovecot/extra.conf
 data/conf/dovecot/shared_namespace.conf
-data/conf/rspamd/custom/*
 data/conf/portainer/
 data/gitea/
 data/gogs/

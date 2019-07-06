@@ -236,7 +236,7 @@ $lang['user']['eas_reset_help'] = 'In vielen Fällen kann ein ActiveSync Profil 
 
 $lang['user']['sogo_profile_reset'] = 'SOGo Profil zurücksetzen';
 $lang['user']['sogo_profile_reset_now'] = 'Profil jetzt zurücksetzen';
-$lang['user']['sogo_profile_reset_help'] = 'Das Profil wird zuzüglich aller Daten <b>unwiederbringlich gelöscht</b>.';
+$lang['user']['sogo_profile_reset_help'] = 'Das Profil wird inklusive <strong>aller</strong> Daten <b>unwiederbringlich gelöscht</b>.';
 
 $lang['user']['encryption'] = 'Verschlüsselung';
 $lang['user']['username'] = 'Benutzername';
@@ -347,8 +347,10 @@ $lang['edit']['max_mailboxes'] = 'Max. Mailboxanzahl:';
 $lang['edit']['title'] = 'Objekt bearbeiten';
 $lang['edit']['target_address'] = 'Ziel-Adresse(n) <small>(getrennt durch Komma)</small>:';
 $lang['edit']['active'] = 'Aktiv';
+$lang['add']['gal'] = 'Globales Adressbuch';
 $lang['edit']['gal'] = 'Globales Adressbuch';
-$lang['edit']['gal_info'] = 'Das Globale Adressbuch enthält alle Objekte einer Domain und kann durch keinen Benutzer editiert werden. <b>Zum Anwenden einer Änderung muss SOGo neugestartet werden.</b>';
+$lang['add']['gal_info'] = 'Das Globale Adressbuch enthält alle Objekte einer Domain und kann durch keinen Benutzer editiert werden. Die Verfügbarkeitsinformation in SOGo ist nur bei eingeschaltetem globalen Adressbuch ersichtlich! <b>Zum Anwenden einer Änderung muss SOGo neugestartet werden.</b>';
+$lang['edit']['gal_info'] = 'Das Globale Adressbuch enthält alle Objekte einer Domain und kann durch keinen Benutzer editiert werden. Die Verfügbarkeitsinformation in SOGo ist nur bei eingeschaltetem globalen Adressbuch ersichtlich <b>Zum Anwenden einer Änderung muss SOGo neugestartet werden.</b>';
 $lang['edit']['force_pw_update'] = 'Erzwinge Passwortänderung bei nächstem Login';
 $lang['edit']['force_pw_update_info'] = 'Dem Benutzer wird lediglich der Zugang zur mailcow UI ermöglicht.';
 $lang['edit']['sogo_access'] = 'SOGo Zugriffsrecht';
@@ -754,7 +756,7 @@ $lang['debug']['log_info'] = '<p>mailcow <b>in-memory Logs</b> werden in Redis L
   <br>In-memory Logs sind vergänglich und nicht zur ständigen Aufbewahrung bestimmt. Alle Anwendungen, die in-memory protokollieren, schreiben ebenso in den Docker Daemon.
   <br>Das in-memory Protokoll versteht sich als schnelle Übersicht zum Debugging eines Containers, für komplexere Protokolle sollte der Docker Daemon konsultiert werden.</p>
   <p><b>Externe Logs</b> werden via API externer Applikationen bezogen.</p>
-  <p><b>Statische Logs</b> sind weitesgehend Aktivitätsprotokolle, die nicht in den Docker Daemon geschrieben werden, jedoch permanent verfügbar sein müssen (ausgeschloßen API Logs).</p>';
+  <p><b>Statische Logs</b> sind weitestgehend Aktivitätsprotokolle, die nicht in den Docker Daemon geschrieben werden, jedoch permanent verfügbar sein müssen (ausgeschlossen API Logs).</p>';
 
 $lang['debug']['in_memory_logs'] = 'In-memory Logs';
 $lang['debug']['external_logs'] = 'Externe Logs';

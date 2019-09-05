@@ -22,39 +22,36 @@
 # hervorgerufen hat an den Absender der E-Mail gesendet.
 
 failure_template = <<EOF
-Charset: iso-8859-1
+Charset: utf-8
 From: MAILER-DAEMON (Mail Delivery System)
-Subject: Rueckgabe nicht zustellbarer Nachricht an Absender
+Subject: Nachricht konnte nicht zugestellt werden
 Postmaster-Subject: Postmaster Copy: Undelivered Mail
 
-Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes.
 Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
 folgendes mit:
 
+    Ihre Nachricht konnte an einen oder mehrere Empfänger nicht zugestellt
+    werden. Ein Problem-Bericht, sowie Ihre usprüngliche Nachricht wurden an
+    das Ende dieser Nachricht angehängt.
 
-    Ihre Nachricht konnte an einen oder mehrere Empfaenger nicht zugestellt
-    werden. Ein Problem-Bericht, sowie Ihre uspruengliche Nachricht wurden an
-    das Ende dieser Nachricht angehaengt.
+Fuer weitere Hilfe kontaktieren Sie bitte den fuer Sie zuständigen Postmaster.
 
-
-Fuer weitere Hilfe kontaktieren Sie bitte den fuer Sie zustaendigen
-<postmaster>.
-
-Senden Sie dazu den an diese E-Mail angefuegten Problem-Bericht mit.
-Den Inhalt Ihrer urspruenglichen Nachricht koennen Sie - zum Schutz Ihrer
-Privatsphaere - entfernen; er ist fuer eine Fehler-Diagnose nicht zwingend
+Senden Sie dazu den an diese E-Mail angefügten Problem-Bericht mit.
+Den Inhalt Ihrer ursprünglichen Nachricht können Sie - zum Schutz Ihrer
+Privatsphäre - entfernen; er ist für eine Fehler-Diagnose nicht zwingend
 notwendig.
 
-                   Der $mail_name E-Mail-Dienst
+###############################################################################
 
                         INTERNATIONAL VERSION
 
-This is the $mail_name program at host $myhostname.
+This is the mail service at host $myhostname.
 
 I'm sorry to have to inform you that your message could not
 be delivered to one or more recipients. It's attached below.
 
-For further assistance, please send mail to <postmaster>
+For further assistance, please send mail to your postmaster.
 
 If you do so, please include this problem report. You can
 delete your own text from the attached returned message.
@@ -79,42 +76,38 @@ EOF
 # begleitenden Text in der Vorlage anpassen.
 
 delay_template = <<EOF
-Charset: iso-8859-1
+Charset: utf-8
 From: MAILER-DAEMON (Mail Delivery System)
-Subject: Nachricht wurde verzoegert (Zustellung wird weiter versucht)
+Subject: Nachricht wurde verzögert (Zustellung wird weiter versucht)
 Postmaster-Subject: Postmaster Warning: Delayed Mail
 
-Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes.
 Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
 folgendes mit:
-
 
     Eine von Ihnen gesendete Nachricht konnte seit $delay_warning_time_hours
     Stunden nicht zugestellt werden.
     
-    Sie muessen die Nachricht nicht noch einmal senden. Der $mail_name
-    E-Mail-Dienst wird so lange versuchen Ihre Nachricht zuzustellen,
+    Sie müssen die Nachricht nicht noch einmal senden. Der E-Mail-Dienst 
+    wird so lange versuchen Ihre Nachricht zuzustellen,
     bis sie $maximal_queue_lifetime_days Tage alt ist.
 
     Sollte eine Zustellung bis in $maximal_queue_lifetime_days Tagen nicht
-    gelingen, wird der $mail_name E-Mail-Dienst die Zustellung abbrechen und
+    gelingen, wird der E-Mail-Dienst die Zustellung abbrechen und
     Sie davon in Kenntnis setzen.
 
+Fuer weitere Hilfe kontaktieren Sie bitte den für Sie zuständigen Postmaster.
 
-Fuer weitere Hilfe kontaktieren Sie bitte den fuer Sie zustaendigen
-<postmaster>.
-
-Senden Sie dazu den, in dieser E-Mail angefuegten, Problem-Bericht mit.
-Den Inhalt Ihrer urspruenglichen Nachricht koennen Sie, zum Schutz Ihrer
-Privatsphaere, entfernen; er ist fuer eine Fehler-Diagnose nicht zwingend
+Senden Sie dazu den, in dieser E-Mail angefügten, Problem-Bericht mit.
+Den Inhalt Ihrer ursprünglichen Nachricht können Sie, zum Schutz Ihrer
+Privatsphäre, entfernen; er ist für eine Fehler-Diagnose nicht zwingend
 notwendig.
 
-                   Der $mail_name E-Mail-Dienst
-
+###############################################################################
 
                         INTERNATIONAL VERSION
 
-This is the $mail_name program at host $myhostname.
+This is the mail service at host $myhostname.
 
 ####################################################################
 # THIS IS A WARNING ONLY.  YOU DO NOT NEED TO RESEND YOUR MESSAGE. #
@@ -123,12 +116,11 @@ This is the $mail_name program at host $myhostname.
 Your message could not be delivered for $delay_warning_time_hours hour(s).
 It will be retried until it is $maximal_queue_lifetime_days day(s) old.
 
-For further assistance, please send mail to <postmaster>
+For further assistance, please send mail to your postmaster.
 
 If you do so, please include this problem report. You can
 delete your own text from the attached returned message.
 
-                   The $mail_name program
 EOF
 
 
@@ -144,36 +136,32 @@ EOF
 # Postmaster-Subject: angeben.
 
 success_template = <<EOF
-Charset: iso-8859-1
+Charset: utf-8
 From: MAILER-DAEMON (Mail Delivery System)
-Subject: Bericht ueber erfolgreiche Zustellung
+Subject: Bericht über erfolgreiche Zustellung
 
-Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes.
 Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
 folgendes mit:
 
-
     Ihre Nachricht wurde erfolgreich an die E-Mail-Server der am Ende dieser
-    E-Mail aufgelisteten Empfaenger ausgeliefert.
+    E-Mail aufgelisteten Empfänger ausgeliefert.
 
     Falls Sie eine Zustellbericht angefordet haben und der empfangende
-    E-Mail-Server diese Funktionalitaet unterstuetzt erhalten Sie
+    E-Mail-Server diese Funktionalität unterstützt erhalten Sie
     auch von diesem E-Mail-Server eine entsprechende Benachrichtigung.
 
-
-                   Der $mail_name E-Mail-Dienst
-
+###############################################################################
 
                         INTERNATIONAL VERSION
 
-This is the $mail_name program at host $myhostname.
+This is the mail service at host $myhostname.
 
 Your message was successfully delivered to the destination(s)
 listed below. If the message was delivered to mailbox you will
 receive no further notifications. Otherwise you may still receive
 notifications of mail delivery errors from other systems.
 
-                   The $mail_name program
 EOF
 
 
@@ -187,27 +175,23 @@ EOF
 # Postmaster-Subject: angeben.
 
 verify_template = <<EOF
-Charset: iso-8859-1
+Charset: utf-8
 From: MAILER-DAEMON (Mail Delivery System)
 Subject: Zustellbericht (Mail Delivery Status Report)
 
-Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes.
 Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
 folgendes mit:
 
+    Sie haben einen Empfänger-Adressen-Bericht angefordert. Der Bericht wurde
+    an diese Nachricht angehängt.
 
-    Sie haben einen Empfaenger-Adressen-Bericht angefordert. Der Bericht wurde
-    an diese Nachricht angehaengt.
-
-
-                   Der $mail_name E-Mail-Dienst
-
+###############################################################################
 
                         INTERNATIONAL VERSION
 
-This is the $mail_name program at host $myhostname.
+This is the mail service at host $myhostname.
 
 Enclosed is the mail delivery report that you requested.
 
-                   The $mail_name program
 EOF

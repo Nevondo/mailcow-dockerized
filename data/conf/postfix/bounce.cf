@@ -1,0 +1,213 @@
+# $Id$
+#
+# Deutsch-sprachige Vorlagen fuer Postfix Zustell-Status-Benachrichtigungen
+# (engl. DSN, Delivery Status Notification)
+#
+# Uebersetzt und an die deutsche Sprache angepasst von Patrick Koetter
+# <p@state-of-mind.de> und Ralf Hildebrandt <ralf.hildebrandt@charite.de>.
+#
+# Folgen Sie den Anweisungen der bounce(5) manual page, um die in dieser Datei
+# enthaltenen Zustell-Status-Benachrichtigungen in Ihren Postfix-Server
+# einzubinden.
+
+
+# failure_template
+# Das failure_template kommt zum Einsatz, wenn der empfangende Mail-Server die
+# Nachricht entweder zurueckgewiesen hat oder wenn die Nachricht nicht
+# innerhalb eines vorgegebenen Zeitraums ($maximal_queue_lifetime) zugestellt
+# werden konnte.
+#
+# In beiden Faellen wird der Inhalt von failure_template zusammen mit der
+# urspruenglich gesendeten Nachricht und dem Fehler, der die Benachrichtigung
+# hervorgerufen hat an den Absender der E-Mail gesendet.
+
+failure_template = <<EOF
+Charset: iso-8859-1
+From: MAILER-DAEMON (Mail Delivery System)
+Subject: Rueckgabe nicht zustellbarer Nachricht an Absender
+Postmaster-Subject: Postmaster Copy: Undelivered Mail
+
+Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
+folgendes mit:
+
+
+    Ihre Nachricht konnte an einen oder mehrere Empfaenger nicht zugestellt
+    werden. Ein Problem-Bericht, sowie Ihre uspruengliche Nachricht wurden an
+    das Ende dieser Nachricht angehaengt.
+
+
+Fuer weitere Hilfe kontaktieren Sie bitte den fuer Sie zustaendigen
+<postmaster>.
+
+Senden Sie dazu den an diese E-Mail angefuegten Problem-Bericht mit.
+Den Inhalt Ihrer urspruenglichen Nachricht koennen Sie - zum Schutz Ihrer
+Privatsphaere - entfernen; er ist fuer eine Fehler-Diagnose nicht zwingend
+notwendig.
+
+                   Der $mail_name E-Mail-Dienst
+
+                        INTERNATIONAL VERSION
+
+This is the $mail_name program at host $myhostname.
+
+I'm sorry to have to inform you that your message could not
+be delivered to one or more recipients. It's attached below.
+
+For further assistance, please send mail to <postmaster>
+
+If you do so, please include this problem report. You can
+delete your own text from the attached returned message.
+
+EOF
+
+
+# delay_template
+# Das delay_template kommt zum Einsatz, wenn sich die Zustellung einer
+# Nachricht verzoegert - die Zustellung wird so lange versucht, bis der Postfix
+# Server sie wegen Ueberschreitung der $maximal_queue_lifetime abbrechen muss.
+#
+# Anmerkung:
+# Die Standardvorgaben in Postfix sehen vor, dass Zustell-Verzoegerungen in
+# Stunden ($delay_warning_time_hours) und die maximale Lebenszeit einer
+# Nachricht in der Postfix Zustell-Warteschlange in Tagen
+# ($maximal_queue_lifetime_days) angegeben werden.
+#
+# Alternativ koennen Sie anstatt der genannten Zeiteinheiten auch Sekunden,
+# Minuten oder Wochen angeben, indem Sie die aktuelle Zeiteinheit des
+# Parameters durch _seconds, _minutes oder _weeks austauschen und den
+# begleitenden Text in der Vorlage anpassen.
+
+delay_template = <<EOF
+Charset: iso-8859-1
+From: MAILER-DAEMON (Mail Delivery System)
+Subject: Nachricht wurde verzoegert (Zustellung wird weiter versucht)
+Postmaster-Subject: Postmaster Warning: Delayed Mail
+
+Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
+folgendes mit:
+
+
+    Eine von Ihnen gesendete Nachricht konnte seit $delay_warning_time_hours
+    Stunden nicht zugestellt werden.
+    
+    Sie muessen die Nachricht nicht noch einmal senden. Der $mail_name
+    E-Mail-Dienst wird so lange versuchen Ihre Nachricht zuzustellen,
+    bis sie $maximal_queue_lifetime_days Tage alt ist.
+
+    Sollte eine Zustellung bis in $maximal_queue_lifetime_days Tagen nicht
+    gelingen, wird der $mail_name E-Mail-Dienst die Zustellung abbrechen und
+    Sie davon in Kenntnis setzen.
+
+
+Fuer weitere Hilfe kontaktieren Sie bitte den fuer Sie zustaendigen
+<postmaster>.
+
+Senden Sie dazu den, in dieser E-Mail angefuegten, Problem-Bericht mit.
+Den Inhalt Ihrer urspruenglichen Nachricht koennen Sie, zum Schutz Ihrer
+Privatsphaere, entfernen; er ist fuer eine Fehler-Diagnose nicht zwingend
+notwendig.
+
+                   Der $mail_name E-Mail-Dienst
+
+
+                        INTERNATIONAL VERSION
+
+This is the $mail_name program at host $myhostname.
+
+####################################################################
+# THIS IS A WARNING ONLY.  YOU DO NOT NEED TO RESEND YOUR MESSAGE. #
+####################################################################
+
+Your message could not be delivered for $delay_warning_time_hours hour(s).
+It will be retried until it is $maximal_queue_lifetime_days day(s) old.
+
+For further assistance, please send mail to <postmaster>
+
+If you do so, please include this problem report. You can
+delete your own text from the attached returned message.
+
+                   The $mail_name program
+EOF
+
+
+# success_template
+# Das success_template kommt zum Einsatz, wenn eine Nachricht an ein Postfach
+# zugestellt wurde, wenn ein Alias-Name oder eine Liste von Empfaengern in ihre
+# Zieladressen aufgeloest wurde oder wenn eine Nachricht an ein System
+# zugestellt wurde, das im Dialog mit Ihrem Postfix-Server keine
+# DSN-Faehigkeiten erkennen lies.
+#
+# Achtung:
+# Sie duerfen fuer diese Art von Zustell-Status-Benachrichtigung kein
+# Postmaster-Subject: angeben.
+
+success_template = <<EOF
+Charset: iso-8859-1
+From: MAILER-DAEMON (Mail Delivery System)
+Subject: Bericht ueber erfolgreiche Zustellung
+
+Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
+folgendes mit:
+
+
+    Ihre Nachricht wurde erfolgreich an die E-Mail-Server der am Ende dieser
+    E-Mail aufgelisteten Empfaenger ausgeliefert.
+
+    Falls Sie eine Zustellbericht angefordet haben und der empfangende
+    E-Mail-Server diese Funktionalitaet unterstuetzt erhalten Sie
+    auch von diesem E-Mail-Server eine entsprechende Benachrichtigung.
+
+
+                   Der $mail_name E-Mail-Dienst
+
+
+                        INTERNATIONAL VERSION
+
+This is the $mail_name program at host $myhostname.
+
+Your message was successfully delivered to the destination(s)
+listed below. If the message was delivered to mailbox you will
+receive no further notifications. Otherwise you may still receive
+notifications of mail delivery errors from other systems.
+
+                   The $mail_name program
+EOF
+
+
+# verify_template
+# Das verify_template kommt zum Einsatz, wenn Adress-Ueberpruefung (sendmail
+# -bv adresse...) oder ausfuehrliche Protokollierung (sendmail -v adresse...)
+# angefordert wurde.
+#
+# Achtung:
+# Sie duerfen fuer diese Art von Zustell-Status-Benachrichtigung kein
+# Postmaster-Subject: angeben.
+
+verify_template = <<EOF
+Charset: iso-8859-1
+From: MAILER-DAEMON (Mail Delivery System)
+Subject: Zustellbericht (Mail Delivery Status Report)
+
+Dies ist eine automatisch generierte Nachricht des $mail_name E-Mail-Dienstes.
+Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen
+folgendes mit:
+
+
+    Sie haben einen Empfaenger-Adressen-Bericht angefordert. Der Bericht wurde
+    an diese Nachricht angehaengt.
+
+
+                   Der $mail_name E-Mail-Dienst
+
+
+                        INTERNATIONAL VERSION
+
+This is the $mail_name program at host $myhostname.
+
+Enclosed is the mail delivery report that you requested.
+
+                   The $mail_name program
+EOF

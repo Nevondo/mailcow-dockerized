@@ -78,7 +78,7 @@ EOF
 delay_template = <<EOF
 Charset: utf-8
 From: MAILER-DAEMON (Mail Delivery System)
-Subject: Nachricht wurde verzögert (Zustellung wird weiter versucht)
+Subject: Nachricht wurde noch nicht zugestellt. Es wird weiterhin versucht, die Nachricht zuzustellen
 Postmaster-Subject: Postmaster Warning: Delayed Mail
 
 Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes.
@@ -138,7 +138,7 @@ EOF
 success_template = <<EOF
 Charset: utf-8
 From: MAILER-DAEMON (Mail Delivery System)
-Subject: Bericht über erfolgreiche Zustellung
+Subject: Erfolgreiche Zustellung
 
 Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes.
 Dieser Dienst wird auf dem Server $myhostname betrieben und teilt Ihnen

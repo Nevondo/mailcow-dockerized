@@ -74,7 +74,7 @@ $autodiscover_config = array(
 $DETECT_LANGUAGE = true;
 
 // Change default language, "cs", "de", "en", "es", "nl", "pt", "ru"
-$DEFAULT_LANG = 'en';
+$DEFAULT_LANG = 'de';
 
 // Available languages
 $AVAILABLE_LANGUAGES = array('cs', 'de', 'en', 'es', 'fr', 'lv', 'nl', 'pl', 'pt', 'ru', 'it', 'ca');
@@ -88,7 +88,7 @@ $DEFAULT_THEME = 'lumen';
 
 // Password complexity as regular expression
 // Min. 6 characters
-$PASSWD_REGEP = '.{6,}';
+$PASSWD_REGEP = '.{8,}';
 // Min. 6 characters, which must include at least one uppercase letter, one lowercase letter and one number
 // $PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}$';
 // Min. 6 characters, which must include at least one letter and one number

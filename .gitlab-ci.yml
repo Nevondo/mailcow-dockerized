@@ -1,0 +1,19 @@
+image: docker/compose:1.25.0-rc2-alpine
+
+stages:
+    - build
+
+before_script:
+  - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+  - apk add --no-cache bash grep coreutils
+
+after_script:
+  - docker logout $CI_REGISTRY
+
+build:
+  stage: build 
+  script:
+    - echo 'Europe/Berlin' | MAILCOW_HOSTNAME=build.mailcow ./generate_config.sh
+    - docker-compose pull --ignore-pull-failures --parallel
+    - docker-compose build
+    - docker-compose push

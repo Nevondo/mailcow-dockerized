@@ -15,5 +15,5 @@ build:
   script:
     - echo 'Europe/Berlin' | MAILCOW_HOSTNAME=build.mailcow ./generate_config.sh
     - docker-compose pull --ignore-pull-failures --parallel
-    - docker-compose build
+    - docker-compose build --no-cache --pull
     - docker-compose push

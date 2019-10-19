@@ -12,8 +12,9 @@ after_script:
 
 build:
   stage: build 
+  when: manual
   script:
     - echo 'Europe/Berlin' | MAILCOW_HOSTNAME=build.mailcow ./generate_config.sh
     - docker-compose pull --ignore-pull-failures --parallel
-    - docker-compose build --pull
+    - docker-compose build --no-cache --pull
     - docker-compose push

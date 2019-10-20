@@ -173,7 +173,7 @@ services:
             - sogo
 
     dovecot-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/dovecot:1.91
+      image: registry.codeink.de/codeink/mailcow-dockerized/dovecot:1.92
       build: ./data/Dockerfiles/dovecot
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254

@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
     unbound-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/unbound:1.9
+      image: mailcow/unbound:1.9
       build: ./data/Dockerfiles/unbound
       environment:
         - TZ=${TZ}
@@ -52,7 +52,7 @@ services:
             - redis
 
     clamd-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/clamd:1.30
+      image: mailcow/clamd:1.30
       build: ./data/Dockerfiles/clamd
       restart: always
       dns:
@@ -68,7 +68,7 @@ services:
             - clamd
 
     rspamd-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/rspamd:1.48
+      image: mailcow/rspamd:1.48
       build: ./data/Dockerfiles/rspamd
       stop_grace_period: 30s
       depends_on:
@@ -96,7 +96,7 @@ services:
             - rspamd
 
     php-fpm-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/phpfpm:1.49
+      image: mailcow/phpfpm:1.49
       build: ./data/Dockerfiles/phpfpm
       command: "php-fpm -d date.timezone=${TZ} -d expose_php=0"
       depends_on:
@@ -144,7 +144,7 @@ services:
             - phpfpm
 
     sogo-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/sogo:1.61
+      image: mailcow/sogo:1.61
       build: ./data/Dockerfiles/sogo
       environment:
         - DBNAME=${DBNAME}
@@ -173,7 +173,7 @@ services:
             - sogo
 
     dovecot-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/dovecot:1.93
+      image: mailcow/dovecot:1.93
       build: ./data/Dockerfiles/dovecot
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
@@ -227,7 +227,7 @@ services:
             - dovecot
 
     postfix-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/postfix:1.41
+      image: mailcow/postfix:1.41
       build: ./data/Dockerfiles/postfix
       volumes:
         - ./data/conf/postfix:/opt/postfix/conf
@@ -314,7 +314,7 @@ services:
     acme-mailcow:
       depends_on:
         - nginx-mailcow
-      image: registry.codeink.de/codeink/mailcow-dockerized/acme:1.63
+      image: mailcow/acme:1.63
       build: ./data/Dockerfiles/acme
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
@@ -344,7 +344,7 @@ services:
             - acme
 
     netfilter-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/netfilter:1.30
+      image: mailcow/netfilter:1.30
       build: ./data/Dockerfiles/netfilter
       stop_grace_period: 30s
       depends_on:
@@ -366,7 +366,7 @@ services:
         - /lib/modules:/lib/modules:ro
 
     watchdog-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/watchdog:1.61
+      image: mailcow/watchdog:1.61
       # Debug
       #command: /watchdog.sh
       build: ./data/Dockerfiles/watchdog
@@ -399,7 +399,7 @@ services:
             - watchdog
 
     dockerapi-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/dockerapi:1.35
+      image: mailcow/dockerapi:1.35
       restart: always
       build: ./data/Dockerfiles/dockerapi
       oom_kill_disable: true
@@ -416,7 +416,7 @@ services:
             - dockerapi
 
     solr-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/solr:1.7
+      image: mailcow/solr:1.7
       build: ./data/Dockerfiles/solr
       restart: always
       volumes:
@@ -433,7 +433,7 @@ services:
             - solr
 
     olefy-mailcow:
-      image: registry.codeink.de/codeink/mailcow-dockerized/olefy:1.2
+      image: mailcow/olefy:1.2
       restart: always
       build: ./data/Dockerfiles/olefy
       environment:

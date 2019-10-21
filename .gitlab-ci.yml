@@ -11,7 +11,8 @@ after_script:
   - docker logout $CI_REGISTRY
 
 build:
-  stage: build 
+  stage: build
+  when: manual 
   script:
     - echo 'Europe/Berlin' | MAILCOW_HOSTNAME=build.mailcow ./generate_config.sh
     - docker-compose pull --ignore-pull-failures --parallel

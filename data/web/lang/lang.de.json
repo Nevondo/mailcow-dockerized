@@ -532,8 +532,8 @@
         "danger": "Gefahr",
         "spam_score": "Bewertung",
         "qhandler_success": "Aktion wurde an das System übergeben. Sie dürfen dieses Fenster nun schließen.",
-        "release_body": "Die ursprüngliche Nachricht wurde als EML-Datei im Anhang hinterlegt.",
-        "release_subject": "Potentiell schädliche Nachricht aus Quarantäne: %s",
+        "release_body": "Die ursprüngliche Nachricht wurde durch einen Administrator freigegeben und an diese E-Mail angehangen. \nDie E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt. \nSollte es sich doch um eine unerwünschte Nachricht handeln, antworten Sie nicht auf die sich im Anhang befindene Nachricht um weiteren Spam zu vermeiden!",
+        "release_subject": "Potentiell schädliche Nachricht aus Quarantäne freigegeben: %s",
         "confirm_delete": "Bestätigen Sie die Löschung dieses Elements."
     },
     "mailbox": {

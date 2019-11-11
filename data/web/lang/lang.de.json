@@ -310,7 +310,7 @@
     "admin": {
         "spamfilter": "Spamfilter",
         "domain_s": "Domain(s)",
-        "rspamd-com_settings": "<a href=\"https://rspamd.com/doc/configuration/settings.html#settings-structure\" target=\"_blank\">Rspamd docs</a>\r\n  - Ein Name wird automatisch generiert. Beispielinhalte zur Einsicht stehen nachstehend bereit.",
+        "rspamd-com_settings": "Ein Name wird automatisch generiert. Beispielinhalte zur Einsicht stehen nachstehend bereit. Siehe auch <a href=\"https://rspamd.com/doc/configuration/settings.html#settings-structure\" target=\"_blank\">Rspamd docs</a>",
         "no_new_rows": "Keine weiteren Zeilen vorhanden",
         "additional_rows": " zusätzliche Zeilen geladen",
         "private_key": "Private Key",
@@ -354,7 +354,7 @@
         "rsetting_content": "Regelinhalt",
         "rsetting_none": "Keine Regel hinterlegt",
         "rsetting_no_selection": "Bitte eine Regel auswählen",
-        "rsettings_preset_1": "Alles außer DKIM und Ratelimits für authentifizierte Benutzer deaktivieren\"",
+        "rsettings_preset_1": "Alles außer DKIM und Ratelimits für authentifizierte Benutzer deaktivieren",
         "rsettings_preset_2": "Spam an Postmaster-Addressen nicht blockieren",
         "rsettings_insert_preset": "Beispiel \"%s\" laden",
         "rsetting_add_rule": "Regel hinzufügen",
@@ -534,7 +534,8 @@
         "qhandler_success": "Aktion wurde an das System übergeben. Sie dürfen dieses Fenster nun schließen.",
         "release_body": "Die ursprüngliche Nachricht wurde durch einen Administrator freigegeben und an diese E-Mail angehangen. \nDie E-Mail wurde automatisch als Spam bzw. Virus erkannt und deshalb unter Quarantäne gestellt. \nSollte es sich doch um eine unerwünschte Nachricht handeln, antworten Sie nicht auf die sich im Anhang befindene Nachricht um weiteren Spam zu vermeiden!",
         "release_subject": "Potentiell schädliche Nachricht aus Quarantäne freigegeben: %s",
-        "confirm_delete": "Bestätigen Sie die Löschung dieses Elements."
+        "confirm_delete": "Bestätigen Sie die Löschung dieses Elements.",
+        "notified": "Benachrichtigt"
     },
     "mailbox": {
         "tls_policy_maps": "TLS-Richtlinien",
@@ -569,6 +570,7 @@
         "active": "Aktiv",
         "action": "Aktion",
         "backup_mx": "Backup MX",
+        "domain_admins": "Domain-Administratoren",
         "domain_aliases": "Domain-Aliasse",
         "target_domain": "Ziel-Domain",
         "target_address": "Ziel-Adresse",
@@ -646,7 +648,11 @@
         "alias_domain_backupmx": "Alias-Domain für Relay-Domain inaktiv",
         "add_domain_record_first": "Bitte zuerst eine Domain hinzufügen",
         "no": "&#10005;",
-        "yes": "&#10003;"
+        "yes": "&#10003;",
+        "insert_preset": "Beispiel \"%s\" laden",
+        "sieve_preset_header": "Beispielinhalte zur Einsicht stehen nachstehend bereit. Siehe auch <a href=\"https://de.wikipedia.org/wiki/Sieve\" target=\"_blank\">Wikipedia</a>.",
+        "sieve_preset_1": "E-Mails mit potenziell gefährlichen Dateitypen abweisen",
+        "sieve_preset_2": "E-Mail eines bestimmten Absenders immer als gelesen markieren"
     },
     "edit": {
         "sogo_visible": "Alias in SOGo sichtbar",

@@ -94,7 +94,7 @@ while (($#)); do
   case "${1}" in
     --check|-c)
       echo "Checking remote code for updates..."
-      LATEST_REV=$(git ls-remote --exit-code --refs --quiet https://git.codeink.de/CodeInk/mailcow-dockerized.git ${BRANCH} | cut -f1)
+      LATEST_REV=$(git ls-remote --exit-code --refs --quiet https://git.nevondo.com/Nevondo/mailcow-dockerized.git ${BRANCH} | cut -f1)
       if [ $? -ne 0 ]; then
         echo "A problem occurred while trying to fetch the latest revision from github."
         exit 99
@@ -359,7 +359,7 @@ sleep 2
 docker-compose down
 
 # Silently fixing remote url from andryyy to mailcow
-git remote set-url origin https://git.codeink.de/CodeInk/mailcow-dockerized.git
+git remote set-url origin https://git.nevondo.com/Nevondo/mailcow-dockerized.git
 echo -e "\e[32mCommitting current status...\e[0m"
 [[ -z "$(git config user.name)" ]] && git config user.name moo
 [[ -z "$(git config user.email)" ]] && git config user.email moo@cow.moo

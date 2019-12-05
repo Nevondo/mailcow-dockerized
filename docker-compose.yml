@@ -96,7 +96,7 @@ services:
             - rspamd
 
     php-fpm-mailcow:
-      image: mailcow/phpfpm:1.54
+      image: mailcow/phpfpm:1.55
       command: "php-fpm -d date.timezone=${TZ} -d expose_php=0"
       depends_on:
         - redis-mailcow
@@ -144,7 +144,7 @@ services:
             - phpfpm
 
     sogo-mailcow:
-      image: mailcow/sogo:1.63
+      image: mailcow/sogo:1.64
       environment:
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
@@ -172,7 +172,7 @@ services:
             - sogo
 
     dovecot-mailcow:
-      image: mailcow/dovecot:1.97
+      image: mailcow/dovecot:1.103
       depends_on:
         - mysql-mailcow
       dns:
@@ -365,7 +365,7 @@ services:
         - /lib/modules:/lib/modules:ro
 
     watchdog-mailcow:
-      image: mailcow/watchdog:1.62
+      image: mailcow/watchdog:1.65
       # Debug
       #command: /watchdog.sh
       dns:
@@ -376,6 +376,7 @@ services:
         - ./data/assets/ssl:/etc/ssl/mail/:ro
       restart: always
       environment:
+        - IPV6_NETWORK=${IPV6_NETWORK:-fd4d:6169:6c63:6f77::/64}
         - LOG_LINES=${LOG_LINES:-9999}
         - TZ=${TZ}
         - DBNAME=${DBNAME}

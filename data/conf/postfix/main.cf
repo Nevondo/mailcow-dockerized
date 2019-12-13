@@ -151,7 +151,7 @@ smtp_sasl_security_options =
 smtp_sasl_mechanism_filter = plain, login
 smtp_tls_policy_maps=proxy:mysql:/opt/postfix/conf/sql/mysql_tls_policy_override_maps.cf
 smtp_header_checks = pcre:/opt/postfix/conf/anonymize_headers.pcre
-mail_name = nvdnSmtp
+mail_name = nvndSmtp
 # local_transport map catches local destinations and prevents routing local dests when the next map would route "*"
 # Use custom_transport.pcre for custom transports
 transport_maps = pcre:/opt/postfix/conf/custom_transport.pcre,

@@ -574,7 +574,7 @@
         "booking_0_short": "Immer verfügbar",
         "booking_lt0_short": "Weiches Limit",
         "booking_custom_short": "Hartes Limit",
-        "alias_domain_alias_hint": "Alias-Adressen werden <b>nicht</b> automatisch auch auf Domain-Alias Adressen angewendet. Eine Alias-Adresse <code>mein-alias@domain</code> bildet demnach <b>nicht</b> die Adresse <code>my-alias@alias-domain</code> ab.",
+        "alias_domain_alias_hint": "Alias-Adressen werden <b>nicht</b> automatisch auch auf Domain-Alias Adressen angewendet. Eine Alias-Adresse <code>mein-alias@domain</code> bildet demnach <b>nicht</b> die Adresse <code>mein-alias@alias-domain</code> ab.",
         "domain": "Domain",
         "spam_aliases": "Temp. Alias",
         "alias": "Alias",
@@ -673,7 +673,12 @@
         "insert_preset": "Beispiel \"%s\" laden",
         "sieve_preset_header": "Beispielinhalte zur Einsicht stehen nachstehend bereit. Siehe auch <a href=\"https://de.wikipedia.org/wiki/Sieve\" target=\"_blank\">Wikipedia</a>.",
         "sieve_preset_1": "E-Mails mit potenziell gefährlichen Dateitypen abweisen",
-        "sieve_preset_2": "E-Mail eines bestimmten Absenders immer als gelesen markieren"
+        "sieve_preset_2": "E-Mail eines bestimmten Absenders immer als gelesen markieren",
+        "sieve_preset_3": "Lautlos löschen, weitere Ausführung von Filtern verhindern",
+        "sieve_preset_4": "Nach INBOX einsortieren und weitere Filterbearbeitung stoppen",
+        "sieve_preset_5": "Auto-Responder (Vacation, Urlaub)",
+        "sieve_preset_6": "E-Mails mit Nachricht abweisen",
+        "sieve_preset_7": "Weiterleiten und behalten oder verwerfen"
     },
     "edit": {
         "generate": "generieren",
@@ -815,7 +820,7 @@
         "select_domain": "Bitte zuerst eine Domain auswählen",
         "password": "Passwort",
         "password_repeat": "Passwort (Wiederholung)",
-        "restart_sogo_hint": "Der SOGo Container muss nach dem Hinzufügen einer neuen Domain neugestartet werden!",
+        "post_domain_add": "Der SOGo Container, \"sogo-mailcow\" muss nach dem Hinzufügen einer Domain neugestartet werden!<br><br>Im Anschluss sollte die DNS-Konfiguration der Domain überprüft- und \"acme-mailcow\" gegebenenfalls neugestartet werden, um Änderungen am Zertifikat zu übernehmen (autoconfig.&lt;domain&gt;, autodiscover.&lt;domain&gt;).<br>Dieser Schritt ist optional und wird alle 24 Stunden automatisch ausgeführt.",
         "goto_null": "Nachrichten sofort verwerfen",
         "goto_ham": "Nachrichten als <span class=\"text-success\"><b>Ham</b></span> lernen",
         "goto_spam": "Nachrichten als <span class=\"text-danger\"><b>Spam</b></span> lernen",

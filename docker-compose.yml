@@ -147,7 +147,7 @@ services:
             - phpfpm
 
     sogo-mailcow:
-      image: mailcow/sogo:1.66
+      image: mailcow/sogo:1.68
       environment:
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
@@ -318,7 +318,7 @@ services:
     acme-mailcow:
       depends_on:
         - nginx-mailcow
-      image: mailcow/acme:1.63
+      image: mailcow/acme:1.64
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:

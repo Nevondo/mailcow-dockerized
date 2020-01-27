@@ -166,8 +166,8 @@ smtputf8_enable = yes
 submission_smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
 smtps_smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
 smtpd_client_recipient_rate_limit = 50
+bounce_template_file = /opt/postfix/conf/bounce.cf
 
 # DO NOT EDIT ANYTHING BELOW #
 # User overrides #
-bounce_template_file =/opt/postfix/conf/bounce.cf
 

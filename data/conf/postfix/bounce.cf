@@ -1,16 +1,3 @@
-# $Id$
-#
-# Deutsch-sprachige Vorlagen fuer Postfix Zustell-Status-Benachrichtigungen
-# (engl. DSN, Delivery Status Notification)
-#
-# Uebersetzt und an die deutsche Sprache angepasst von Patrick Koetter
-# <p@state-of-mind.de> und Ralf Hildebrandt <ralf.hildebrandt@charite.de>.
-#
-# Folgen Sie den Anweisungen der bounce(5) manual page, um die in dieser Datei
-# enthaltenen Zustell-Status-Benachrichtigungen in Ihren Postfix-Server
-# einzubinden.
-
-
 # failure_template
 # Das failure_template kommt zum Einsatz, wenn der empfangende Mail-Server die
 # Nachricht entweder zurueckgewiesen hat oder wenn die Nachricht nicht
@@ -81,8 +68,7 @@ Postmaster-Subject: Postmaster Warning: Delayed Mail
 
 Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes:
 
-    Eine von Ihnen gesendete Nachricht konnte seit $delay_warning_time_hours
-    Stunden nicht zugestellt werden.
+    Eine von Ihnen gesendete Nachricht konnte seit $delay_warning_time_hours Stunden nicht zugestellt werden.
     
     Sie müssen die Nachricht nicht noch einmal senden. Der E-Mail-Dienst 
     wird so lange versuchen Ihre Nachricht zuzustellen,
@@ -187,3 +173,4 @@ This is the mail service at host $myhostname.
 Enclosed is the mail delivery report that you requested.
 
 EOF
+

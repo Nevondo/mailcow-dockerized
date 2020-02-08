@@ -1,6 +1,6 @@
-if /^\s*Received:.*Authenticated sender.*\(PostNVND\)/
-#/^Received: from .*? \([\w-.]* \[.*?\]\)\s+\(Authenticated sender: (.+)\)\s+by.+\(PostNVND\) with (E?SMTPS?A?) id ([A-F0-9]+).+;.*?/
-/^Received: from .*? \([\w-.]* \[.*?\]\)(.*|\n.*)\(Authenticated sender: (.+)\)\s+by.+\(PostNVND\) with (.*)/
+if /^\s*Received:.*Authenticated sender.*\(NDSMTP\)/
+#/^Received: from .*? \([\w-.]* \[.*?\]\)\s+\(Authenticated sender: (.+)\)\s+by.+\(NDSMTP\) with (E?SMTPS?A?) id ([A-F0-9]+).+;.*?/
+/^Received: from .*? \([\w-.]* \[.*?\]\)(.*|\n.*)\(Authenticated sender: (.+)\)\s+by.+\(NDSMTP\) with (.*)/
   REPLACE Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with $3
 endif
 /^\s*X-Enigmail/        IGNORE

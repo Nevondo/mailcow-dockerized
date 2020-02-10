@@ -26,7 +26,7 @@ data/assets/ssl/*
 data/web/.well-known/acme-challenge
 data/web/nextcloud*/
 data/web/rc*/
-!data/conf/rspamd/local.d/*
+data/conf/rspamd/local.d/*
 data/conf/rspamd/override.d/*
 !data/conf/nginx/dynmaps.conf
 !data/conf/nginx/site.conf
@@ -40,6 +40,7 @@ data/conf/dovecot/sni.conf
 data/conf/dovecot/sogo-sso.conf
 data/conf/dovecot/extra.conf
 data/conf/dovecot/shared_namespace.conf
+data/conf/rspamd/custom/*
 data/conf/portainer/
 data/hooks/
 data/gitea/
@@ -49,4 +50,3 @@ update_diffs/
 .github/
 docker-compose.override.yml
 refresh_images.sh
-!data/conf/nginx/redirect.conf

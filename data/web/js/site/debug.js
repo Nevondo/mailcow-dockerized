@@ -454,7 +454,7 @@ jQuery(function($){
   function draw_rspamd_history() {
     ft_rspamd_history = FooTable.init('#rspamd_history', {
       "columns": [
-        {"name":"unix_time","formatter":function unix_time_format(tm) { var date = new Date(tm ? tm * 1000 : 0); return date.toLocaleString();},"title":lang.time,"style":{"width":"180px"}},
+        {"name":"unix_time","formatter":function unix_time_format(tm) { var date = new Date(tm ? tm * 1000 : 0); return date.toLocaleString();},"title":lang.time,"style":{"width":"170px"}},
         {"name": "ip","title": "IP address","breakpoints": "all","style": {"minWidth": 88}},
         {"name": "sender_mime","title": "From","breakpoints": "xs sm md","style": {"minWidth": 100}},
         {"name": "rcpt","title": "To","breakpoints": "xs sm md","style": {"minWidth": 100}},

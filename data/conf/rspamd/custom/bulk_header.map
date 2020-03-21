@@ -1,1 +1,12 @@
 /X-CSA-Complaints: .*/i
+/X-EMV-Platform; .*/i
+/X-Mailer: promio.*/i
+/.*nur-1-click*/i
+/.*episerver.*/i
+/.*supergewinne.*/i
+/.*mailer-service\.de/i
+/List-Unsubscribe.*nbps\.eu/i
+/X-Mailer: AWeber.*/i
+/.*regiofinder.*/i
+/.*EmailSocket.*/i
+/List-Unsubscribe:.*respread.*/i

@@ -71,7 +71,7 @@ services:
             - clamd
 
     rspamd-mailcow:
-      image: mailcow/rspamd:1.64
+      image: mailcow/rspamd:1.65
       stop_grace_period: 30s
       depends_on:
         - nginx-mailcow
@@ -188,7 +188,7 @@ services:
             - sogo
 
     dovecot-mailcow:
-      image: mailcow/dovecot:1.116
+      image: mailcow/dovecot:1.117
       depends_on:
         - mysql-mailcow
       dns:

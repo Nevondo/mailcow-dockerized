@@ -97,6 +97,21 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
                 fwrite($filter_handle, $script_data);
                 fclose($filter_handle);
               }
+              $restart_response = json_decode(docker('post', 'dovecot-mailcow', 'restart'), true);
+              if ($restart_response['type'] == "success") {
+                $_SESSION['return'][] = array(
+                  'type' => 'success',
+                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                  'msg' => 'dovecot_restart_success'
+                );
+              }
+              else {
+                $_SESSION['return'][] = array(
+                  'type' => 'warning',
+                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                  'msg' => 'dovecot_restart_failed'
+                );
+              }
             }
             catch (Exception $e) {
               $_SESSION['return'][] = array(
@@ -116,6 +131,21 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
                 }
                 fwrite($filter_handle, $script_data);
                 fclose($filter_handle);
+              }
+              $restart_response = json_decode(docker('post', 'dovecot-mailcow', 'restart'), true);
+              if ($restart_response['type'] == "success") {
+                $_SESSION['return'][] = array(
+                  'type' => 'success',
+                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                  'msg' => 'dovecot_restart_success'
+                );
+              }
+              else {
+                $_SESSION['return'][] = array(
+                  'type' => 'warning',
+                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                  'msg' => 'dovecot_restart_failed'
+                );
               }
             }
             catch (Exception $e) {
@@ -533,8 +563,8 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
             ratelimit('edit', 'domain', array('rl_value' => $_data['rl_value'], 'rl_frame' => $_data['rl_frame'], 'object' => $domain));
           }
           if (!empty($restart_sogo)) {
-            $restart_reponse = json_decode(docker('post', 'sogo-mailcow', 'restart'), true);
-            if ($restart_reponse['type'] == "success") {
+            $restart_response = json_decode(docker('post', 'sogo-mailcow', 'restart'), true);
+            if ($restart_response['type'] == "success") {
               $_SESSION['return'][] = array(
                 'type' => 'success',
                 'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
@@ -3300,9 +3330,13 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           }
           $mailboxdata = array();
           $rl = ratelimit('get', 'mailbox', $_data);
-          $last_mail_login = $redis->Get('last-login/' . $_data);
-          if ($last_mail_login === false) {
-            $last_mail_login = '';
+          $last_imap_login = $redis->Get('last-login/imap/' . $_data);
+          $last_pop3_login = $redis->Get('last-login/pop3/' . $_data);
+          if ($last_imap_login === false || $GLOBALS['SHOW_LAST_LOGIN'] === false) {
+            $last_imap_login = '0';
+          }
+          if ($last_pop3_login === false || $GLOBALS['SHOW_LAST_LOGIN'] === false) {
+            $last_pop3_login = '0';
           }
           if (preg_match('/y|yes/i', getenv('MASTER'))) {
             $stmt = $pdo->prepare("SELECT
@@ -3367,7 +3401,8 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
           }
           $mailboxdata['is_relayed'] = $row['backupmx'];
           $mailboxdata['name'] = $row['name'];
-          $mailboxdata['last_mail_login'] = $last_mail_login;
+          $mailboxdata['last_imap_login'] = $last_imap_login;
+          $mailboxdata['last_pop3_login'] = $last_pop3_login;
           $mailboxdata['active'] = $row['active'];
           $mailboxdata['active_int'] = $row['active_int'];
           $mailboxdata['domain'] = $row['domain'];

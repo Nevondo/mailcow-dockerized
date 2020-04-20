@@ -3,7 +3,7 @@ function init_db_schema() {
   try {
     global $pdo;
 
-    $db_version = "09042020_1403";
+    $db_version = "19042020_1437";
 
     $stmt = $pdo->query("SHOW TABLES LIKE 'versions'");
     $num_results = count($stmt->fetchAll(PDO::FETCH_ASSOC));
@@ -372,9 +372,9 @@ function init_db_schema() {
           "spam_policy" => "TINYINT(1) NOT NULL DEFAULT '1'",
           "delimiter_action" => "TINYINT(1) NOT NULL DEFAULT '1'",
           "syncjobs" => "TINYINT(1) NOT NULL DEFAULT '1'",
-          "eas_reset" => "TINYINT(1) NOT NULL DEFAULT '0'",
-          "sogo_profile_reset" => "TINYINT(1) NOT NULL DEFAULT '1'",
-          "pushover" => "TINYINT(1) NOT NULL DEFAULT '0'",
+          "eas_reset" => "TINYINT(1) NOT NULL DEFAULT '1'",
+          "sogo_profile_reset" => "TINYINT(1) NOT NULL DEFAULT '0'",
+          "pushover" => "TINYINT(1) NOT NULL DEFAULT '1'",
           // quarantine is for quarantine actions, todo: rename
           "quarantine" => "TINYINT(1) NOT NULL DEFAULT '1'",
           "quarantine_attachments" => "TINYINT(1) NOT NULL DEFAULT '1'",
@@ -837,8 +837,11 @@ function init_db_schema() {
           "username" => "VARCHAR(255) NOT NULL",
           "key" => "VARCHAR(255) NOT NULL",
           "token" => "VARCHAR(255) NOT NULL",
+          "attributes" => "JSON",
           "title" => "TEXT",
           "text" => "TEXT",
+          "senders" => "TEXT",
+          "senders_regex" => "TEXT",
           "active" => "TINYINT(1) NOT NULL DEFAULT '1'"
         ),
         "keys" => array(
@@ -1142,6 +1145,11 @@ function init_db_schema() {
     $stmt = $pdo->query("DELETE FROM `da_acl` WHERE `username` NOT IN (SELECT `username`FROM `domain_admins`);");
 
     // Migrate attributes
+    // pushover
+    $stmt = $pdo->query("UPDATE `pushover` SET `attributes` = '{}' WHERE `attributes` = '' OR `attributes` IS NULL;");
+    $stmt = $pdo->query("UPDATE `pushover` SET `attributes` =  JSON_SET(`attributes`, '$.evaluate_x_prio', \"0\") WHERE JSON_EXTRACT(`attributes`, '$.evaluate_x_prio') IS NULL;");
+    $stmt = $pdo->query("UPDATE `pushover` SET `attributes` =  JSON_SET(`attributes`, '$.only_x_prio', \"0\") WHERE JSON_EXTRACT(`attributes`, '$.only_x_prio') IS NULL;");
+    // mailbox
     $stmt = $pdo->query("UPDATE `mailbox` SET `attributes` = '{}' WHERE `attributes` = '' OR `attributes` IS NULL;");
     $stmt = $pdo->query("UPDATE `mailbox` SET `attributes` =  JSON_SET(`attributes`, '$.force_pw_update', \"0\") WHERE JSON_EXTRACT(`attributes`, '$.force_pw_update') IS NULL;");
     $stmt = $pdo->query("UPDATE `mailbox` SET `attributes` =  JSON_SET(`attributes`, '$.sogo_access', \"1\") WHERE JSON_EXTRACT(`attributes`, '$.sogo_access') IS NULL;");

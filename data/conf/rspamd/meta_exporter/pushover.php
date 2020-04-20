@@ -46,13 +46,24 @@ if (!function_exists('getallheaders'))  {
   }
 }
 
-
 $headers = getallheaders();
 
 $qid      = $headers['X-Rspamd-Qid'];
 $rcpts    = $headers['X-Rspamd-Rcpt'];
+$sender   = $headers['X-Rspamd-From'];
 $ip       = $headers['X-Rspamd-Ip'];
 $subject  = $headers['X-Rspamd-Subject'];
+$priority = 0;
+
+$symbols_array = json_decode($headers['X-Rspamd-Symbols'], true);
+if (is_array($symbols_array)) {
+  foreach ($symbols_array as $symbol) {
+    if ($symbol['name'] == 'HAS_X_PRIO_ONE') {
+      $priority = 1;
+      break;
+    }
+  }
+}
 
 $rcpt_final_mailboxes = array();
 
@@ -187,14 +198,49 @@ foreach ($rcpt_final_mailboxes as $rcpt_final) {
   if (isset($api_data['key']) && isset($api_data['token'])) {
     $title = (!empty($api_data['title'])) ? $api_data['title'] : 'Mail';
     $text = (!empty($api_data['text'])) ? $api_data['text'] : 'You\'ve got mail 📧';
+    $attributes = json_decode($api_data['attributes'], true);
+    $senders = explode(',', $api_data['senders']);
+    $senders = array_filter($senders);
+    $senders_regex = $api_data['senders_regex'];
+    $sender_validated = false;
+    if (empty($senders) && empty($senders_regex)) {
+      $sender_validated = true;
+    }
+    else {
+      if (!empty($senders)) {
+        if (in_array($sender, $senders)) {
+          $sender_validated = true;
+        }
+      }
+      if (!empty($senders_regex) && $sender_validated !== true) {
+        if (preg_match($senders_regex, $sender)) {
+          $sender_validated = true;
+        }
+      }
+    }
+    if ($sender_validated === false) {
+      error_log("NOTIFY: pushover pipe: skipping unwanted sender " . $sender);
+      continue;
+    }
+    if ($attributes['only_x_prio'] == "1" && $priority == 0) {
+      error_log("NOTIFY: pushover pipe: mail has no X-Priority: 1 header, skipping");
+      continue;
+    }
+    $post_fields = array(
+      "token" => $api_data['token'],
+      "user" => $api_data['key'],
+      "title" => sprintf("%s", str_replace(array('{SUBJECT}', '{SENDER}'), array($subject, $sender), $title)),
+      "priority" => $priority,
+      "message" => sprintf("%s", str_replace(array('{SUBJECT}', '{SENDER}'), array($subject, $sender), $text))
+    );
+    if ($attributes['evaluate_x_prio'] == "1" && $priority == 1) {
+      $post_fields['expire'] = 600;
+      $post_fields['retry'] = 120;
+      $post_fields['priority'] = 2;
+    }
     curl_setopt_array($ch = curl_init(), array(
       CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-      CURLOPT_POSTFIELDS => array(
-    "token" => $api_data['token'],
-    "user" => $api_data['key'],
-    "title" => $title,
-    "message" => sprintf("%s", str_replace('{SUBJECT}', $subject, $text))
-      ),
+      CURLOPT_POSTFIELDS => $post_fields,
       CURLOPT_SAFE_UPLOAD => true,
       CURLOPT_RETURNTRANSFER => true,
     ));

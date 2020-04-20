@@ -41,8 +41,48 @@ function pushover($_action, $_data = null) {
           );
           continue;
         }
-        $key = $_data['key'];
-        $token = $_data['token'];
+        $is_now = pushover('get', $username);
+        if (!empty($is_now)) {
+          $key = (!empty($_data['key'])) ? $_data['key'] : $is_now['key'];
+          $token = (!empty($_data['token'])) ? $_data['token'] : $is_now['token'];
+          $senders = (isset($_data['senders'])) ? $_data['senders'] : $is_now['senders'];
+          $senders_regex = (isset($_data['senders_regex'])) ? $_data['senders_regex'] : $is_now['senders_regex'];
+          $title = (!empty($_data['title'])) ? $_data['title'] : $is_now['title'];
+          $text = (!empty($_data['text'])) ? $_data['text'] : $is_now['text'];
+          $active = (isset($_data['active'])) ? intval($_data['active']) : $is_now['active'];
+          $evaluate_x_prio = (isset($_data['evaluate_x_prio'])) ? intval($_data['evaluate_x_prio']) : $is_now['evaluate_x_prio'];
+          $only_x_prio = (isset($_data['only_x_prio'])) ? intval($_data['only_x_prio']) : $is_now['only_x_prio'];
+        }
+        else {
+          $_SESSION['return'][] = array(
+            'type' => 'danger',
+            'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+            'msg' => 'access_denied'
+          );
+          continue;
+        }
+        if (!empty($senders_regex) && !is_valid_regex($senders_regex)) {
+          $_SESSION['return'][] = array(
+            'type' => 'danger',
+            'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+            'msg' => 'Invalid regex'
+          );
+          continue;
+        }
+        $senders = array_map('trim', preg_split( "/( |,|;|\n)/", $senders));
+        foreach ($senders as $i => &$sender) {
+          if (empty($sender)) {
+            continue;
+          }
+          if (!filter_var($sender, FILTER_VALIDATE_EMAIL) === true) {
+            unset($senders[$i]);
+            continue;
+          }
+          $senders[$i] = preg_replace('/\.(?=.*?@gmail\.com$)/', '$1', $sender);
+        }
+        $senders = array_filter($senders);
+        if (empty($senders)) { $senders = ''; }
+        $senders = implode(",", $senders);
         if (!ctype_alnum($key) || strlen($key) != 30) {
           $_SESSION['return'][] = array(
             'type' => 'danger',
@@ -59,14 +99,20 @@ function pushover($_action, $_data = null) {
           );
           continue;
         }
-        $title = $_data['title'];
-        $text = $_data['text'];
-        $active = intval($_data['active']);
-        $stmt = $pdo->prepare("REPLACE INTO `pushover` (`username`, `key`, `token`, `title`, `text`, `active`)
-          VALUES (:username, :key, :token, :title, :text, :active)");
+        $po_attributes = json_encode(
+          array(
+            'evaluate_x_prio' => strval(intval($evaluate_x_prio)),
+            'only_x_prio' => strval(intval($only_x_prio))
+          )
+        );
+        $stmt = $pdo->prepare("REPLACE INTO `pushover` (`username`, `key`, `attributes`, `senders_regex`, `senders`, `token`, `title`, `text`, `active`)
+          VALUES (:username, :key, :po_attributes, :senders_regex, :senders, :token, :title, :text, :active)");
         $stmt->execute(array(
           ':username' => $username,
           ':key' => $key,
+          ':po_attributes' => $po_attributes,
+          ':senders_regex' => $senders_regex,
+          ':senders' => $senders,
           ':token' => $token,
           ':title' => $title,
           ':text' => $text,
@@ -93,6 +139,7 @@ function pushover($_action, $_data = null) {
         ':username' => $_data
       ));
       $data = $stmt->fetch(PDO::FETCH_ASSOC);
+      $data['attributes'] = json_decode($data['attributes'], true);
       if (empty($data)) {
         return false;
       }

@@ -8,6 +8,7 @@
     "add": {
         "activate_filter_warn": "Visi pārējie filtri tiks deaktivizēti, kad aktīvs ir atzīmēts.",
         "active": "Aktīvs",
+        "add": "Pievienot",
         "add_domain_only": "Tikai pievienot domēnu",
         "add_domain_restart": "Pievienot domēnu un restartēt SOGo",
         "alias_address": "Alias addrese/s",
@@ -227,6 +228,7 @@
         "force_pw_update_info": "Šis lietotājs varēs pieslēgties tikai %s.",
         "full_name": "Pilns vārds",
         "hostname": "Hosta nosaukums",
+        "inactive": "Neaktīvs",
         "kind": "Veids",
         "mailbox": "Rediģēt pastkasti",
         "max_aliases": "Maks. aliases",
@@ -295,6 +297,7 @@
         "action": "Rīcība",
         "activate": "Activate",
         "active": "Aktīvs",
+        "add": "Pievienot",
         "add_alias": "Pievienot alias",
         "add_bcc_entry": "Pievienot BCC karti",
         "add_domain": "Pievienot domēnu",

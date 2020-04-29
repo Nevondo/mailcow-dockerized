@@ -4,6 +4,7 @@
     },
     "add": {
         "active": "Actif",
+        "add": "Ajouter",
         "alias_address": "Adresse(s) alias",
         "alias_address_info": "<small>Adresse de courriel complète ou @exemple.com pour recevoir tous les messages d'un domaine (séparés par de virgules). <b>Domaines mailcow seulement</b></small>",
         "alias_domain": "Alias de domaine",
@@ -180,6 +181,7 @@
         "exclude": "Objets à exclure (expression régulière)",
         "full_name": "Nom complet",
         "hostname": "Nom d'hôte",
+        "inactive": "Inactif",
         "kind": "Type",
         "mailbox": "Éditer la boîte",
         "max_aliases": "Alias max.",
@@ -240,6 +242,7 @@
         "action": "Action",
         "activate": "Activer",
         "active": "Actif",
+        "add": "Ajouter",
         "add_alias": "Ajouter un alias",
         "add_domain": "Ajouter un domaine",
         "add_domain_alias": "Ajouter un alias de domaine",

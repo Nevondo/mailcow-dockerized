@@ -169,6 +169,7 @@ if cp --help 2>&1 | head -n 1 | grep -q -i "busybox"; then echo "BusybBox cp det
 
 CONFIG_ARRAY=(
   "SKIP_LETS_ENCRYPT"
+  "SKIP_SOGO"
   "USE_WATCHDOG"
   "WATCHDOG_NOTIFY_EMAIL"
   "WATCHDOG_NOTIFY_BAN"
@@ -315,6 +316,12 @@ for option in ${CONFIG_ARRAY[@]}; do
       echo '# this will allow adding more than 100 domains, but some email clients will not be able to connect with alternative hostnames' >> mailcow.conf
       echo '# see https://wiki.dovecot.org/SSL/SNIClientSupport' >> mailcow.conf
       echo "ENABLE_SSL_SNI=n" >> mailcow.conf
+    fi
+  elif [[ ${option} == "SKIP_SOGO" ]]; then
+    if ! grep -q ${option} mailcow.conf; then
+      echo "Adding new option \"${option}\" to mailcow.conf"
+      echo '# Skip SOGo: Will disable SOGo integration and therefore webmail, DAV protocols and ActiveSync support (experimental, unsupported, not fully implemented) - y/n' >> mailcow.conf
+      echo "SKIP_SOGO=n" >> mailcow.conf
     fi
   elif [[ ${option} == "MAILDIR_SUB" ]]; then
     if ! grep -q ${option} mailcow.conf; then

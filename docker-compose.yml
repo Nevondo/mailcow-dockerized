@@ -191,7 +191,7 @@ services:
             - sogo
 
     dovecot-mailcow:
-      image: mailcow/dovecot:1.123
+      image: mailcow/dovecot:1.124
       depends_on:
         - mysql-mailcow
       dns:
@@ -453,7 +453,7 @@ services:
             - watchdog
 
     dockerapi-mailcow:
-      image: mailcow/dockerapi:1.36
+      image: mailcow/dockerapi:1.37
       restart: always
       oom_kill_disable: true
       dns:

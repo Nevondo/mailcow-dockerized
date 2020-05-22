@@ -3,9 +3,13 @@ if /^\s*Received:.*Authenticated sender.*\(NdSmtp\)/
 /^Received: from .*? \([\w-.]* \[.*?\]\)(.*|\n.*)\(Authenticated sender: (.+)\)\s+by.+\(NdSmtp\) with (.*)/
   REPLACE Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with $3
 endif
-if /^\s*Received: from rspamd \(.*mailcow-network.*\).*\(NdSmtp\)/
-/^Received: from rspamd (.*|\n.*)\((.+) (.+)\)\s+by (.+\(NdSmtp\)) with (.*)/
-  REPLACE Received: from rspamd (RSPAMD_HOST $3) by $4 with $5
+if /^\s*Received: from.* \(.*dovecot-mailcow.*mailcow-network.*\).*\(NdSmtp\)/
+/^Received: from.* (.*|\n.*)\((.+) (.+)\)\s+by (.+) \(NdSmtp\) with (.*)/
+  REPLACE Received: from sieve (sieve $3) by $4 (NdSmtp) with $5
+endif
+if /^\s*Received: from.* \(.*rspamd-mailcow.*mailcow-network.*\).*\(NdSmtp\)/
+/^Received: from.* (.*|\n.*)\((.+) (.+)\)\s+by (.+) \(NdSmtp\) with (.*)/
+  REPLACE Received: from rspamd (rspamd $3) by $4 (NdSmtp) with $5
 endif
 /^\s*X-Enigmail/        IGNORE
 /^\s*X-Mailer/          IGNORE

@@ -159,7 +159,7 @@ services:
             - phpfpm
 
     sogo-mailcow:
-      image: mailcow/sogo:1.83
+      image: mailcow/sogo:1.84
       environment:
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
@@ -494,7 +494,7 @@ services:
             - solr
 
     olefy-mailcow:
-      image: mailcow/olefy:1.3
+      image: mailcow/olefy:1.4
       restart: always
       environment:
         - TZ=${TZ}

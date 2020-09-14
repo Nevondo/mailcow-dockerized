@@ -16,10 +16,10 @@ $(document).ready(function() {
     event.preventDefault();
     $('[data-hibp]').trigger('input');
     if (typeof($(this).closest("form").data('pwgen-length')) == "number") {
-      var random_passwd = Math.random().toString(64).slice($(this).closest("form").data('pwgen-length'))
+      var random_passwd = Math.random().toString(36).slice($(this).closest("form").data('pwgen-length'))
     }
     else {
-      var random_passwd = Math.random().toString(64).slice(-13)
+      var random_passwd = Math.random().toString(36).slice(-13)
     }
     $(this).closest("form").find('[data-pwgen-field]').attr('type', 'text');
     $(this).closest("form").find('[data-pwgen-field]').val(random_passwd);

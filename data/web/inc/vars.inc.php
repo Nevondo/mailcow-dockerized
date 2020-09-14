@@ -88,12 +88,12 @@ $AVAILABLE_LANGUAGES = array('ca', 'cs', 'de', 'en', 'es', 'fi', 'fr', 'it', 'lv
 $DEFAULT_THEME = 'lumen';
 
 // Password complexity as regular expression
-// Min. 6 characters
-$PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$';
-// Min. 6 characters, which must include at least one uppercase letter, one lowercase letter and one number
-// $PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}$';
-// Min. 6 characters, which must include at least one letter and one number
-// $PASSWD_REGEP = '^(?=.*[0-9])(?=.*[A-Za-z]).{6,}$';
+// Min. 8 characters
+// $PASSWD_REGEP = '.{8,}';
+// Min. 12 characters, which must include at least one uppercase letter, one lowercase letter and one number
+$PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{12,}$';
+// Min. 8 characters, which must include at least one letter and one number
+// $PASSWD_REGEP = '^(?=.*[0-9])(?=.*[A-Za-z]).{8,}$';
 
 // Show DKIM private keys - false by default
 $SHOW_DKIM_PRIV_KEYS = false;
@@ -155,7 +155,7 @@ $MAILBOX_DEFAULT_ATTRIBUTES['force_pw_update'] = false;
 $MAILBOX_DEFAULT_ATTRIBUTES['sogo_access'] = true;
 
 // Send notification when quarantine is not empty (never, hourly, daily, weekly)
-$MAILBOX_DEFAULT_ATTRIBUTES['quarantine_notification'] = 'hourly';
+$MAILBOX_DEFAULT_ATTRIBUTES['quarantine_notification'] = 'daily';
 
 // Default mailbox format, should not be changed unless you know exactly, what you do, keep the trailing ":"
 // Check dovecot.conf for further changes (e.g. shared namespace)

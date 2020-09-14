@@ -89,7 +89,7 @@ $DEFAULT_THEME = 'lumen';
 
 // Password complexity as regular expression
 // Min. 6 characters
-$PASSWD_REGEP = '.{8,}';
+$PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$';
 // Min. 6 characters, which must include at least one uppercase letter, one lowercase letter and one number
 // $PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}$';
 // Min. 6 characters, which must include at least one letter and one number

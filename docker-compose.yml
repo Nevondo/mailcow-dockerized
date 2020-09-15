@@ -56,7 +56,7 @@ services:
             - redis
 
     clamd-mailcow:
-      image: mailcow/clamd:1.36
+      image: mailcow/clamd:1.37
       restart: always
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
@@ -71,7 +71,7 @@ services:
             - clamd
 
     rspamd-mailcow:
-      image: mailcow/rspamd:1.68
+      image: mailcow/rspamd:1.69
       stop_grace_period: 30s
       depends_on:
         - dovecot-mailcow
@@ -251,7 +251,7 @@ services:
             - dovecot
 
     postfix-mailcow:
-      image: mailcow/postfix:1.51
+      image: mailcow/postfix:1.52
       depends_on:
         - mysql-mailcow
       volumes:

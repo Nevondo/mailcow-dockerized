@@ -159,7 +159,7 @@ services:
             - phpfpm
 
     sogo-mailcow:
-      image: mailcow/sogo:1.88
+      image: mailcow/sogo:1.90
       environment:
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
@@ -251,7 +251,7 @@ services:
             - dovecot
 
     postfix-mailcow:
-      image: mailcow/postfix:1.53
+      image: mailcow/postfix:1.55
       depends_on:
         - mysql-mailcow
       volumes:
@@ -343,7 +343,7 @@ services:
     acme-mailcow:
       depends_on:
         - nginx-mailcow
-      image: mailcow/acme:1.74
+      image: mailcow/acme:1.75
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:
@@ -401,7 +401,7 @@ services:
         - /lib/modules:/lib/modules:ro
 
     watchdog-mailcow:
-      image: mailcow/watchdog:1.82
+      image: mailcow/watchdog:1.83
       # Debug
       #command: /watchdog.sh
       dns:

@@ -71,7 +71,7 @@ services:
             - clamd
 
     rspamd-mailcow:
-      image: mailcow/rspamd:1.70
+      image: mailcow/rspamd:1.71
       stop_grace_period: 30s
       depends_on:
         - dovecot-mailcow
@@ -251,7 +251,7 @@ services:
             - dovecot
 
     postfix-mailcow:
-      image: mailcow/postfix:1.55
+      image: mailcow/postfix:1.56
       depends_on:
         - mysql-mailcow
       volumes:
@@ -343,7 +343,7 @@ services:
     acme-mailcow:
       depends_on:
         - nginx-mailcow
-      image: mailcow/acme:1.75
+      image: mailcow/acme:1.76
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:
@@ -401,7 +401,7 @@ services:
         - /lib/modules:/lib/modules:ro
 
     watchdog-mailcow:
-      image: mailcow/watchdog:1.83
+      image: mailcow/watchdog:1.84
       # Debug
       #command: /watchdog.sh
       dns:

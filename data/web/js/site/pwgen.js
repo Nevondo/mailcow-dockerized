@@ -15,6 +15,19 @@
 var GPW = {
 
 /**
+ * var pw = GPW.normal(10);
+ */
+
+normal : function (length) {
+    var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+},
+
+/**
  * var pw = GPW.pronounceable(10);
  */
 

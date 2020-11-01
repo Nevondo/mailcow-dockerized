@@ -463,13 +463,13 @@ jQuery(function($){
   function draw_rspamd_history() {
     ft_rspamd_history = FooTable.init('#rspamd_history', {
       "columns": [
-        {"name":"unix_time","formatter":function unix_time_format(tm) { var date = new Date(tm ? tm * 1000 : 0); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.time,"style":{"width":"170px"}},
+        {"name":"unix_time","formatter":function unix_time_format(tm) { var date = new Date(tm ? tm * 1000 : 0); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.time,"style":{"width":"190px"}},
         {"name": "ip","title": "IP address","breakpoints": "all","style": {"minWidth": 88}},
         {"name": "sender_mime","title": "From","breakpoints": "xs sm md","style": {"minWidth": 100}},
         {"name": "rcpt","title": "To","breakpoints": "xs sm md","style": {"minWidth": 100}},
         {"name": "subject","title": "Subject","breakpoints": "all","style": {"word-break": "break-all","minWidth": 150}},
         {"name": "action","title": "Action","style": {"minwidth": 82}},
-        {"name": "score","title": "Score","style": {"maxWidth": 110},},
+        {"name": "score","title": "Score","style": {"minWidth": 110},},
         {"name": "symbols","title": "Symbols","breakpoints": "all",},
         {"name": "size","title": "Msg size","breakpoints": "all","style": {"minwidth": 50},"formatter": function(value){return humanFileSize(value);}},
         {"name": "scan_time","title": "Scan time","breakpoints": "all","style": {"maxWidth": 72},},

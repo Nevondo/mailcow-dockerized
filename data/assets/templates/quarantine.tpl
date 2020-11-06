@@ -42,15 +42,24 @@
     es wurden {{counter}} neue E-Mails in Ihre persönliche Quarantäne verschoben:<br>
     {% endif %}
     <table>
-    <tr><th>Betreff</th><th>Absender</th><th class="mob">Wertung</th><th class="mob">Empfangen am</th>{% if quarantine_acl == 1 %}<th>Aktionen</th>{% endif %}</tr>
-    {% for line in meta %}
+    <tr><th>Betreff</th><th>Absender</th><th class="mob">Wertung</th><th class="mob">Aktion</th><th class="mob">Empfangen am</th>{% if quarantine_acl == 1 %}<th>Aktionen</th>{% endif %}</tr>
+    {% for line in meta|reverse %}
     <tr>
     <td>{{ line.subject|e }}</td>
     <td>{{ line.sender|e }}</td>
     <td class="mob">{{ line.score }}</td>
+    {% if line.action == "reject" %}
+      <td class="mob">Abgelehnt</td>
+    {% else %}
+      <td class="mob">In den Spamordner verschoben</td>
+    {% endif %}
     <td class="mob">{{ line.created }}</td>
     {% if quarantine_acl == 1 %}
-    <td class="fixed"><a href="https://{{ hostname }}/qhandler/release/{{ line.qhash }}">release</a> | <a href="https://{{ hostname }}/qhandler/delete/{{ line.qhash }}">delete</a></td>
+      {% if line.action == "reject" %}
+        <td class="fixed"><a href="https://{{ hostname }}/qhandler/release/{{ line.qhash }}">Freigeben</a> | <a href="https://{{ hostname }}/qhandler/delete/{{ line.qhash }}">Löschen</a></td>
+      {% else %}
+        <td class="fixed"><a href="https://{{ hostname }}/qhandler/release/{{ line.qhash }}">Kopie zusenden</a> | <a href="https://{{ hostname }}/qhandler/delete/{{ line.qhash }}">Löschen</a></td>
+      {% endif %}
     {% endif %}
     </tr>
     {% endfor %}

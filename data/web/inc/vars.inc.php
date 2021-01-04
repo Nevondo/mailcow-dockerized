@@ -162,7 +162,7 @@ $MAILBOX_DEFAULT_ATTRIBUTES['quarantine_notification'] = 'daily';
 $MAILBOX_DEFAULT_ATTRIBUTES['imap_access'] = true;
 
 // Mailbox has POP3 access by default
-$MAILBOX_DEFAULT_ATTRIBUTES['pop3_access'] = true;
+$MAILBOX_DEFAULT_ATTRIBUTES['pop3_access'] = false;
 
 // Mailbox has SMTP access by default
 $MAILBOX_DEFAULT_ATTRIBUTES['smtp_access'] = true;

@@ -71,7 +71,7 @@ services:
             - clamd
 
     rspamd-mailcow:
-      image: mailcow/rspamd:1.75
+      image: mailcow/rspamd:1.76
       stop_grace_period: 30s
       depends_on:
         - dovecot-mailcow
@@ -255,7 +255,7 @@ services:
             - dovecot
 
     postfix-mailcow:
-      image: mailcow/postfix:1.58
+      image: mailcow/postfix:1.59
       depends_on:
         - mysql-mailcow
       volumes:

@@ -6,7 +6,7 @@ SPFTOOLS_DIR=${WORKING_DIR}/spf-tools
 POSTWHITE_DIR=${WORKING_DIR}/postwhite
 POSTWHITE_CONF=${POSTWHITE_DIR}/postwhite.conf
 
-COSTOM_HOSTS="web.de gmx.net mail.de freenet.de arcor.de unity-mail.de"
+CUSTOM_HOSTS="\"web.de gmx.net mail.de freenet.de arcor.de unity-mail.de nevondo.com leardev.de\""
 STATIC_HOSTS=(
     "194.25.134.0/24 permit # t-online.de"
 )
@@ -19,7 +19,7 @@ function set_config() {
     sudo sed -i "s@^\($1\s*=\s*\).*\$@\1$2@" ${POSTWHITE_CONF}
 }
 
-set_config custom_hosts ${COSTOM_HOSTS}
+set_config custom_hosts "${CUSTOM_HOSTS}"
 set_config reload_postfix no
 set_config postfixpath /.
 set_config spftoolspath ${WORKING_DIR}/spf-tools

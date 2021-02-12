@@ -237,7 +237,7 @@ $(document).ready(function() {
           }
         }
         if ($(this).attr("type") == 'email') {
-          var emailReg = /(?:"?([^"]*)"?\s)?(?:<?(.+@[^>]+)>?)/;
+          var emailReg = '/(?:"?([^"]*)"?\s)?(?:<?(.+@[^>]+)>?)/';
           if (!emailReg.test($(this).val())) {
             invalid = true;
             $(this).addClass('inputMissingAttr');

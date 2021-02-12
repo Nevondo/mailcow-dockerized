@@ -16,13 +16,12 @@
 /\sseo\s/i
 /\sjackpot\s/i
 /\slottery\s/i
-/bitcoin/i
-/trojaner/i
-/malware/i
+/\sbitcoin\s/i
+/\strojaner/i
+/\smalware\s/i
 /\sscooter\s/i
-/testost/i
+/\stestost\s/i
 /web\sdevelopment/i
-/\slottery\s/i
 /\ssex\s/i
 /\svagina\s/i
 /\spenis\s/i

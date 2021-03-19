@@ -1062,13 +1062,7 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
               );
               return false;
             }
-            // support pre hashed passwords
-            if (preg_match('/^{(ARGON2I|ARGON2ID|BLF-CRYPT|CLEAR|CLEARTEXT|CRYPT|DES-CRYPT|LDAP-MD5|MD5|MD5-CRYPT|PBKDF2|PLAIN|PLAIN-MD4|PLAIN-MD5|PLAIN-TRUNC|PLAIN-TRUNC|SHA|SHA1|SHA256|SHA256-CRYPT|SHA512|SHA512-CRYPT|SMD5|SSHA|SSHA256|SSHA512)}/i', $password)) {
-              $password_hashed = $password;
-            }
-            else {
-              $password_hashed = hash_password($password);
-            }
+            $password_hashed = hash_password($password);
           }
           else {
             $_SESSION['return'][] = array(
@@ -1937,6 +1931,52 @@ function mailbox($_action, $_type, $_data = null, $_extra = null) {
                 'type' => 'danger',
                 'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
                 'msg' => array('alias_invalid', $address)
+              );
+              continue;
+            }
+            if ($_data['expand_alias'] === true || $_data['expand_alias'] == 1) {
+              $stmt = $pdo->prepare("SELECT `address` FROM `alias`
+                WHERE `address` = :address
+                  AND `domain` NOT IN (
+                    SELECT `alias_domain` FROM `alias_domain`
+                  )");
+              $stmt->execute(array(
+                ':address' => $address,
+              ));
+              $num_results = count($stmt->fetchAll(PDO::FETCH_ASSOC));
+              if ($num_results == 0) {
+                $_SESSION['return'][] = array(
+                  'type' => 'warning',
+                  'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                  'msg' => array('is_not_primary_alias', htmlspecialchars($address))
+                );
+                continue;
+              }
+              $stmt = $pdo->prepare("SELECT `goto`, GROUP_CONCAT(CONCAT(SUBSTRING(`alias`.`address`, 1, LOCATE('@', `alias`.`address`) - 1), '@', `alias_domain`.`alias_domain`)) AS `missing_alias`
+                FROM `alias` JOIN `alias_domain` ON `alias_domain`.`target_domain` = `alias`.`domain`
+                    WHERE CONCAT(SUBSTRING(`alias`.`address`, 1, LOCATE('@', `alias`.`address`) - 1), '@', `alias_domain`.`alias_domain`) NOT IN (
+                      SELECT `address` FROM `alias` WHERE `address` != `goto`
+                    )
+                    AND `alias`.`address` NOT IN (
+                      SELECT `address` FROM `alias` WHERE `address` = `goto`
+                    )
+                    AND `address` = :address ;");
+              $stmt->execute(array(
+                ':address' => $address
+              ));
+              $missing_aliases = $stmt->fetch(PDO::FETCH_ASSOC);
+              if (!empty($missing_aliases['missing_alias'])) {
+                mailbox('add', 'alias', array(
+                  'address' => $missing_aliases['missing_alias'],
+                  'goto' => $missing_aliases['goto'],
+                  'sogo_visible' => 1,
+                  'active' => 1
+                ));
+              }
+              $_SESSION['return'][] = array(
+                'type' => 'success',
+                'log' => array(__FUNCTION__, $_action, $_type, $_data_log, $_attr),
+                'msg' => array('alias_modified', htmlspecialchars($address))
               );
               continue;
             }

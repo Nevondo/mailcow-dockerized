@@ -56,7 +56,7 @@ services:
             - redis
 
     clamd-mailcow:
-      image: mailcow/clamd:1.38
+      image: mailcow/clamd:1.39
       restart: always
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
@@ -164,7 +164,7 @@ services:
             - phpfpm
 
     sogo-mailcow:
-      image: mailcow/sogo:1.95
+      image: mailcow/sogo:1.96
       environment:
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
@@ -200,7 +200,7 @@ services:
             - sogo
 
     dovecot-mailcow:
-      image: mailcow/dovecot:1.141
+      image: mailcow/dovecot:1.142
       depends_on:
         - mysql-mailcow
       dns:
@@ -413,7 +413,7 @@ services:
         - /lib/modules:/lib/modules:ro
 
     watchdog-mailcow:
-      image: mailcow/watchdog:1.90
+      image: mailcow/watchdog:1.91
       # Debug
       #command: /watchdog.sh
       dns:
@@ -437,6 +437,7 @@ services:
         - USE_WATCHDOG=${USE_WATCHDOG:-n}
         - WATCHDOG_NOTIFY_EMAIL=${WATCHDOG_NOTIFY_EMAIL}
         - WATCHDOG_NOTIFY_BAN=${WATCHDOG_NOTIFY_BAN:-y}
+        - WATCHDOG_SUBJECT=${WATCHDOG_SUBJECT:-Watchdog ALERT}
         - WATCHDOG_EXTERNAL_CHECKS=${WATCHDOG_EXTERNAL_CHECKS:-n}
         - WATCHDOG_MYSQL_REPLICATION_CHECKS=${WATCHDOG_MYSQL_REPLICATION_CHECKS:-n}
         - MAILCOW_HOSTNAME=${MAILCOW_HOSTNAME}

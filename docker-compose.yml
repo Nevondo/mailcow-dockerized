@@ -17,7 +17,7 @@ services:
             - unbound
 
     mysql-mailcow:
-      image: mariadb:10.4
+      image: mariadb:10.5
       depends_on:
         - unbound-mailcow
       stop_grace_period: 45s
@@ -390,7 +390,7 @@ services:
             - acme
 
     netfilter-mailcow:
-      image: mailcow/netfilter:1.39
+      image: mailcow/netfilter:1.41
       stop_grace_period: 30s
       depends_on:
         - dovecot-mailcow

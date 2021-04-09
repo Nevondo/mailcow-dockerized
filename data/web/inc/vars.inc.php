@@ -90,14 +90,6 @@ $AVAILABLE_LANGUAGES = array('ca', 'cs', 'da', 'de', 'en', 'es', 'fi', 'fr', 'hu
 // WARNING: Only lumen is loaded locally. Enabling any other theme, will download external sources.
 $DEFAULT_THEME = 'lumen';
 
-// Password complexity as regular expression
-// Min. 8 characters
-// $PASSWD_REGEP = '.{8,}';
-// Min. 12 characters, which must include at least one uppercase letter, one lowercase letter and one number
-$PASSWD_REGEP = '^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{12,}$';
-// Min. 8 characters, which must include at least one letter and one number
-// $PASSWD_REGEP = '^(?=.*[0-9])(?=.*[A-Za-z]).{8,}$';
-
 // Show DKIM private keys - false by default
 $SHOW_DKIM_PRIV_KEYS = false;
 

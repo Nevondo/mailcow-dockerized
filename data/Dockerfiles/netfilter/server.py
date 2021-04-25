@@ -2,6 +2,7 @@
 
 import re
 import os
+import sys
 import time
 import atexit
 import signal
@@ -39,6 +40,7 @@ BLACKLIST= []
 bans = {}
 
 quit_now = False
+exit_code = 0
 lock = Lock()
 
 def log(priority, message):
@@ -61,6 +63,7 @@ def logInfo(message):
 def refreshF2boptions():
   global f2boptions
   global quit_now
+  global exit_code
   if not r.get('F2B_OPTIONS'):
     f2boptions = {}
     f2boptions['ban_time'] = int
@@ -81,10 +84,12 @@ def refreshF2boptions():
     except ValueError:
       print('Error loading F2B options: F2B_OPTIONS is not json')
       quit_now = True
+      exit_code = 2
 
 def refreshF2bregex():
   global f2bregex
   global quit_now
+  global exit_code
   if not r.get('F2B_REGEX'):
     f2bregex = {}
     f2bregex[1] = 'warning: .*\[([0-9a-f\.:]+)\]: SASL .+ authentication failed'
@@ -103,6 +108,7 @@ def refreshF2bregex():
     except ValueError:
       print('Error loading F2B options: F2B_REGEX is not json')
       quit_now = True
+      exit_code = 2
 
 if r.exists('F2B_LOG'):
   r.rename('F2B_LOG', 'NETFILTER_LOG')
@@ -110,6 +116,7 @@ if r.exists('F2B_LOG'):
 def mailcowChainOrder():
   global lock
   global quit_now
+  global exit_code
   while not quit_now:
     time.sleep(10)
     with lock:
@@ -128,9 +135,11 @@ def mailcowChainOrder():
               if position > 2:
                 logCrit('Error in %s chain order: MAILCOW on position %d, restarting container' % (chain.name, position))
                 quit_now = True
+                exit_code = 2
           if not target_found:
             logCrit('Error in %s chain: MAILCOW target not found, restarting container' % (chain.name))
             quit_now = True
+            exit_code = 2
 
 def ban(address):
   global lock
@@ -300,26 +309,30 @@ def watch():
   logInfo('Watching Redis channel F2B_CHANNEL')
   pubsub.subscribe('F2B_CHANNEL')
 
+  global quit_now
+  global exit_code
+
   while not quit_now:
+    try:
       for item in pubsub.listen():
-        try:
-          refreshF2bregex()
-          for rule_id, rule_regex in f2bregex.items():
-            if item['data'] and item['type'] == 'message':
-              try:
-                result = re.search(rule_regex, item['data'])
-              except re.error:
-                result = False
-              if result:
-                addr = result.group(1)
-                ip = ipaddress.ip_address(addr)
-                if ip.is_private or ip.is_loopback:
-                  continue
-                logWarn('%s matched rule id %s (%s)' % (addr, rule_id, item['data']))
-                ban(addr)
-        except Exception as ex:
-          logWarn('Could not read logline from pubsub, skipping...')
-          continue
+        refreshF2bregex()
+        for rule_id, rule_regex in f2bregex.items():
+          if item['data'] and item['type'] == 'message':
+            try:
+              result = re.search(rule_regex, item['data'])
+            except re.error:
+              result = False
+            if result:
+              addr = result.group(1)
+              ip = ipaddress.ip_address(addr)
+              if ip.is_private or ip.is_loopback:
+                continue
+              logWarn('%s matched rule id %s (%s)' % (addr, rule_id, item['data']))
+              ban(addr)
+    except Exception as ex:
+      logWarn('Error reading log line from pubsub')
+      quit_now = True
+      exit_code = 2
 
 def snat4(snat_target):
   global lock
@@ -559,3 +572,5 @@ if __name__ == '__main__':
 
   while not quit_now:
     time.sleep(0.5)
+
+  sys.exit(exit_code)

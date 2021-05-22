@@ -1,4 +1,31 @@
 $(document).ready(function() {
+  // Spam score slider
+  var spam_slider = $('#spam_score')[0];
+  noUiSlider.create(spam_slider, {
+    start: user_spam_score,
+    connect: [true, true, true],
+    range: {
+      'min': [0], //stepsize is 50.000
+      '50%': [10],
+      '70%': [20, 5],
+      '80%': [50, 10],
+      '90%': [100, 100],
+      '95%': [1000, 1000],
+      'max': [5000]
+    },
+  });
+  var connect = spam_slider.querySelectorAll('.noUi-connect');
+  var classes = ['c-1-color', 'c-2-color', 'c-3-color'];
+  for (var i = 0; i < connect.length; i++) {
+    connect[i].classList.add(classes[i]);
+  }
+  spam_slider.noUiSlider.on('update', function (values, handle) {
+    $('.spam-ham-score').text('< ' + Math.round(values[0] * 10) / 10);
+    $('.spam-spam-score').text(Math.round(values[0] * 10) / 10 + ' - ' + Math.round(values[1] * 10) / 10);
+    $('.spam-reject-score').text('> ' + Math.round(values[1] * 10) / 10);
+    $('#spam_score_value').val((Math.round(values[0] * 10) / 10) + ',' + (Math.round(values[1] * 10) / 10));
+  });
+  // syncjobLogModal
   $('#syncjobLogModal').on('show.bs.modal', function(e) {
     var syncjob_id = $(e.relatedTarget).data('syncjob-id');
     $.ajax({
@@ -50,8 +77,9 @@ jQuery(function($){
     ft_tla_table = FooTable.init('#tla_table', {
       "columns": [
         {"name":"chkbox","title":"","style":{"maxWidth":"40px","width":"40px","text-align":"center"},"filterable": false,"sortable": false,"type":"html"},
-        {"sorted": true,"name":"address","title":lang.alias},
+        {"name":"address","title":lang.alias},
         {"name":"validity","formatter":function unix_time_format(tm) { var date = new Date(tm ? tm * 1000 : 0); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.alias_valid_until,"style":{"width":"170px"}},
+        {"sorted": true,"sortValue": function(value){res = new Date(value);return res.getTime();},"direction":"DESC","name":"created","formatter":function date_format(datetime) { var date = new Date(datetime); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.created_on,"style":{"width":"170px"}},
         {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right","maxWidth":"180px","width":"180px"},"type":"html","title":lang.action,"breakpoints":"xs sm"}
       ],
       "empty": lang.empty,
@@ -66,7 +94,7 @@ jQuery(function($){
           $.each(data, function (i, item) {
             if (acl_data.spam_alias === 1) {
               item.action = '<div class="btn-group">' +
-                '<a href="#" data-action="delete_selected" data-id="single-tla" data-api-url="delete/time_limited_alias" data-item="' + encodeURIComponent(item.address) + '" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> ' + lang.remove + '</a>' +
+                '<a href="#" data-action="delete_selected" data-id="single-tla" data-api-url="delete/time_limited_alias" data-item="' + encodeURIComponent(item.address) + '" class="btn btn-xs btn-danger"><i class="bi bi-recycle"></i> ' + lang.remove + '</a>' +
                 '</div>';
               item.chkbox = '<input type="checkbox" data-id="tla" name="multi_select" value="' + encodeURIComponent(item.address) + '" />';
               item.address = escapeHtml(item.address);
@@ -96,7 +124,7 @@ jQuery(function($){
         {"name":"chkbox","title":"","style":{"maxWidth":"60px","width":"60px","text-align":"center"},"filterable": false,"sortable": false,"type":"html"},
         {"sorted": true,"name":"id","title":"ID","style":{"maxWidth":"60px","width":"60px","text-align":"center"}},
         {"name":"server_w_port","title":"Server"},
-        {"name":"enc1","title":lang.encryption,"breakpoints":"xs sm"},
+        {"name":"enc1","title":lang.encryption,"breakpoints":"all"},
         {"name":"user1","title":lang.username},
         {"name":"exclude","title":lang.excludes,"breakpoints":"all"},
         {"name":"mins_interval","title":lang.interval + " (min)","breakpoints":"all"},
@@ -104,7 +132,7 @@ jQuery(function($){
         {"name":"log","title":"Log"},
         {"name":"active","filterable": false,"style":{"maxWidth":"70px","width":"70px"},"title":lang.active,"formatter": function(value){return 1==value?'&#10003;':0==value&&'&#10005;';}},
         {"name":"is_running","filterable": false,"style":{"maxWidth":"120px","width":"100px"},"title":lang.status},
-        {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right","maxWidth":"180px","width":"180px"},"type":"html","title":lang.action,"breakpoints":"xs sm"}
+        {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right","maxWidth":"240px","width":"240px"},"type":"html","title":lang.action,"breakpoints":"xs sm"}
       ],
       "empty": lang.empty,
       "rows": $.ajax({
@@ -126,8 +154,8 @@ jQuery(function($){
             item.server_w_port = escapeHtml(item.user1 + '@' + item.host1 + ':' + item.port1);
             if (acl_data.syncjobs === 1) {
               item.action = '<div class="btn-group">' +
-                '<a href="/edit/syncjob/' + item.id + '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> ' + lang.edit + '</a>' +
-                '<a href="#" data-action="delete_selected" data-id="single-syncjob" data-api-url="delete/syncjob" data-item="' + item.id + '" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> ' + lang.remove + '</a>' +
+                '<a href="/edit/syncjob/' + item.id + '" class="btn btn-xs btn-default"><i class="bi bi-pencil-fill"></i> ' + lang.edit + '</a>' +
+                '<a href="#" data-action="delete_selected" data-id="single-syncjob" data-api-url="delete/syncjob" data-item="' + item.id + '" class="btn btn-xs btn-danger"><i class="bi bi-recycle"></i> ' + lang.remove + '</a>' +
                 '</div>';
               item.chkbox = '<input type="checkbox" data-id="syncjob" name="multi_select" value="' + item.id + '" />';
             }
@@ -180,8 +208,8 @@ jQuery(function($){
             item.name = escapeHtml(item.name);
             if (acl_data.app_passwds === 1) {
               item.action = '<div class="btn-group">' +
-                '<a href="/edit/app-passwd/' + item.id + '" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span> ' + lang.edit + '</a>' +
-                '<a href="#" data-action="delete_selected" data-id="single-apppasswd" data-api-url="delete/app-passwd" data-item="' + item.id + '" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> ' + lang.remove + '</a>' +
+                '<a href="/edit/app-passwd/' + item.id + '" class="btn btn-xs btn-default"><i class="bi bi-pencil-fill"></i> ' + lang.edit + '</a>' +
+                '<a href="#" data-action="delete_selected" data-id="single-apppasswd" data-api-url="delete/app-passwd" data-item="' + item.id + '" class="btn btn-xs btn-danger"><i class="bi bi-recycle"></i> ' + lang.remove + '</a>' +
                 '</div>';
               item.chkbox = '<input type="checkbox" data-id="apppasswd" name="multi_select" value="' + item.id + '" />';
             }

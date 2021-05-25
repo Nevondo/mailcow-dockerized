@@ -115,9 +115,7 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
 
         <? // FIDO2 ?>
         <legend style="margin-top:20px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-bottom: -5px;">
-          <path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 14 3 12.01 3c-1.98 0-3.86.47-5.57 1.41-.24.13-.54.04-.68-.2-.13-.24-.04-.55.2-.68C7.82 2.52 9.86 2 12.01 2c2.13 0 3.99.47 6.03 1.52.25.13.34.43.21.67-.09.18-.26.28-.44.28zM3.5 9.72c-.1 0-.2-.03-.29-.09-.23-.16-.28-.47-.12-.7.99-1.4 2.25-2.5 3.75-3.27C9.98 4.04 14 4.03 17.15 5.65c1.5.77 2.76 1.86 3.75 3.25.16.22.11.54-.12.7-.23.16-.54.11-.7-.12-.9-1.26-2.04-2.25-3.39-2.94-2.87-1.47-6.54-1.47-9.4.01-1.36.7-2.5 1.7-3.4 2.96-.08.14-.23.21-.39.21zm6.25 12.07c-.13 0-.26-.05-.35-.15-.87-.87-1.34-1.43-2.01-2.64-.69-1.23-1.05-2.73-1.05-4.34 0-2.97 2.54-5.39 5.66-5.39s5.66 2.42 5.66 5.39c0 .28-.22.5-.5.5s-.5-.22-.5-.5c0-2.42-2.09-4.39-4.66-4.39-2.57 0-4.66 1.97-4.66 4.39 0 1.44.32 2.77.93 3.85.64 1.15 1.08 1.64 1.85 2.42.19.2.19.51 0 .71-.11.1-.24.15-.37.15zm7.17-1.85c-1.19 0-2.24-.3-3.1-.89-1.49-1.01-2.38-2.65-2.38-4.39 0-.28.22-.5.5-.5s.5.22.5.5c0 1.41.72 2.74 1.94 3.56.71.48 1.54.71 2.54.71.24 0 .64-.03 1.04-.1.27-.05.53.13.58.41.05.27-.13.53-.41.58-.57.11-1.07.12-1.21.12zM14.91 22c-.04 0-.09-.01-.13-.02-1.59-.44-2.63-1.03-3.72-2.1-1.4-1.39-2.17-3.24-2.17-5.22 0-1.62 1.38-2.94 3.08-2.94 1.7 0 3.08 1.32 3.08 2.94 0 1.07.93 1.94 2.08 1.94s2.08-.87 2.08-1.94c0-3.77-3.25-6.83-7.25-6.83-2.84 0-5.44 1.58-6.61 4.03-.39.81-.59 1.76-.59 2.8 0 .78.07 2.01.67 3.61.1.26-.03.55-.29.64-.26.1-.55-.04-.64-.29-.49-1.31-.73-2.61-.73-3.96 0-1.2.23-2.29.68-3.24 1.33-2.79 4.28-4.6 7.51-4.6 4.55 0 8.25 3.51 8.25 7.83 0 1.62-1.38 2.94-3.08 2.94s-3.08-1.32-3.08-2.94c0-1.07-.93-1.94-2.08-1.94s-2.08.87-2.08 1.94c0 1.71.66 3.31 1.87 4.51.95.94 1.86 1.46 3.27 1.85.27.07.42.35.35.61-.05.23-.26.38-.47.38z"/>
-        </svg>
+        <i class="bi bi-shield-fill-check"></i>
         <?=$lang['fido2']['fido2_auth'];?></legend>
         <div class="row">
           <div class="col-sm-3 col-xs-5 text-right"><?=$lang['fido2']['known_ids'];?>:</div>
@@ -134,7 +132,7 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
                 ?>
                 <tr>
                   <td>
-                    <?=($_SESSION['fido2_cid'] == $key_info['cid']) ? '→ ' : NULL; ?><?=(!empty($key_info['fn']))?$key_info['fn']:$key_info['subject'];?>
+                    <?=($_SESSION['fido2_cid'] == $key_info['cid']) ? '<i class="bi bi-unlock-fill"></i> ' : NULL; ?><?=(!empty($key_info['fn']))?$key_info['fn']:$key_info['subject'];?>
                   </td>
                   <td style="min-width:240px;text-align: right">
                     <form style="display:inline;" method="post">
@@ -179,7 +177,7 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
             <div class="col-sm-9">
               <div class="input-group">
                 <span class="input-group-addon">
-                  <i class="bi bi-suit-heart<?=(isset($_SESSION['gal']['valid']) && $_SESSION['gal']['valid'] === "true") ? '-fill text-danger' : '';?>""></i> 
+                  <i class="bi bi-suit-heart<?=(isset($_SESSION['gal']['valid']) && $_SESSION['gal']['valid'] === "true") ? '-fill text-danger' : '';?>"></i>
                 </span>
                 <input type="text" id="guid" class="form-control" value="<?=license('guid');?>" readonly>
               </div>
@@ -386,13 +384,13 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
             <div class="form-group">
               <label class="control-label col-sm-3" for="rspamd_ui_pass"><?=$lang['admin']['password'];?>:</label>
               <div class="col-sm-9">
-              <input type="password" class="form-control" name="rspamd_ui_pass" autocomplete="new-password" required>
+              <input type="password" class="form-control" id="rspamd_ui_pass" name="rspamd_ui_pass" autocomplete="new-password" required>
               </div>
             </div>
             <div class="form-group">
               <label class="control-label col-sm-3" for="rspamd_ui_pass2"><?=$lang['admin']['password_repeat'];?>:</label>
               <div class="col-sm-9">
-              <input type="password" class="form-control" name="rspamd_ui_pass2" autocomplete="new-password" required>
+              <input type="password" class="form-control" id="rspamd_ui_pass2" name="rspamd_ui_pass2" autocomplete="new-password" required>
               </div>
             </div>
             <div class="form-group">
@@ -436,16 +434,16 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
           <div class="col-md-6">
             <form class="form" data-id="rlyhost" role="form" method="post">
               <div class="form-group">
-                <label for="hostname"><?=$lang['admin']['host'];?></label>
-                <input class="form-control input-sm" name="hostname" placeholder='[0.0.0.0], [0.0.0.0]:25, host:25, host, [host]:25' required>
+                <label for="rlyhost_hostname"><?=$lang['admin']['host'];?></label>
+                <input class="form-control input-sm" id="rlyhost_hostname" name="hostname" placeholder='[0.0.0.0], [0.0.0.0]:25, host:25, host, [host]:25' required>
               </div>
               <div class="form-group">
-                <label for="username"><?=$lang['admin']['username'];?></label>
-                <input class="form-control input-sm" name="username">
+                <label for="rlyhost_username"><?=$lang['admin']['username'];?></label>
+                <input class="form-control input-sm" id="rlyhost_username" name="username">
               </div>
               <div class="form-group">
-                <label for="password"><?=$lang['admin']['password'];?></label>
-                <input class="form-control input-sm" name="password">
+                <label for="rlyhost_password"><?=$lang['admin']['password'];?></label>
+                <input class="form-control input-sm" id="rlyhost_password" name="password">
               </div>
               <button class="btn btn-default" data-action="add_item" data-id="rlyhost" data-api-url='add/relayhost' data-api-attr='{}' href="#"><i class="bi bi-plus-lg"></i> <?=$lang['admin']['add'];?></button>
             </form>
@@ -479,20 +477,20 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
           <div class="col-md-6">
             <form class="form" data-id="transport" role="form" method="post">
               <div class="form-group">
-                <label for="destination"><?=$lang['admin']['destination'];?></label>
-                <input class="form-control input-sm" name="destination" placeholder='<?=$lang['admin']['transport_dest_format'];?>' required>
+                <label for="transport_destination"><?=$lang['admin']['destination'];?></label>
+                <input class="form-control input-sm" id="transport_destination" name="destination" placeholder='<?=$lang['admin']['transport_dest_format'];?>' required>
               </div>
               <div class="form-group">
-                <label for="nexthop"><?=$lang['admin']['nexthop'];?></label>
-                <input class="form-control input-sm" name="nexthop" placeholder='host:25, host, [host]:25, [0.0.0.0]:25' required>
+                <label for="transport_nexthop"><?=$lang['admin']['nexthop'];?></label>
+                <input class="form-control input-sm" id="transport_nexthop" name="nexthop" placeholder='host:25, host, [host]:25, [0.0.0.0]:25' required>
               </div>
               <div class="form-group">
-                <label for="username"><?=$lang['admin']['username'];?></label>
-                <input class="form-control input-sm" name="username">
+                <label for="transport_username"><?=$lang['admin']['username'];?></label>
+                <input class="form-control input-sm" id="transport_username" name="username">
               </div>
               <div class="form-group">
-                <label for="password"><?=$lang['admin']['password'];?></label>
-                <input class="form-control input-sm" name="password">
+                <label for="transport_password"><?=$lang['admin']['password'];?></label>
+                <input class="form-control input-sm" id="transport_password" name="password">
               </div>
               <!-- <div class="form-group">
                 <label>
@@ -627,13 +625,13 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
         <legend style="margin-top:40px"><?=$lang['admin']['dkim_add_key'];?></legend>
         <form class="form" data-id="dkim" role="form" method="post">
           <div class="form-group">
-            <label for="domain"><?=$lang['admin']['domain_s'];?></label>
+            <label for="dkim_add_domains"><?=$lang['admin']['domain_s'];?></label>
             <input class="form-control input-sm" id="dkim_add_domains" name="domains" placeholder="example.org, example.com" required>
             <small><i class="bi bi-arrow-return-right"></i> <a href="#" id="dkim_missing_keys"><?=$lang['admin']['dkim_domains_wo_keys'];?></a></small>
           </div>
           <div class="form-group">
-            <label for="domain"><?=$lang['admin']['dkim_domains_selector'];?></label>
-            <input class="form-control input-sm" name="dkim_selector" value="dkim" required>
+            <label for="dkim_selector"><?=$lang['admin']['dkim_domains_selector'];?></label>
+            <input class="form-control input-sm" id="dkim_selector" name="dkim_selector" value="dkim" required>
           </div>
           <div class="form-group">
             <select data-width="200px" data-style="btn btn-default btn-sm" class="form-control" id="key_size" name="key_size" title="<?=$lang['admin']['dkim_key_length'];?>" required>
@@ -650,12 +648,12 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
         <div id="import_dkim" class="collapse">
         <form class="form" data-id="dkim_import" role="form" method="post">
           <div class="form-group">
-            <label for="domain"><?=$lang['admin']['domain'];?>:</label>
-            <input class="form-control input-sm" name="domain" placeholder="example.org" required>
+            <label for="dkim_import_domain"><?=$lang['admin']['domain'];?>:</label>
+            <input class="form-control input-sm" id="dkim_import_domain" name="domain" placeholder="example.org" required>
           </div>
           <div class="form-group">
-            <label for="domain"><?=$lang['admin']['dkim_domains_selector'];?>:</label>
-            <input class="form-control input-sm" name="dkim_selector" value="dkim" required>
+            <label for="dkim_import_selector"><?=$lang['admin']['dkim_domains_selector'];?>:</label>
+            <input class="form-control input-sm" id="dkim_import_selector" name="dkim_selector" value="dkim" required>
           </div>
           <div class="form-group">
             <label for="private_key_file"><?=$lang['admin']['private_key'];?>: (RSA PKCS#8)</label>
@@ -743,8 +741,8 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
         <p class="help-block"><?=$lang['admin']['forwarding_hosts_add_hint'];?></p>
         <form class="form" data-id="fwdhost" role="form" method="post">
           <div class="form-group">
-            <label for="hostname"><?=$lang['admin']['host'];?></label>
-            <input class="form-control" name="hostname" placeholder="example.org" required>
+            <label for="fwdhost_hostname"><?=$lang['admin']['host'];?></label>
+            <input class="form-control" id="fwdhost_hostname" name="hostname" placeholder="example.org" required>
           </div>
           <div class="form-group">
             <select data-width="200px" class="form-control" id="filter_spam" name="filter_spam" title="<?=$lang['user']['spamfilter'];?>" required>
@@ -767,40 +765,40 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
       ?>
         <form class="form" data-id="f2b" role="form" method="post">
           <div class="form-group">
-            <label for="ban_time"><?=$lang['admin']['f2b_ban_time'];?>:</label>
-            <input type="number" class="form-control" name="ban_time" value="<?=$f2b_data['ban_time'];?>" required>
+            <label for="f2b_ban_time"><?=$lang['admin']['f2b_ban_time'];?>:</label>
+            <input type="number" class="form-control" id="f2b_ban_time" name="ban_time" value="<?=$f2b_data['ban_time'];?>" required>
           </div>
           <div class="form-group">
-            <label for="max_attempts"><?=$lang['admin']['f2b_max_attempts'];?>:</label>
-            <input type="number" class="form-control" name="max_attempts" value="<?=$f2b_data['max_attempts'];?>" required>
+            <label for="f2b_max_attempts"><?=$lang['admin']['f2b_max_attempts'];?>:</label>
+            <input type="number" class="form-control" id="f2b_max_attempts" name="max_attempts" value="<?=$f2b_data['max_attempts'];?>" required>
           </div>
           <div class="form-group">
-            <label for="retry_window"><?=$lang['admin']['f2b_retry_window'];?>:</label>
-            <input type="number" class="form-control" name="retry_window" value="<?=$f2b_data['retry_window'];?>" required>
+            <label for="f2b_retry_window"><?=$lang['admin']['f2b_retry_window'];?>:</label>
+            <input type="number" class="form-control" id="f2b_retry_window" name="retry_window" value="<?=$f2b_data['retry_window'];?>" required>
           </div>
           <div class="form-group">
-            <label for="netban_ipv4"><?=$lang['admin']['f2b_netban_ipv4'];?>:</label>
+            <label for="f2b_netban_ipv4"><?=$lang['admin']['f2b_netban_ipv4'];?>:</label>
             <div class="input-group">
               <span class="input-group-addon">/</span>
-              <input type="number" class="form-control" name="netban_ipv4" value="<?=$f2b_data['netban_ipv4'];?>" required>
+              <input type="number" class="form-control" id="f2b_netban_ipv4" name="netban_ipv4" value="<?=$f2b_data['netban_ipv4'];?>" required>
             </div>
           </div>
           <div class="form-group">
-            <label for="netban_ipv6"><?=$lang['admin']['f2b_netban_ipv6'];?>:</label>
+            <label for="f2b_netban_ipv6"><?=$lang['admin']['f2b_netban_ipv6'];?>:</label>
             <div class="input-group">
               <span class="input-group-addon">/</span>
-              <input type="number" class="form-control" name="netban_ipv6" value="<?=$f2b_data['netban_ipv6'];?>" required>
+              <input type="number" class="form-control" id="f2b_netban_ipv6" name="netban_ipv6" value="<?=$f2b_data['netban_ipv6'];?>" required>
             </div>
           </div>
           <hr>
           <p class="help-block"><?=$lang['admin']['f2b_list_info'];?></p>
           <div class="form-group">
-            <label for="whitelist"><?=$lang['admin']['f2b_whitelist'];?>:</label>
-            <textarea class="form-control" name="whitelist" rows="5"><?=$f2b_data['whitelist'];?></textarea>
+            <label for="f2b_whitelist"><?=$lang['admin']['f2b_whitelist'];?>:</label>
+            <textarea class="form-control" id="f2b_whitelist" name="whitelist" rows="5"><?=$f2b_data['whitelist'];?></textarea>
           </div>
           <div class="form-group">
-            <label for="blacklist"><?=$lang['admin']['f2b_blacklist'];?>:</label>
-            <textarea class="form-control" name="blacklist" rows="5"><?=$f2b_data['blacklist'];?></textarea>
+            <label for="f2b_blacklist"><?=$lang['admin']['f2b_blacklist'];?>:</label>
+            <textarea class="form-control" id="f2b_blacklist" name="blacklist" rows="5"><?=$f2b_data['blacklist'];?></textarea>
           </div>
           <div class="btn-group">
             <button class="btn btn-sm btn-success" data-action="edit_selected" data-item="self" data-id="f2b" data-api-url='edit/fail2ban' data-api-attr='{}' href="#"><i class="bi bi-check-lg"></i> <?=$lang['admin']['save'];?></button>
@@ -894,60 +892,60 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
         ?>
         <form class="form-horizontal" data-id="quarantine" role="form" method="post">
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="retention_size"><?=$lang['admin']['quarantine_retention_size'];?></label>
+            <label class="col-sm-4 control-label" for="quarantine_retention_size"><?=$lang['admin']['quarantine_retention_size'];?></label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" name="retention_size" value="<?=$q_data['retention_size'];?>" placeholder="0" required>
+              <input type="number" class="form-control" id="quarantine_retention_size" name="retention_size" value="<?=$q_data['retention_size'];?>" placeholder="0" required>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="max_size"><?=$lang['admin']['quarantine_max_size'];?></label>
+            <label class="col-sm-4 control-label" for="quarantine_max_size"><?=$lang['admin']['quarantine_max_size'];?></label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" name="max_size" value="<?=$q_data['max_size'];?>" placeholder="0" required>
+              <input type="number" class="form-control" id="quarantine_max_size" name="max_size" value="<?=$q_data['max_size'];?>" placeholder="0" required>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="max_score"><?=$lang['admin']['quarantine_max_score'];?></label>
+            <label class="col-sm-4 control-label" for="quarantine_max_score"><?=$lang['admin']['quarantine_max_score'];?></label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" name="max_score" value="<?=$q_data['max_score'];?>" placeholder="9999.0">
+              <input type="number" class="form-control" id="quarantine_max_score" name="max_score" value="<?=$q_data['max_score'];?>" placeholder="9999.0">
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="max_age"><?=$lang['admin']['quarantine_max_age'];?></label>
+            <label class="col-sm-4 control-label" for="quarantine_max_age"><?=$lang['admin']['quarantine_max_age'];?></label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" name="max_age" value="<?=$q_data['max_age'];?>" min="1" required>
-            </div>
-          </div>
-          <hr>
-          <div class="form-group">
-            <label class="col-sm-4 control-label" for="sender"><i class="bi bi-box-arrow-right"></i> <?=$lang['admin']['quarantine_redirect'];?></label>
-            <div class="col-sm-8">
-              <input type="email" class="form-control" name="redirect" value="<?=htmlspecialchars($q_data['redirect']);?>" placeholder="">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-4 control-label" for="sender"><i class="bi bi-files"></i> <?=$lang['admin']['quarantine_bcc'];?></label>
-            <div class="col-sm-8">
-              <input type="email" class="form-control" name="bcc" value="<?=htmlspecialchars($q_data['bcc']);?>" placeholder="">
+              <input type="number" class="form-control" id="quarantine_max_age" name="max_age" value="<?=$q_data['max_age'];?>" min="1" required>
             </div>
           </div>
           <hr>
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="sender"><?=$lang['admin']['quarantine_notification_sender'];?>:</label>
+            <label class="col-sm-4 control-label" for="quarantine_redirect"><i class="bi bi-box-arrow-right"></i> <?=$lang['admin']['quarantine_redirect'];?></label>
             <div class="col-sm-8">
-              <input type="email" class="form-control" name="sender" value="<?=htmlspecialchars($q_data['sender']);?>" placeholder="quarantine@localhost">
+              <input type="email" class="form-control" id="quarantine_redirect" name="redirect" value="<?=htmlspecialchars($q_data['redirect']);?>" placeholder="">
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="subject"><?=$lang['admin']['quarantine_notification_subject'];?>:</label>
+            <label class="col-sm-4 control-label" for="quarantine_bcc"><i class="bi bi-files"></i> <?=$lang['admin']['quarantine_bcc'];?></label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" name="subject" value="<?=htmlspecialchars($q_data['subject']);?>" placeholder="Spam Quarantine Notification">
+              <input type="email" class="form-control" id="quarantine_bcc" name="bcc" value="<?=htmlspecialchars($q_data['bcc']);?>" placeholder="">
             </div>
           </div>
           <hr>
           <div class="form-group">
-            <label class="col-sm-4 control-label" for="release_format"><?=$lang['admin']['quarantine_release_format'];?>:</label>
+            <label class="col-sm-4 control-label" for="quarantine_sender"><?=$lang['admin']['quarantine_notification_sender'];?>:</label>
             <div class="col-sm-8">
-              <select data-width="100%" name="release_format" class="selectpicker" title="<?=$lang['tfa']['select'];?>">
+              <input type="email" class="form-control" id="quarantine_sender" name="sender" value="<?=htmlspecialchars($q_data['sender']);?>" placeholder="quarantine@localhost">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label" for="quarantine_subject"><?=$lang['admin']['quarantine_notification_subject'];?>:</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="quarantine_subject" name="subject" value="<?=htmlspecialchars($q_data['subject']);?>" placeholder="Spam Quarantine Notification">
+            </div>
+          </div>
+          <hr>
+          <div class="form-group">
+            <label class="col-sm-4 control-label" for="quarantine_release_format"><?=$lang['admin']['quarantine_release_format'];?>:</label>
+            <div class="col-sm-8">
+              <select data-width="100%" id="quarantine_release_format" name="release_format" class="selectpicker" title="<?=$lang['tfa']['select'];?>">
                 <option <?=($q_data['release_format'] == 'raw') ? 'selected' : null;?> value="raw"><?=$lang['admin']['quarantine_release_format_raw'];?></option>
                 <option <?=($q_data['release_format'] == 'attachment') ? 'selected' : null;?> value="attachment"><?=$lang['admin']['quarantine_release_format_att'];?></option>
               </select>
@@ -990,14 +988,14 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="sender"><?=$lang['admin']['quarantine_notification_sender'];?>:</label>
-              <input type="email" class="form-control" name="sender" value="<?=htmlspecialchars($qw_data['sender']);?>" placeholder="quota-warning@localhost">
+              <label for="quota_notification_sender"><?=$lang['admin']['quarantine_notification_sender'];?>:</label>
+              <input type="email" class="form-control" id="quota_notification_sender" name="sender" value="<?=htmlspecialchars($qw_data['sender']);?>" placeholder="quota-warning@localhost">
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="subject"><?=$lang['admin']['quarantine_notification_subject'];?>:</label>
-              <input type="text" class="form-control" name="subject" value="<?=htmlspecialchars($qw_data['subject']);?>" placeholder="Quota warning">
+              <label for="quota_notification_subject"><?=$lang['admin']['quarantine_notification_subject'];?>:</label>
+              <input type="text" class="form-control" id="quota_notification_subject" name="subject" value="<?=htmlspecialchars($qw_data['subject']);?>" placeholder="Quota warning">
             </div>
           </div>
         </div>
@@ -1089,12 +1087,12 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
                   <form class="form" data-id="rsettings" role="form" method="post">
                     <input type="hidden" name="active" value="0">
                     <div class="form-group">
-                      <label for="desc"><?=$lang['admin']['rsetting_desc'];?>:</label>
-                      <input type="text" class="form-control" name="desc" value="<?=htmlspecialchars($rsetting_details['desc']);?>">
+                      <label for="rsettings_desc"><?=$lang['admin']['rsetting_desc'];?>:</label>
+                      <input type="text" class="form-control" id="rsettings_desc" name="desc" value="<?=htmlspecialchars($rsetting_details['desc']);?>">
                     </div>
                     <div class="form-group">
-                      <label for="content"><?=$lang['admin']['rsetting_content'];?>:</label>
-                      <textarea class="form-control" name="content" rows="10"><?=htmlspecialchars($rsetting_details['content']);?></textarea>
+                      <label for="rsettings_content"><?=$lang['admin']['rsetting_content'];?>:</label>
+                      <textarea class="form-control" id="rsettings_content" name="content" rows="10"><?=htmlspecialchars($rsetting_details['content']);?></textarea>
                     </div>
                     <div class="form-group">
                       <label>
@@ -1121,12 +1119,12 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
     <div class="panel panel-default">
       <div class="panel-heading"><?=$lang['admin']['customize'];?></div>
       <div class="panel-body">
-        <legend><?=$lang['admin']['change_logo'];?></legend>
+        <legend><i class="bi bi-file-image"></i> <?=$lang['admin']['change_logo'];?></legend>
         <p class="help-block"><?=$lang['admin']['logo_info'];?></p>
         <form class="form-inline" role="form" method="post" enctype="multipart/form-data">
           <p>
-            <input type="file" name="main_logo" class="filestyle" data-buttonName="btn-default" data-buttonText="Select" accept="image/gif, image/jpeg, image/pjpeg, image/x-png, image/png, image/svg+xml">
-            <button name="submit_main_logo" type="submit" class="btn btn-default"><i class="bi bi-cloud-arrow-up-fill"></i> <?=$lang['admin']['upload'];?></button>
+            <input type="file" name="main_logo" accept="image/gif, image/jpeg, image/pjpeg, image/x-png, image/png, image/svg+xml"><br>
+            <button name="submit_main_logo" type="submit" class="btn btn-xs btn-default"><i class="bi bi-upload"></i> <?=$lang['admin']['upload'];?></button>
           </p>
         </form>
         <?php
@@ -1191,16 +1189,16 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
         <?php $ui_texts = customize('get', 'ui_texts'); ?>
           <form class="form" data-id="uitexts" role="form" method="post">
             <div class="form-group">
-              <label for="title_name"><?=$lang['admin']['title_name'];?>:</label>
-              <input type="text" class="form-control" name="title_name" placeholder="mailcow UI" value="<?=$ui_texts['title_name'];?>">
+              <label for="uitests_title_name"><?=$lang['admin']['title_name'];?>:</label>
+              <input type="text" class="form-control" id="uitests_title_name" placeholder="mailcow UI" value="<?=$ui_texts['title_name'];?>">
             </div>
             <div class="form-group">
-              <label for="main_name"><?=$lang['admin']['main_name'];?>:</label>
-              <input type="text" class="form-control" name="main_name" placeholder="mailcow UI" value="<?=$ui_texts['main_name'];?>">
+              <label for="uitests_main_name"><?=$lang['admin']['main_name'];?>:</label>
+              <input type="text" class="form-control" id="uitests_main_name" name="main_name" placeholder="mailcow UI" value="<?=$ui_texts['main_name'];?>">
             </div>
             <div class="form-group">
-              <label for="apps_name"><?=$lang['admin']['apps_name'];?>:</label>
-              <input type="text" class="form-control" name="apps_name" placeholder="mailcow Apps" value="<?=$ui_texts['apps_name'];?>">
+              <label for="uitests_apps_name"><?=$lang['admin']['apps_name'];?>:</label>
+              <input type="text" class="form-control" id="uitests_apps_name" name="apps_name" placeholder="mailcow Apps" value="<?=$ui_texts['apps_name'];?>">
             </div>
             <div class="form-group">
               <label for="help_text"><?=$lang['admin']['help_text'];?>:</label>
@@ -1210,7 +1208,7 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
             <div class="form-group">
               <p class="help-block"><?=$lang['admin']['ui_header_announcement_help'];?></p>
               <label for="ui_announcement_type"><?=$lang['admin']['ui_header_announcement'];?>:</label>
-              <p><select multiple data-width="100%" name="ui_announcement_type" class="selectpicker show-tick" data-max-options="1" title="<?=$lang['admin']['ui_header_announcement_select'];?>">
+              <p><select multiple data-width="100%" id="ui_announcement_type" name="ui_announcement_type" class="selectpicker show-tick" data-max-options="1" title="<?=$lang['admin']['ui_header_announcement_select'];?>">
                 <option <?=($ui_texts['ui_announcement_type'] == 'info') ? 'selected' : null;?> value="info"><?=$lang['admin']['ui_header_announcement_type_info'];?></option>
                 <option <?=($ui_texts['ui_announcement_type'] == 'warning') ? 'selected' : null;?> value="warning"><?=$lang['admin']['ui_header_announcement_type_warning'];?></option>
                 <option <?=($ui_texts['ui_announcement_type'] == 'danger') ? 'selected' : null;?> value="danger"><?=$lang['admin']['ui_header_announcement_type_danger'];?></option>
@@ -1283,15 +1281,15 @@ if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CAC
       <div class="panel-body">
         <form class="form-horizontal" autocapitalize="none" data-id="admin" autocorrect="off" role="form" method="post">
           <div class="form-group">
-            <label class="control-label col-sm-2" for="mass_from"><?=$lang['admin']['from'];?>:</label>
+            <label class="control-label col-sm-2" for="admin_mass_from"><?=$lang['admin']['from'];?>:</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" name="mass_from" value="noreply@<?=getenv('MAILCOW_HOSTNAME');;?>" required>
+              <input type="email" class="form-control" id="admin_mass_from" name="mass_from" value="noreply@<?=getenv('MAILCOW_HOSTNAME');;?>" required>
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-sm-2" for="mass_subject"><?=$lang['admin']['subject'];?>:</label>
+            <label class="control-label col-sm-2" for="admin_mass_subject"><?=$lang['admin']['subject'];?>:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="mass_subject" required>
+              <input type="text" class="form-control" id="admin_mass_subject" name="mass_subject" required>
             </div>
           </div>
           <?php

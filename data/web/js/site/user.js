@@ -79,7 +79,7 @@ jQuery(function($){
         {"name":"chkbox","title":"","style":{"maxWidth":"40px","width":"40px","text-align":"center"},"filterable": false,"sortable": false,"type":"html"},
         {"name":"address","title":lang.alias},
         {"name":"validity","formatter":function unix_time_format(tm) { var date = new Date(tm ? tm * 1000 : 0); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.alias_valid_until,"style":{"width":"170px"}},
-        {"sorted": true,"sortValue": function(value){res = new Date(value);return res.getTime();},"direction":"DESC","name":"created","formatter":function date_format(datetime) { var date = new Date(datetime); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.created_on,"style":{"width":"170px"}},
+        {"sorted": true,"sortValue": function(value){res = new Date(value);return res.getTime();},"direction":"DESC","name":"created","formatter":function date_format(datetime) { var date = new Date(datetime.replace(/-/g, "/")); return date.toLocaleDateString(undefined, {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit"});},"title":lang.created_on,"style":{"width":"170px"}},
         {"name":"action","filterable": false,"sortable": false,"style":{"text-align":"right","maxWidth":"180px","width":"180px"},"type":"html","title":lang.action,"breakpoints":"xs sm"}
       ],
       "empty": lang.empty,
@@ -94,7 +94,7 @@ jQuery(function($){
           $.each(data, function (i, item) {
             if (acl_data.spam_alias === 1) {
               item.action = '<div class="btn-group">' +
-                '<a href="#" data-action="delete_selected" data-id="single-tla" data-api-url="delete/time_limited_alias" data-item="' + encodeURIComponent(item.address) + '" class="btn btn-xs btn-danger"><i class="bi bi-recycle"></i> ' + lang.remove + '</a>' +
+                '<a href="#" data-action="delete_selected" data-id="single-tla" data-api-url="delete/time_limited_alias" data-item="' + encodeURIComponent(item.address) + '" class="btn btn-xs btn-danger"><i class="bi bi-trash"></i> ' + lang.remove + '</a>' +
                 '</div>';
               item.chkbox = '<input type="checkbox" data-id="tla" name="multi_select" value="' + encodeURIComponent(item.address) + '" />';
               item.address = escapeHtml(item.address);
@@ -155,7 +155,7 @@ jQuery(function($){
             if (acl_data.syncjobs === 1) {
               item.action = '<div class="btn-group">' +
                 '<a href="/edit/syncjob/' + item.id + '" class="btn btn-xs btn-default"><i class="bi bi-pencil-fill"></i> ' + lang.edit + '</a>' +
-                '<a href="#" data-action="delete_selected" data-id="single-syncjob" data-api-url="delete/syncjob" data-item="' + item.id + '" class="btn btn-xs btn-danger"><i class="bi bi-recycle"></i> ' + lang.remove + '</a>' +
+                '<a href="#" data-action="delete_selected" data-id="single-syncjob" data-api-url="delete/syncjob" data-item="' + item.id + '" class="btn btn-xs btn-danger"><i class="bi bi-trash"></i> ' + lang.remove + '</a>' +
                 '</div>';
               item.chkbox = '<input type="checkbox" data-id="syncjob" name="multi_select" value="' + item.id + '" />';
             }
@@ -209,7 +209,7 @@ jQuery(function($){
             if (acl_data.app_passwds === 1) {
               item.action = '<div class="btn-group">' +
                 '<a href="/edit/app-passwd/' + item.id + '" class="btn btn-xs btn-default"><i class="bi bi-pencil-fill"></i> ' + lang.edit + '</a>' +
-                '<a href="#" data-action="delete_selected" data-id="single-apppasswd" data-api-url="delete/app-passwd" data-item="' + item.id + '" class="btn btn-xs btn-danger"><i class="bi bi-recycle"></i> ' + lang.remove + '</a>' +
+                '<a href="#" data-action="delete_selected" data-id="single-apppasswd" data-api-url="delete/app-passwd" data-item="' + item.id + '" class="btn btn-xs btn-danger"><i class="bi bi-trash"></i> ' + lang.remove + '</a>' +
                 '</div>';
               item.chkbox = '<input type="checkbox" data-id="apppasswd" name="multi_select" value="' + item.id + '" />';
             }

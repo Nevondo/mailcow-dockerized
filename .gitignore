@@ -1,6 +1,7 @@
 !data/conf/nginx/dynmaps.conf
 !data/conf/nginx/meta_exporter.conf
 !data/conf/nginx/site.conf
+!data/conf/rspamd/custom/strict_phising.map
 *.iml
 .idea
 .vscode/*

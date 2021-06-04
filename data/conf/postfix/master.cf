@@ -70,6 +70,16 @@ submission inet n       -       n       -       -       smtpd
   -o syslog_name=postfix/quarantine
   -o smtpd_end_of_data_restrictions=$smtpd_last_auth
 
+# used to send bcc mails
+591 inet n      -       n       -       -       smtpd
+  -o smtpd_helo_restrictions=
+  -o smtpd_client_restrictions=permit_mynetworks,reject
+  -o smtpd_tls_auth_only=no
+  -o smtpd_milters=
+  -o non_smtpd_milters=
+  -o syslog_name=postfix/bcc
+  -o smtpd_end_of_data_restrictions=$smtpd_last_auth
+
 # enforced smtp connector
 smtp_enforced_tls      unix  -       -       n       -       -       smtp
   -o smtp_tls_security_level=encrypt
@@ -115,7 +125,6 @@ smtp_sender_cleanup unix n - y - 0 cleanup
 
 # start whitelist_fwd
 127.0.0.1:10027 inet n n n - 0 spawn user=nobody argv=/usr/local/bin/whitelist_forwardinghosts.sh
-127.0.0.1:10028 inet n n n - 0 spawn user=nobody argv=/usr/local/bin/smtpd_last_login.sh
 # end whitelist_fwd
 
 # start watchdog-specific

@@ -52,7 +52,7 @@
       </div>
       <div class="row">
         <div class="col-sm-offset-3 col-sm-9">
-          <div class="btn-group">
+          <div class="btn-group nowrap">
             <button class="btn btn-sm btn-primary visible-xs-block visible-sm-inline visible-md-inline visible-lg-inline" id="register-fido2">{{ lang.fido2.set_fido2 }}</button>
             <button type="button" class="btn btn-sm btn-xs-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="caret"></span>
@@ -87,7 +87,7 @@
       <div class="row">
         <div class="col-sm-offset-3 col-sm-9">
           {% if mailboxdata.attributes.force_pw_update == '1' %}
-          <div class="alert alert-danger">{{ lang.user.force_pw_update }}</div>
+          <div class="alert alert-danger">{{ lang.user.force_pw_update|raw }}</div>
           {% endif %}
           <p><a target="_blank" href="https://mailcow.github.io/mailcow-dockerized-docs/client/#{{ clientconfigstr }}">[{{ lang.user.client_configuration }}]</a></p>
           <p><a href="#userFilterModal" data-toggle="modal">[{{ lang.user.show_sieve_filters }}]</a></p>

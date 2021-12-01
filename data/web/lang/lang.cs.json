@@ -703,11 +703,11 @@
         "bcc_to_rcpt": "Přepnout typ na Přijatý e-mail",
         "bcc_to_sender": "Přepnout typ na Odeslaný e-mail",
         "bcc_type": "Typ skryté kopie",
-        "booking_0": "Vždy volno",
+        "booking_null": "Vždy volno",
         "booking_0_short": "Vždy volno",
         "booking_custom": "Omezeno na pevný počet rezervací",
         "booking_custom_short": "Pevný limit",
-        "booking_lt0": "Neomezeno, ale po rezervaci se ukazuje jako obsazené",
+        "booking_ltnull": "Neomezeno, ale po rezervaci se ukazuje jako obsazené",
         "booking_lt0_short": "Volný limit",
         "catch_all": "Doménový koš",
         "daily": "Každý den",
@@ -885,11 +885,11 @@
         "type": "Typ"
     },
     "ratelimit": {
-	    "disabled": "Vypnuto",
-	    "second": "zpráv za sekundu",
-	    "minute": "zpráv za minutu",
-	    "hour": "zpráv za hodinu",
-	    "day": "zpráv za den"
+        "disabled": "Vypnuto",
+        "second": "zpráv za sekundu",
+        "minute": "zpráv za minutu",
+        "hour": "zpráv za hodinu",
+        "day": "zpráv za den"
     },
     "start": {
         "help": "Zobrazit/skrýt panel nápovědy",
@@ -1067,7 +1067,6 @@
         "months": "měsíce",
         "never": "Nikdy",
         "new_password": "Nové heslo",
-        "new_password_description": "Požadavek: min. délka 6 znaků, písmena a čísla.",
         "new_password_repeat": "Potvrzení nového hesla (opakujte)",
         "no_active_filter": "Není k dispozici žádný aktivní filtr",
         "no_last_login": "Žádný záznam o přihlášení",

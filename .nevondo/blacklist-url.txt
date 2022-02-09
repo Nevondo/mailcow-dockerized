@@ -1,2 +1,2 @@
-(http:|https:)\/\/clck\.ru\/.*$
-(http:|https:)\/\/cutt\.ly\/.*$
+((http)|(https)):\/\/clck.ru\/.*
+((http)|(https)):\/\/cutt.ly\/.*

@@ -99,6 +99,7 @@ smtpd_sasl_path = inet:dovecot:10001
 smtpd_sasl_type = dovecot
 smtpd_sender_login_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf
 smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch,
+  check_sender_access pcre:/opt/postfix/conf/rejected_domains.pcre,
   permit_mynetworks,
   permit_sasl_authenticated,
   reject_unlisted_sender,

@@ -11,6 +11,11 @@ $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
 $solr_status = (preg_match("/^([yY][eE][sS]|[yY])+$/", $_ENV["SKIP_SOLR"])) ? false : solr_status();
 $clamd_status = (preg_match("/^([yY][eE][sS]|[yY])+$/", $_ENV["SKIP_CLAMD"])) ? false : true;
 
+
+if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CACHE')) {
+  $_SESSION['gal'] = json_decode($license_cache, true);
+}
+
 $js_minifier->add('/web/js/site/debug.js');
 
 // vmail df
@@ -44,15 +49,25 @@ foreach ($containers as $container => $container_info) {
   $containers[$container]['State']['StartedAtHR'] = $started;
 }
 
+// get mailcow data
+$hostname = getenv('MAILCOW_HOSTNAME');
+$timezone = getenv('TZ');
+
 $template = 'debug.twig';
 $template_data = [
   'log_lines' => getenv('LOG_LINES'),
   'vmail_df' => $vmail_df,
+  'hostname' => $hostname,
+  'timezone' => $timezone,
+  'gal' => @$_SESSION['gal'],
+  'license_guid' => license('guid'),
   'solr_status' => $solr_status,
   'solr_uptime' => round($solr_status['status']['dovecot-fts']['uptime'] / 1000 / 60 / 60),
   'clamd_status' => $clamd_status,
   'containers' => $containers,
   'lang_admin' => json_encode($lang['admin']),
+  'lang_debug' => json_encode($lang['debug']),
+  'lang_datatables' => json_encode($lang['datatables']),
 ];
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/footer.inc.php';

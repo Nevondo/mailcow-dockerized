@@ -10,9 +10,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/header.inc.php';
 $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
 $tfa_data = get_tfa();
 $fido2_data = fido2(array("action" => "get_friendly_names"));
-if (!isset($_SESSION['gal']) && $license_cache = $redis->Get('LICENSE_STATUS_CACHE')) {
-  $_SESSION['gal'] = json_decode($license_cache, true);
-}
 
 $js_minifier->add('/web/js/site/admin.js');
 $js_minifier->add('/web/js/presets/rspamd.js');
@@ -83,15 +80,12 @@ foreach ($RSPAMD_MAPS['regex'] as $rspamd_regex_desc => $rspamd_regex_map) {
   ];
 }
 
-
 $template = 'admin.twig';
 $template_data = [
   'tfa_data' => $tfa_data,
   'tfa_id' => @$_SESSION['tfa_id'],
   'fido2_cid' => @$_SESSION['fido2_cid'],
   'fido2_data' => $fido2_data,
-  'gal' => @$_SESSION['gal'],
-  'license_guid' => license('guid'),
   'api' => [
     'ro' => admin_api('ro', 'get'),
     'rw' => admin_api('rw', 'get'),
@@ -112,6 +106,7 @@ $template_data = [
   'password_complexity' => password_complexity('get'),
   'show_rspamd_global_filters' => @$_SESSION['show_rspamd_global_filters'],
   'lang_admin' => json_encode($lang['admin']),
+  'lang_datatables' => json_encode($lang['datatables'])
 ];
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/inc/footer.inc.php';

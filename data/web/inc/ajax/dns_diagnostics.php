@@ -142,27 +142,6 @@ if (isset($_SESSION['mailcow_cc_role']) && ($_SESSION['mailcow_cc_role'] == "adm
     state_optional
   );
 
-  $records[] = array(
-    '_mta-sts.' . $domain,
-    'CNAME',
-    $mailcow_hostname,
-    state_optional
-  );
-
-  $records[] = array(
-    '_mta-sts.' . $domain,
-    'TXT',
-    'v=STSv1; id=' . date('YmdHis') . 'Z',
-    state_optional
-  );
-
-  $records[] = array(
-    '_smtp._tls.' . $domain,
-    'TXT',
-    'v=TLSRPTv1; rua=mailto:postmaster@' . $domain,
-    state_optional
-  );
-
   if (!empty($dkim = dkim('details', $domain))) {
     $records[] = array(
       $dkim['dkim_selector'] . '._domainkey.' . $domain,

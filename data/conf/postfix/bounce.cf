@@ -69,8 +69,8 @@ Postmaster-Subject: Postmaster Warning: Delayed Mail
 Dies ist eine automatisch generierte Nachricht des E-Mail-Dienstes:
 
     Eine von Ihnen gesendete Nachricht konnte seit $delay_warning_time_hours Stunden nicht zugestellt werden.
-    
-    Sie müssen die Nachricht nicht noch einmal senden. Der E-Mail-Dienst 
+
+    Sie müssen die Nachricht nicht noch einmal senden. Der E-Mail-Dienst
     wird so lange versuchen Ihre Nachricht zuzustellen,
     bis sie $maximal_queue_lifetime_days Tage alt ist.
 

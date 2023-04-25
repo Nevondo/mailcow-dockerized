@@ -30,14 +30,14 @@
   @media all and (max-width: 480px) {
     .mob {
     display: none;
-    }    
+    }
   }
   </style>
   </head>
   <body>
     <p>Hallo {{username}},<br>
     {% if counter == 1 %}
-    es wurde 1 neue E-Mail in Ihre persönliche Quarantäne verschoben:<br>
+    es wurde eine neue E-Mail in Ihre persönliche Quarantäne verschoben:<br>
     {% else %}
     es wurden {{counter}} neue E-Mails in Ihre persönliche Quarantäne verschoben:<br>
     {% endif %}

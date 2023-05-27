@@ -26,6 +26,13 @@ set_config spftoolspath ${WORKING_DIR}/spf-tools
 set_config whitelist .${SCRIPT_DIR}/../data/conf/postfix/postscreen_access.cidr
 set_config yahoo_static_hosts ${POSTWHITE_DIR}/yahoo_static_hosts.txt
 
+#Fix URL for Yahoo!: https://github.com/stevejenkins/postwhite/issues/59
+sudo sed -i \
+      -e 's#yahoo_url="https://help.yahoo.com/kb/SLN23997.html"#yahoo_url="https://senders.yahooinc.com/outbound-mail-servers/"#' \
+      -e 's#echo "ipv6:$line";#echo "ipv6:$line" | grep -v "ipv6:::";#' \
+      -e 's#`command -v wget`#`command -v skip-wget`#' \
+      ${POSTWHITE_DIR}/scrape_yahoo
+
 cd ${POSTWHITE_DIR}
 ./postwhite ${POSTWHITE_CONF}
 

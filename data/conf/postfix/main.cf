@@ -170,4 +170,4 @@ bounce_template_file = /opt/postfix/conf/bounce.cf
 parent_domain_matches_subdomains = debug_peer_list,fast_flush_domains,mynetworks,qmqpd_authorized_clients
 
 # DO NOT EDIT ANYTHING BELOW #
-# User overrides #
+# Overrides #

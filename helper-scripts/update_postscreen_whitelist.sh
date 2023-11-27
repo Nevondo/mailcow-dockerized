@@ -6,7 +6,7 @@ SPFTOOLS_DIR=${WORKING_DIR}/spf-tools
 POSTWHITE_DIR=${WORKING_DIR}/postwhite
 POSTWHITE_CONF=${POSTWHITE_DIR}/postwhite.conf
 
-CUSTOM_HOSTS="\"icloud.com web.de gmx.net mail.de freenet.de arcor.de unity-mail.de ewetel.net protonmail.com nevondo.com leardev.de\""
+CUSTOM_HOSTS="\"gmail.com icloud.com web.de gmx.net mail.de freenet.de arcor.de unity-mail.de ewetel.net protonmail.com nevondo.com leardev.de howaner.de\""
 STATIC_HOSTS=(
     "194.25.134.0/24 permit # t-online.de"
 )

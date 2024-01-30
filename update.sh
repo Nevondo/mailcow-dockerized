@@ -116,11 +116,11 @@ migrate_docker_nat() {
       echo "Working on IPv6 NAT, please wait..."
       echo ${NAT_CONFIG} > /etc/docker/daemon.json
       ip6tables -F -t nat
-      [[ -e /etc/alpine-release ]] && rc-service docker restart || systemctl restart docker.service
+      [[ -e /etc/rc.conf ]] && rc-service docker restart || systemctl restart docker.service
       if [[ $? -ne 0 ]]; then
         echo -e "\e[31mError:\e[0m Failed to activate IPv6 NAT! Reverting and exiting."
         rm /etc/docker/daemon.json
-        if [[ -e /etc/alpine-release ]]; then
+        if [[ -e /etc/rc.conf ]]; then
           rc-service docker restart
         else
           systemctl reset-failed docker.service
@@ -181,7 +181,7 @@ if ! [[ "${DOCKER_COMPOSE_VERSION}" =~ ^(native|standalone)$ ]]; then
         echo -e "\e[33mNotice: You'll have to update this Compose Version via your Package Manager manually!\e[0m"
       else
         echo -e "\e[31mCannot find Docker Compose with a Version Higher than 2.X.X.\e[0m" 
-        echo -e "\e[31mPlease update/install it manually regarding to this doc site: https://docs.mailcow.email/i_u_m/i_u_m_install/\e[0m"
+        echo -e "\e[31mPlease update/install it manually regarding to this doc site: https://docs.mailcow.email/install/\e[0m"
         exit 1
       fi
   elif docker-compose > /dev/null 2>&1; then
@@ -196,14 +196,14 @@ if ! [[ "${DOCKER_COMPOSE_VERSION}" =~ ^(native|standalone)$ ]]; then
         echo -e "\e[33mNotice: For an automatic update of docker-compose please use the update_compose.sh scripts located at the helper-scripts folder.\e[0m"
       else
         echo -e "\e[31mCannot find Docker Compose with a Version Higher than 2.X.X.\e[0m" 
-        echo -e "\e[31mPlease update/install regarding to this doc site: https://docs.mailcow.email/i_u_m/i_u_m_install/\e[0m"
+        echo -e "\e[31mPlease update/install regarding to this doc site: https://docs.mailcow.email/install/\e[0m"
         exit 1
       fi
     fi
 
   else
     echo -e "\e[31mCannot find Docker Compose.\e[0m" 
-    echo -e "\e[31mPlease install it regarding to this doc site: https://docs.mailcow.email/i_u_m/i_u_m_install/\e[0m"
+    echo -e "\e[31mPlease install it regarding to this doc site: https://docs.mailcow.email/install/\e[0m"
     exit 1
   fi
 
@@ -216,7 +216,7 @@ elif [ "${DOCKER_COMPOSE_VERSION}" == "native" ]; then
     if ! $COMPOSE_COMMAND > /dev/null 2>&1 || ! $COMPOSE_COMMAND --version | grep "^2." > /dev/null 2>&1; then
       # IF it cannot find Standalone in > 2.X, then script stops
       echo -e "\e[31mCannot find Docker Compose or the Version is lower then 2.X.X.\e[0m" 
-      echo -e "\e[31mPlease install it regarding to this doc site: https://docs.mailcow.email/i_u_m/i_u_m_install/\e[0m"
+      echo -e "\e[31mPlease install it regarding to this doc site: https://docs.mailcow.email/install/\e[0m"
       exit 1
     fi
       # If it finds the standalone Plugin it will use this instead and change the mailcow.conf Variable accordingly
@@ -236,7 +236,7 @@ elif [ "${DOCKER_COMPOSE_VERSION}" == "standalone" ]; then
     if ! $COMPOSE_COMMAND > /dev/null 2>&1; then
       # IF it cannot find Native in > 2.X, then script stops
       echo -e "\e[31mCannot find Docker Compose.\e[0m" 
-      echo -e "\e[31mPlease install it regarding to this doc site: https://docs.mailcow.email/i_u_m/i_u_m_install/\e[0m"
+      echo -e "\e[31mPlease install it regarding to this doc site: https://docs.mailcow.email/install/\e[0m"
       exit 1
     fi
       # If it finds the native Plugin it will use this instead and change the mailcow.conf Variable accordingly
@@ -480,6 +480,7 @@ CONFIG_ARRAY=(
   "WATCHDOG_VERBOSE"
   "WEBAUTHN_ONLY_TRUSTED_VENDORS"
   "SPAMHAUS_DQS_KEY"
+  "SKIP_UNBOUND_HEALTHCHECK"
 )
 
 detect_bad_asn
@@ -746,6 +747,12 @@ for option in ${CONFIG_ARRAY[@]}; do
       echo "Adding new option \"${option}\" to mailcow.conf"
       echo '# Enable watchdog verbose logging' >> mailcow.conf
       echo 'WATCHDOG_VERBOSE=n' >> mailcow.conf
+    fi
+  elif [[ ${option} == "SKIP_UNBOUND_HEALTHCHECK" ]]; then
+    if ! grep -q ${option} mailcow.conf; then
+      echo "Adding new option \"${option}\" to mailcow.conf"
+      echo '# Skip Unbound (DNS Resolver) Healthchecks (NOT Recommended!) - y/n' >> mailcow.conf
+      echo 'SKIP_UNBOUND_HEALTHCHECK=n' >> mailcow.conf
     fi
   elif ! grep -q ${option} mailcow.conf; then
     echo "Adding new option \"${option}\" to mailcow.conf"

@@ -170,7 +170,7 @@ function notify_error() {
     fi
 
     # Replace subject and body placeholders
-    WEBHOOK_BODY=$(echo ${WATCHDOG_NOTIFY_WEBHOOK_BODY} | sed "s|\$SUBJECT\|\${SUBJECT}|$SUBJECT|g" | sed "s|\$BODY\|\${BODY}|$BODY|")
+    WEBHOOK_BODY=$(echo ${WATCHDOG_NOTIFY_WEBHOOK_BODY} | sed "s/\$SUBJECT\|\${SUBJECT}/$SUBJECT/g" | sed "s/\$BODY\|\${BODY}/$BODY/g")
     
     # POST to webhook
     curl -X POST -H "Content-Type: application/json" ${CURL_VERBOSE} -d "${WEBHOOK_BODY}" ${WATCHDOG_NOTIFY_WEBHOOK}
@@ -716,8 +716,8 @@ rspamd_checks() {
 From: watchdog@localhost
 
 Empty
-' | usr/bin/curl --max-time 10 -s --data-binary @- --unix-socket /var/lib/rspamd/rspamd.sock http://rspamd/scan | jq -rc .default.required_score)
-    if [[ ${SCORE} != "9999" ]]; then
+' | usr/bin/curl --max-time 10 -s --data-binary @- --unix-socket /var/lib/rspamd/rspamd.sock http://rspamd/scan | jq -rc .default.required_score | sed 's/\..*//' )
+    if [[ ${SCORE} -ne 9999 ]]; then
       echo "Rspamd settings check failed, score returned: ${SCORE}" 2>> /tmp/rspamd-mailcow 1>&2
       err_count=$(( ${err_count} + 1))
     else

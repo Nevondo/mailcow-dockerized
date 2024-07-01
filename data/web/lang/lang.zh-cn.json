@@ -336,7 +336,9 @@
         "validate_license_now": "通过证书服务器验证 GUID",
         "verify": "验证",
         "yes": "&#10003;",
-        "options": "选项"
+        "options": "选项",
+        "f2b_max_ban_time": "最长封禁时间（秒）",
+        "copy_to_clipboard": "复制到粘贴板"
     },
     "danger": {
         "access_denied": "访问被拒绝或者表单数据无效",
@@ -456,7 +458,8 @@
         "validity_missing": "请设置有效期",
         "value_missing": "请填入所有值",
         "yotp_verification_failed": "Yubico OTP 认证失败: %s",
-        "template_exists": "模板 %s 已存在"
+        "template_exists": "模板 %s 已存在",
+        "template_name_invalid": "模板名称无效"
     },
     "debug": {
         "chart_this_server": "图表 (此服务器)",
@@ -487,7 +490,11 @@
         "container_disabled": "容器已被停止或禁用",
         "container_running": "运行中",
         "cores": "核心数",
-        "memory": "内存"
+        "memory": "内存",
+        "error_show_ip": "无法解析公网IP地址",
+        "show_ip": "显示公网IP",
+        "update_available": "有可用更新",
+        "update_failed": "无法检查更新"
     },
     "diagnostics": {
         "cname_from_a": "来自 A/AAAA 记录的值。但只要记录指向正确的资源即可。",
@@ -903,7 +910,7 @@
         "disabled": "禁用",
         "second": "msgs / 秒",
         "minute": "msgs / 分钟",
-        "hour": "msgs / 小说",
+        "hour": "msgs / 小时",
         "day": "msgs / 天"
     },
     "start": {
@@ -1202,7 +1209,8 @@
         "paginate": {
             "first": "第一页",
             "last": "最后一页",
-            "previous": "上一页"
+            "previous": "上一页",
+            "next": "下一页"
         }
     }
 }

@@ -336,7 +336,7 @@ while (($#)); do
   case "${1}" in
     --check|-c)
       echo "Checking remote code for updates..."
-      LATEST_REV=$(git ls-remote --exit-code --refs --quiet https://git.nevondo.com/Nevondo/mailcow-dockerized.git ${BRANCH} | cut -f1)
+      LATEST_REV=$(git ls-remote --exit-code --refs --quiet https://git.leardev.de/leardev/mailcow-dockerized ${BRANCH} | cut -f1)
       if [ $? -ne 0 ]; then
         echo "A problem occurred while trying to fetch the latest revision from github."
         exit 99
@@ -934,9 +934,9 @@ done
 [[ -f data/conf/nginx/ZZZ-ejabberd.conf ]] && rm data/conf/nginx/ZZZ-ejabberd.conf
 
 # Silently fixing remote url from andryyy to mailcow
-# git remote set-url origin https://github.com/mailcow/mailcow-dockerized
+git remote set-url origin https://git.leardev.de/leardev/mailcow-dockerized
 
-DEFAULT_REPO=https://git.nevondo.com/Nevondo/mailcow-dockerized.git
+DEFAULT_REPO=https://git.leardev.de/leardev/mailcow-dockerized
 CURRENT_REPO=$(git config --get remote.origin.url)
 if [ "$CURRENT_REPO" != "$DEFAULT_REPO" ]; then 
   echo "The Repository currently used is not the default Mailcow Repository."
